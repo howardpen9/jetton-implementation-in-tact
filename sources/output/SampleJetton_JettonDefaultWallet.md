@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: JettonDefaultWallet
-BOC Size: 2200 bytes
+BOC Size: 2201 bytes
 
 # Types
 Total Types: 14
@@ -24,6 +24,10 @@ Signature: `ChangeOwner{newOwner:address}`
 ## Mint
 TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
 Signature: `Mint{amount:int257,receiver:address}`
+
+## JettonData
+TLB: `_ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell = JettonData`
+Signature: `JettonData{totalSupply:int257,mintable:bool,owner:address,content:^cell,walletCode:^cell}`
 
 ## TokenTransfer
 TLB: `token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
@@ -52,10 +56,6 @@ Signature: `TokenExcesses{queryId:uint64}`
 ## TokenUpdateContent
 TLB: `token_update_content#af1ca26a content:^cell = TokenUpdateContent`
 Signature: `TokenUpdateContent{content:^cell}`
-
-## JettonData
-TLB: `_ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell = JettonData`
-Signature: `JettonData{totalSupply:int257,mintable:bool,owner:address,content:^cell,walletCode:^cell}`
 
 ## JettonWalletData
 TLB: `_ balance:int257 owner:address master:address walletCode:^cell = JettonWalletData`

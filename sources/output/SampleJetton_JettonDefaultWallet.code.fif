@@ -48,6 +48,7 @@ PROGRAM{
   DECLPROC $__gen_JettonDefaultWallet_receive_TokenTransfer
   DECLPROC __gen_constructor_SendParameters$to_value_bounce_body
   DECLPROC __gen_constructor_TokenNotification$queryId_amount_from_forward_payload
+  DECLPROC __gen_constructor_SendParameters$to_value_bounce_body_mode
   DECLPROC $__gen_JettonDefaultWallet_receive_TokenTransferInternal
   DECLPROC __gen_constructor_SendParameters$to_value_mode_bounce_body
   DECLPROC __gen_constructor_TokenBurnNotification$queryId_amount_owner_response_destination
@@ -623,6 +624,12 @@ PROGRAM{
   }>
   __gen_constructor_TokenNotification$queryId_amount_from_forward_payload PROCINLINE:<{
   }>
+  __gen_constructor_SendParameters$to_value_bounce_body_mode PROCINLINE:<{
+    s2 s4 XCHG
+    s3 s0 s0 XCHG3
+    PUSHNULL
+    PUSHNULL
+  }>
   $__gen_JettonDefaultWallet_receive_TokenTransferInternal PROCINLINE:<{
     __tact_context_get INLINECALLDICT
     s2 s10 PUSH2
@@ -673,19 +680,15 @@ PROGRAM{
     s6 s3 s10 XCHG3
     s1 s5 XCHG
     $__gen_Context_readForwardFee INLINECALLDICT
-    s0 s2 XCHG
-    0 PUSHINT
-    MAX
-    ROT
-    ADD
-    s1 s6 XCHG
+    s7 s2 XCHG2
+    SUB
+    SWAP
+    10000000 PUSHINT
+    MIN
     SUB
     s5 PUSH
     ISNULL
     NOT
-    OVER
-    0 GTINT
-    AND
     IF:<{
       FALSE
       s0 s3 XCHG
@@ -693,7 +696,8 @@ PROGRAM{
       __gen_writecell_TokenExcesses INLINECALLDICT
       s3 s6 XCHG
       s1 s6 s0 XCHG3
-      __gen_constructor_SendParameters$to_value_bounce_body INLINECALLDICT
+      2 PUSHINT
+      __gen_constructor_SendParameters$to_value_bounce_body_mode INLINECALLDICT
       $send INLINECALLDICT
     }>ELSE<{
       DROP
@@ -855,7 +859,7 @@ PROGRAM{
     209778528950190195973528115415557644819 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5231783976754346524d586f7246466d7a47687472457261764771334158545070717a4a38644e777353354c} PUSHSLICE
+    x{697066733a2f2f516d656a51394b6131653464554e5539556a4b654d533238574344454539554a73424d6d6f645531376a63324c62} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

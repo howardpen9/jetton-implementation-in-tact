@@ -29,10 +29,11 @@ import { JettonDefaultWallet } from "./output/SampleJetton_JettonDefaultWallet";
     const jettonParams = {
         name: "Test 123 Best Practice",
         description: "This is description of Test tact jetton",
-        symbol: "TEST P",
+        symbol: "PPPPPPPP",
         image: "https://cdn.logo.com/hotlink-ok/logo-social.png" 
     };
-    let max_supply = toNano(123456789011); // specify total supply in nano
+
+    let max_supply = toNano(1234567666666689011); // Set the specific total supply in nano
 
     // Create content Cell
     let content = buildOnchainMetadata(jettonParams);

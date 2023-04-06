@@ -1,9 +1,16 @@
 import "@stdlib/ownable";
-// import "@stdlib/jetton";
 
 message Mint {
     amount: Int;
     receiver: Address;
+}
+
+struct JettonData {
+    totalSupply: Int;
+    mintable: Bool;
+    owner: Address;
+    content: Cell;
+    walletCode: Cell;
 }
 
 contract SampleJetton with Jetton {
@@ -73,7 +80,6 @@ trait Jetton with Ownable {
     }
 
     // Private Methods // 
-
     // @to The Address receive the Jetton token after minting
     // @amount The amount of Jetton token being minted
     // @response_destination The previous owner address
@@ -178,20 +184,7 @@ message TokenUpdateContent {
     content: Cell;
 }
 
-struct JettonData {
-    totalSupply: Int;
-    mintable: Bool;
-    owner: Address;
-    content: Cell;
-    walletCode: Cell;
-}
 
-struct JettonWalletData {
-    balance: Int;
-    owner: Address;
-    master: Address;
-    walletCode: Cell;
-}
 
 // ============================================================ //
 @interface("org.ton.jetton.wallet")
@@ -215,7 +208,6 @@ contract JettonDefaultWallet {
 
         let fwdFee: Int = ctx.readForwardFee() + ctx.readForwardFee();  // Gas checks
         let final: Int =  2 * self.gasConsumption + self.minTonsForStorage + fwdFee;
-        
         require(ctx.value > min(final, ton("0.01")), "Invalid value!!"); 
 
         self.balance = self.balance - msg.amount; // Update balance
@@ -268,15 +260,18 @@ contract JettonDefaultWallet {
 
         let msgValue: Int = self.msgValue(ctx.value);  // Get value for gas
         let fwdFee: Int = ctx.readForwardFee();
-        msgValue = msgValue - ( max(msg.forward_ton_amount, 0) + fwdFee );
-        if (msg.response_destination != null && msgValue > 0) { // Cashback
+        // msgValue = msgValue - msg.forward_ton_amount - fwdFee;
+        msgValue = msgValue - msg.forward_ton_amount - min(fwdFee, ton("0.01"));
+        
+        if (msg.response_destination != null) { // Cashback
                 send(SendParameters {
                     to: msg.response_destination, 
                     value: msgValue,  
                     bounce: false,
                     body: TokenExcesses { // 0xd53276db
                         queryId: msg.queryId
-                    }.toCell()
+                    }.toCell(),
+                    mode: SendIgnoreErrors
                 });
         }
     }
@@ -331,4 +326,11 @@ contract JettonDefaultWallet {
             walletCode: (initOf JettonDefaultWallet(self.master, self.owner)).code
         };
     }
+}
+
+struct JettonWalletData {
+    balance: Int;
+    owner: Address;
+    master: Address;
+    walletCode: Cell;
 }
