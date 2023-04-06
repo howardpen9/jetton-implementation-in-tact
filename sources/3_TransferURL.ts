@@ -12,15 +12,16 @@ let new_owner_Address = Address.parse(""); // the
 
 (async () => {
     // This example is for generating the URL for inteacting with Contract by URL
+    
     const jettonParams = {
-        name: "Test 123",
+        name: "Test 123 Best Practice",
         description: "This is description of Test tact jetton",
-        symbol: "TEST",
+        symbol: "PPPPPPPP",
         image: "https://cdn.logo.com/hotlink-ok/logo-social.png" 
     };
 
     let content = buildOnchainMetadata(jettonParams);
-    let max_supply = toNano(123456789011); // specify total supply in nano
+    let max_supply = toNano(1234567666666689011); // Set the specific total supply in nano
 
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address

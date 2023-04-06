@@ -954,19 +954,15 @@ SETCP0
             3 MULCONST
             1 RSHIFT
           }> CALLREF
-          s0 s2 XCHG
-          0 PUSHINT
-          MAX
-          ROT
-          ADD
-          s1 s6 XCHG
+          s7 s2 XCHG2
+          SUB
+          s0 s1 XCHG
+          10000000 PUSHINT
+          MIN
           SUB
           s5 PUSH
           ISNULL
           NOT
-          s1 PUSH
-          0 GTINT
-          AND
           <{
             0 PUSHINT
             s0 s3 XCHG
@@ -979,9 +975,9 @@ SETCP0
             ENDC
             s3 s6 XCHG
             s1 s6 s0 XCHG3
-            s3 s3 s0 XCHG3
-            0 PUSHINT
-            s0 s1 XCHG
+            2 PUSHINT
+            s2 s4 XCHG
+            s3 s0 s0 XCHG3
             PUSHNULL
             PUSHNULL
             <{

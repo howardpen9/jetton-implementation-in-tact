@@ -8,7 +8,8 @@ import {mnemonicToPrivateKey} from "ton-crypto";
 import {SampleJetton} from "./output/SampleJetton_SampleJetton";
 import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_JettonDefaultWallet";
  
-    let NewOnwer_Address = Address.parse("NEW"); // NEW Owner Address
+    // Owner should usually be the deploying wallet's address.
+    let NewOnwer_Address = Address.parse("kQCBgRI-utROP6bJmQydwWiE-NIPScVW_UGPRhQqvTaMXVYG");
 
 (async () => {
     //create client for testnet sandboxv4 API - alternative endpoint
@@ -16,24 +17,25 @@ import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_J
         endpoint: "https://sandbox-v4.tonhubapi.com"
     });
     
-    const mnemonics = "YOUR mnemonics" // Paste your mnemonics of wallet address want to use in deploy
-    
+    const mnemonics = 
+
     let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));
     let secretKey = keyPair.secretKey;
     let workchain = 0; 
     let wallet = WalletContractV4.create({ workchain, publicKey: keyPair.publicKey});
     let wallet_contract = client4.open(wallet);
 
-    const jettonParams = { // Change this whatever you want.
+    const jettonParams = {
         name: "Test 123 Best Practice",
         description: "This is description of Test tact jetton",
-        symbol: "TEST P",
+        symbol: "PPPPPPPP",
         image: "https://cdn.logo.com/hotlink-ok/logo-social.png" 
     };
 
+
     // Create content Cell
     let content = buildOnchainMetadata(jettonParams);
-    let max_supply = toNano(123456789011); // specify total supply in nano
+    let max_supply = toNano(1234567666666689011); // Set the specific total supply in nano
 
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address
@@ -45,7 +47,7 @@ import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_J
     let contract = client4.open(contract_dataFormat);
     let jetton_wallet =  await contract.getGetWalletAddress(wallet_contract.address)
 
-    console.log("✨ Calling:\n" + wallet_contract.address + "'s JettonWallet ==> ");
+    console.log("✨ Calling:\n" + wallet_contract.address + "'s \nJettonWallet ==> ");
     console.log("✨ JettonWallet: \n" + jetton_wallet);
     
     let test_message = beginCell()
