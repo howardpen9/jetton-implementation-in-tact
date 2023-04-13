@@ -5,7 +5,7 @@
     "test": "jest",
     "deploy": "ts-node ./sources/contract.deploy.ts",
     "read": "ts-node ./sources/contract.read.ts",
-    "d1": "ts-node ./sources/1_WalletTransfer.ts",
+    "d1": "ts-node ./sources/2_Transfer.ts",
     "d2": "ts-node ./sources/2_UsingURLTransfer.ts"
   },
   "dependencies": {
