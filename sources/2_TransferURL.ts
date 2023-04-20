@@ -11,9 +11,6 @@ let deploy_address = Address.parse(""); // The deployer wallet address from mnem
 let new_owner_Address = Address.parse(""); // the 
 
 (async () => {
-    // This example is for generating the URL for inteacting with Contract by URL
-    
-
     const jettonParams = {
         name: "Test 123 Best Practice",
         description: "This is description of Test tact jetton",

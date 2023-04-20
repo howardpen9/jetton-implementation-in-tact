@@ -17,7 +17,6 @@ import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_J
         endpoint: "https://sandbox-v4.tonhubapi.com"
     });
     
-    const mnemonics = "shed hero drastic knee kit elbow multiply sign tell addict gesture priority degree reward physical surprise decade portion slight speed match tissue nominee puzzle"
 
     let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));
     let secretKey = keyPair.secretKey;
@@ -53,18 +52,18 @@ import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_J
                 .storeStringRefTail("https://cdn.logo.com/hotlink-ok/logo-social.png")
             .endCell();
 
-    let string_test = beginCell().storeStringRefTail("EEEEEE").endCell();
+    let string_test = beginCell().storeStringTail("EEEEEE 我我我").endCell();
 
     let packed = beginCell().store(
         storeTokenTransfer({
             $$type: 'TokenTransfer',
             queryId: 0n,
-            amount: toNano(16666666),
+            amount: toNano(33333),
             destination: NewOnwer_Address,
             response_destination: wallet_contract.address, // Original Owner, aka. First Minter's Jetton Wallet
-            custom_payload: string_test,
+            custom_payload: test_message,
             forward_ton_amount: toNano("0.01"),
-            forward_payload: test_message
+            forward_payload: string_test
     })).endCell(); 
 
     let deployAmount = toNano("0.4");

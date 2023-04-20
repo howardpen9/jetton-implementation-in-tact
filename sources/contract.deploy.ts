@@ -12,7 +12,6 @@ import {JettonDefaultWallet} from "./output/SampleJetton_JettonDefaultWallet";
         endpoint: "https://sandbox-v4.tonhubapi.com"
     });
 
-    const mnemonics = "shed hero drastic knee kit elbow multiply sign tell addict gesture priority degree reward physical surprise decade portion slight speed match tissue nominee puzzle"
 
     let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));
     let secretKey = keyPair.secretKey;
