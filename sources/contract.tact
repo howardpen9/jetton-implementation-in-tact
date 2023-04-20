@@ -89,6 +89,7 @@ trait Jetton with Ownable {
         self.totalSupply = self.totalSupply + amount; // Update total supply
 
         let winit: StateInit = self.getJettonWalletInit(to); // Create message
+
         send(SendParameters{
             to: contractAddress(winit), 
             value: 0, 
@@ -134,6 +135,7 @@ trait Jetton with Ownable {
         return contractAddress(winit);
     }
 }
+
 
 
 message(0xf8a7ea5) TokenTransfer {
@@ -185,7 +187,6 @@ message TokenUpdateContent {
 }
 
 
-
 // ============================================================ //
 @interface("org.ton.jetton.wallet")
 contract JettonDefaultWallet {
@@ -233,6 +234,8 @@ contract JettonDefaultWallet {
             });
     }
 
+// forward_payload: "Approve1234".asComment().asSlice()
+
     receive(msg: TokenTransferInternal) { // 0x178d4519
         let ctx: Context = context();
 
@@ -260,8 +263,7 @@ contract JettonDefaultWallet {
 
         let msgValue: Int = self.msgValue(ctx.value);  // Get value for gas
         let fwdFee: Int = ctx.readForwardFee();
-        // msgValue = msgValue - msg.forward_ton_amount - fwdFee;
-        msgValue = msgValue - msg.forward_ton_amount - min(fwdFee, ton("0.01"));
+        msgValue = msgValue - msg.forward_ton_amount - fwdFee;
         
         if (msg.response_destination != null) { // Cashback
                 send(SendParameters {

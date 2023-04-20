@@ -17,7 +17,6 @@ import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_J
         endpoint: "https://sandbox-v4.tonhubapi.com"
     });
     
-    const mnemonics = 
 
     let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));
     let secretKey = keyPair.secretKey;
@@ -31,11 +30,10 @@ import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_J
         symbol: "PPPPPPPP",
         image: "https://cdn.logo.com/hotlink-ok/logo-social.png" 
     };
-
-
     // Create content Cell
     let content = buildOnchainMetadata(jettonParams);
-    let max_supply = toNano(1234567666666689011); // Set the specific total supply in nano
+    let max_supply = toNano(123456766689011); // Set the specific total supply in nano
+
 
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address
@@ -47,30 +45,32 @@ import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_J
     let contract = client4.open(contract_dataFormat);
     let jetton_wallet =  await contract.getGetWalletAddress(wallet_contract.address)
 
-    console.log("✨ Calling:\n" + wallet_contract.address + "'s \nJettonWallet ==> ");
+    console.log("✨ " + wallet_contract.address + "'s JettonWallet ==> ");
     console.log("✨ JettonWallet: \n" + jetton_wallet);
     
     let test_message = beginCell()
-                .storeMaybeStringRefTail("https://cdn.logo.com/hotlink-ok/logo-social.png")
+                .storeStringRefTail("https://cdn.logo.com/hotlink-ok/logo-social.png")
             .endCell();
+
+    let string_test = beginCell().storeStringTail("EEEEEE 我我我").endCell();
 
     let packed = beginCell().store(
         storeTokenTransfer({
             $$type: 'TokenTransfer',
             queryId: 0n,
-            amount: toNano(16666666),
+            amount: toNano(33333),
             destination: NewOnwer_Address,
             response_destination: wallet_contract.address, // Original Owner, aka. First Minter's Jetton Wallet
-            custom_payload: null,
+            custom_payload: test_message,
             forward_ton_amount: toNano("0.01"),
-            forward_payload: test_message
+            forward_payload: string_test
     })).endCell(); 
 
     let deployAmount = toNano("0.4");
     let seqno: number = await wallet_contract.getSeqno();
     let balance: bigint = await wallet_contract.getBalance();
 
-    console.log('Current deployment wallet balance = ', fromNano(balance).toString(), '💎TON');
+    console.log('Current deployment wallet balance = ', fromNano(balance).toString(), '💎TON\n\n');
     console.log("\n🛠️ Calling To JettonWallet:\n" + jetton_wallet);
     await wallet_contract.sendTransfer({
         seqno,

@@ -11,8 +11,6 @@ let deploy_address = Address.parse(""); // The deployer wallet address from mnem
 let new_owner_Address = Address.parse(""); // the 
 
 (async () => {
-    // This example is for generating the URL for inteacting with Contract by URL
-    
     const jettonParams = {
         name: "Test 123 Best Practice",
         description: "This is description of Test tact jetton",
@@ -20,8 +18,10 @@ let new_owner_Address = Address.parse(""); // the
         image: "https://cdn.logo.com/hotlink-ok/logo-social.png" 
     };
 
+    // Create content Cell
     let content = buildOnchainMetadata(jettonParams);
-    let max_supply = toNano(1234567666666689011); // Set the specific total supply in nano
+    let max_supply = toNano(123456766689011); // Set the specific total supply in nano
+    
 
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address

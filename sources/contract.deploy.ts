@@ -12,8 +12,6 @@ import {JettonDefaultWallet} from "./output/SampleJetton_JettonDefaultWallet";
         endpoint: "https://sandbox-v4.tonhubapi.com"
     });
 
-    // const mnemonics = "shed hero drastic knee kit elbow multiply sign tell addict gesture priority degree reward physical surprise decade portion slight speed match tissue nominee puzzle"
-    const mnemonics = "MM"
 
     let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));
     let secretKey = keyPair.secretKey;
@@ -34,7 +32,7 @@ import {JettonDefaultWallet} from "./output/SampleJetton_JettonDefaultWallet";
 
     // Create content Cell
     let content = buildOnchainMetadata(jettonParams);
-    let max_supply = toNano(1234567666666689011); // Set the specific total supply in nano
+    let max_supply = toNano(123456766689011); // Set the specific total supply in nano
 
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address

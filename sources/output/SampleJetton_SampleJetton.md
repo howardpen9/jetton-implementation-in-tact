@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: SampleJetton
-BOC Size: 1632 bytes
+BOC Size: 1759 bytes
 
 # Types
-Total Types: 14
+Total Types: 15
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -18,8 +18,12 @@ TLB: `_ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Ma
 Signature: `SendParameters{bounce:bool,to:address,value:int257,mode:int257,body:Maybe ^cell,code:Maybe ^cell,data:Maybe ^cell}`
 
 ## ChangeOwner
-TLB: `change_owner#0f474d03 newOwner:address = ChangeOwner`
-Signature: `ChangeOwner{newOwner:address}`
+TLB: `change_owner#819dbe99 queryId:uint64 newOwner:address = ChangeOwner`
+Signature: `ChangeOwner{queryId:uint64,newOwner:address}`
+
+## ChangeOwnerOk
+TLB: `change_owner_ok#327b2b4a queryId:uint64 newOwner:address = ChangeOwnerOk`
+Signature: `ChangeOwnerOk{queryId:uint64,newOwner:address}`
 
 ## Mint
 TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
