@@ -1,0 +1,263 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "SampleJetton_Round.headers.fc";
+#include "SampleJetton_Round.stdlib.fc";
+#include "SampleJetton_Round.constants.fc";
+#include "SampleJetton_Round.storage.fc";
+
+;;
+;; Contract Round functions
+;;
+
+(int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $Round$_contract_init(int $project_id, slice $ido_contract, slice $staking_contract) impure inline_ref {
+    var (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds)) = (null(), null(), null(), 0, null(), 0, null(), 0, null(), null(), 0, null(), 0, null(), null());
+    $self'project_id = $project_id;
+    $self'owner = $ido_contract;
+    $self'staking_contract = $staking_contract;
+    $self'is_inject_funds = false;
+    $self'second_owner = $ido_contract;
+    return ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds);
+}
+
+((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int), cell) $Round$_fun_get_user_list_this_round((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self) impure inline_ref {
+    var (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds)) = $self;
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), $self'user_register_list);
+}
+
+((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int), int) $Round$_fun_get_user_weights_in_this_round((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self, slice $user) impure inline_ref {
+    var (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds)) = $self;
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), ((__tact_not_null(__tact_dict_get_slice_int($self'user_score_list, 267, $user, 257)) * 1000000000) / $self'weights_total));
+}
+
+((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int), cell) $Round$_fun_get_user_score_list((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self) impure inline_ref {
+    var (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds)) = $self;
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), $self'user_score_list);
+}
+
+((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int), (int, slice, slice, int, slice, int, slice, int, int, int, int, int)) $Round$_fun_round_data((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self) impure inline_ref {
+    var (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds)) = $self;
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), $RoundData$_constructor_project_id_owner_second_owner_end_time_round_contract_jetton_wallet_convert_rate_upcoming_token_jetton_wallet_amount_of_upcoming_token_is_inject_funds_is_open_pariticipators_weights_total($self'project_id, $self'owner, $self'second_owner, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_inject_funds, $self'is_open, $self'pariticipators, $self'weights_total));
+}
+
+;;
+;; Receivers of a Contract Round
+;;
+
+(((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int)), ()) $Round$_internal_binary_AdminUploadJettonWalletData((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self, (int, slice, int, slice, slice) $msg) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds) = $self;
+    var ($msg'funding_period, $msg'round_contract_jetton_wallet, $msg'convert_rate, $msg'upcoming_token_jetton_wallet, $msg'second_owner) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(21884, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
+    throw_unless(35179, ($msg'funding_period <= 86401));
+    $self'end_time = (now() + $msg'funding_period);
+    throw_unless(35067, ($msg'convert_rate > 1));
+    throw_unless(35067, ($msg'convert_rate < 65535));
+    $self'convert_rate = $msg'convert_rate;
+    $self'round_contract_jetton_wallet = $msg'round_contract_jetton_wallet;
+    $self'upcoming_token_jetton_wallet = $msg'upcoming_token_jetton_wallet;
+    $self'second_owner = $msg'second_owner;
+    $self'is_open = true;
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($ctx'sender, 0, (64 + 2), true, __gen_cell_comment_91418869be3aad39ee6d6e884fd779b91fad1e25fe8ee805edc6d40f6ecf4b8e()));
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), ());
+}
+
+((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int), ()) $Round$_internal_text_1a596b822cf6e0fae930142ed76b2c6a8db062c1eddd06f9efbae302582bcc31((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(30226, ($ctx'value >= 100000000));
+    throw_unless(33986, $self'is_open);
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'staking_contract, 0, (64 + 2), true, $GetWeighted$_store_cell($GetWeighted$_constructor_applied_user_address($ctx'sender))));
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), ());
+}
+
+(((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int)), ()) $Round$_internal_binary_PassScoreToRoundContract((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self, (slice, int) $msg) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds) = $self;
+    var ($msg'checked_address, $msg'return_score) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    int $participate = __tact_dict_get_slice_int($self'user_register_list, 267, $msg'checked_address, 1);
+    throw_unless(25145, null?($participate));
+    throw_unless(28412, $self'is_open);
+    $self'user_register_list~__tact_dict_set_slice_int(267, $msg'checked_address, true, 1);
+    $self'pariticipators = ($self'pariticipators + 1);
+    $self'user_score_list~__tact_dict_set_slice_int(267, $msg'checked_address, $msg'return_score, 257);
+    $self'weights_total = ($self'weights_total + $msg'return_score);
+    $global_emit($WeightLog$_store_cell($WeightLog$_constructor_weight_total_pariticipator_return_score($self'weights_total, $msg'checked_address, $msg'return_score)));
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), ());
+}
+
+(((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int)), ()) $Round$_internal_binary_TokenNotification((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self, (int, int, slice, slice) $msg) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds) = $self;
+    var ($msg'queryId, $msg'amount, $msg'from, $msg'forward_payload) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    if (( __tact_slice_eq_bits_nullable_one($self'round_contract_jetton_wallet, $ctx'sender) )) {
+        throw_unless(44849, (now() <= $self'end_time));
+        throw_unless(24241, $self'is_open);
+    } elseif (( __tact_slice_eq_bits_nullable_one($self'upcoming_token_jetton_wallet, $ctx'sender) )) {
+        throw_unless(15748, ( (( __tact_slice_eq_bits($self'owner, $msg'from) )) ? (true) : (( __tact_slice_eq_bits($self'second_owner, $msg'from) )) ));
+        throw_unless(59169, (~ $self'is_inject_funds));
+        $self'is_inject_funds = true;
+        $self'amount_of_upcoming_token = $msg'amount;
+        $global_send($SendParameters$_constructor_to_value_mode_bounce_body($msg'from, 0, (64 + 2), true, __gen_cell_comment_b3bc9cdf51385d4acd78d8a6e96940eeecf37a655401caa06f8decf06f703f21()));
+    }
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), ());
+}
+
+((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int), ()) $Round$_internal_text_75098fd44fb540e04accece784264ef2abeecd9d941721f24b735d694472a8a3((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(21884, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
+    $self'is_open = false;
+    if ((~ null?($self'second_owner))) {
+        $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'owner, 10000000, 2, true, __gen_cell_comment_2b01c455cea993d8bbe1d89385d1bbb64ec7ff124fb0c8b9b186c1badc9ad368()));
+    }
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'owner, 0, (64 + 2), true, __gen_cell_comment_2b01c455cea993d8bbe1d89385d1bbb64ec7ff124fb0c8b9b186c1badc9ad368()));
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), ());
+}
+
+(((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int)), ()) $Round$_internal_binary_UserClaim((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $self, (int) $msg) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds) = $self;
+    var ($msg'queryId) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(59383, __tact_int_eq_nullable_one($self'is_open, false));
+    throw_unless(4034, (~ null?(__tact_dict_get_slice_int($self'user_score_list, 267, $ctx'sender, 257))));
+    int $new_token_qty = (($self'amount_of_upcoming_token * ($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds)~$Round$_fun_get_user_weights_in_this_round($ctx'sender)) / 1000);
+    $self'user_score_list~__tact_dict_set_slice_int(267, $ctx'sender, null(), 257);
+    $global_send($SendParameters$_constructor_to_value_bounce_mode_body(__tact_not_null($self'upcoming_token_jetton_wallet), 100000000, false, 0, $TokenTransfer$_store_cell($TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload($msg'queryId, $new_token_qty, $ctx'sender, my_address(), null(), 10000000, $global_emptySlice()))));
+    return (($self'project_id, $self'owner, $self'staking_contract, $self'end_time, $self'round_contract_jetton_wallet, $self'convert_rate, $self'upcoming_token_jetton_wallet, $self'amount_of_upcoming_token, $self'is_open, $self'user_register_list, $self'pariticipators, $self'user_score_list, $self'weights_total, $self'second_owner, $self'is_inject_funds), ());
+}
+
+;;
+;; Get methods of a Contract Round
+;;
+
+_ %get_user_list_this_round() method_id(126207) {
+    var self = $Round$_contract_load();
+    var res = self~$Round$_fun_get_user_list_this_round();
+    return res;
+}
+
+_ %get_user_weights_in_this_round(slice $$user) method_id(97174) {
+    slice $user = __tact_verify_address($$user);
+    var self = $Round$_contract_load();
+    var res = self~$Round$_fun_get_user_weights_in_this_round($user);
+    return res;
+}
+
+_ %get_user_score_list() method_id(86972) {
+    var self = $Round$_contract_load();
+    var res = self~$Round$_fun_get_user_score_list();
+    return res;
+}
+
+_ %round_data() method_id(112202) {
+    var self = $Round$_contract_load();
+    var res = self~$Round$_fun_round_data();
+    return $RoundData$_to_external(res);
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://QmSucQ7qavdEb1unJ2i5hC2CKkCs1Ntq4JkkNZ1JhVaniP";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract Round
+;;
+
+((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int), int) $Round$_contract_router_internal((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive AdminUploadJettonWalletData message
+    if (op == 3842255875) {
+        var msg = in_msg~$AdminUploadJettonWalletData$_load();
+        self~$Round$_internal_binary_AdminUploadJettonWalletData(msg);
+        return (self, true);
+    }
+    
+    ;; Receive PassScoreToRoundContract message
+    if (op == 3858595625) {
+        var msg = in_msg~$PassScoreToRoundContract$_load();
+        self~$Round$_internal_binary_PassScoreToRoundContract(msg);
+        return (self, true);
+    }
+    
+    ;; Receive TokenNotification message
+    if (op == 1935855772) {
+        var msg = in_msg~$TokenNotification$_load();
+        self~$Round$_internal_binary_TokenNotification(msg);
+        return (self, true);
+    }
+    
+    ;; Receive UserClaim message
+    if (op == 2673970054) {
+        var msg = in_msg~$UserClaim$_load();
+        self~$Round$_internal_binary_UserClaim(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "Register" message
+        if (text_op == 0x1a596b822cf6e0fae930142ed76b2c6a8db062c1eddd06f9efbae302582bcc31) {
+            self~$Round$_internal_text_1a596b822cf6e0fae930142ed76b2c6a8db062c1eddd06f9efbae302582bcc31();
+            return (self, true);
+        }
+        
+        ;; Receive "AdminExecute" message
+        if (text_op == 0x75098fd44fb540e04accece784264ef2abeecd9d941721f24b735d694472a8a3) {
+            self~$Round$_internal_text_75098fd44fb540e04accece784264ef2abeecd9d941721f24b735d694472a8a3();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $Round$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Round$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $Round$_contract_store(self);
+}

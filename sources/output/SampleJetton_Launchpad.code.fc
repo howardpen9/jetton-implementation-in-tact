@@ -1,0 +1,165 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "SampleJetton_Launchpad.headers.fc";
+#include "SampleJetton_Launchpad.stdlib.fc";
+#include "SampleJetton_Launchpad.constants.fc";
+#include "SampleJetton_Launchpad.storage.fc";
+
+;;
+;; Contract Launchpad functions
+;;
+
+(int, slice, slice) $Launchpad$_contract_init(slice $owner, slice $staking_contract) impure inline_ref {
+    var (($self'project_id, $self'owner, $self'staking_contract)) = (0, null(), null());
+    $self'owner = $owner;
+    $self'staking_contract = $staking_contract;
+    return ($self'project_id, $self'owner, $self'staking_contract);
+}
+
+((int, slice, slice), slice) $Launchpad$_fun_get_round_address((int, slice, slice) $self, int $project_id) impure inline_ref {
+    var (($self'project_id, $self'owner, $self'staking_contract)) = $self;
+    var ($init'code, $init'data) = $Round$_init_child(__tact_context_sys, $project_id, my_address(), $self'staking_contract);
+    return (($self'project_id, $self'owner, $self'staking_contract), $global_contractAddress(($init'code, $init'data)));
+}
+
+;;
+;; Receivers of a Contract Launchpad
+;;
+
+((int, slice, slice), ()) $Launchpad$_internal_text_dd75a2e63fc7adf8c26fc6c9deb71ae7cd221b94496a215cf1e3d95376d23425((int, slice, slice) $self) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract) = $self;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(49280, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
+    var ($init'code, $init'data) = $Round$_init_child(__tact_context_sys, $self'project_id, my_address(), $self'staking_contract);
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_code_data($global_contractAddress(($init'code, $init'data)), 0, (64 + 2), true, $init'code, $init'data));
+    $self'project_id = ($self'project_id + 1);
+    return (($self'project_id, $self'owner, $self'staking_contract), ());
+}
+
+(((int, slice, slice)), ()) $Launchpad$_internal_binary_UploadJettonWalletData((int, slice, slice) $self, (int, int, slice, int, slice, slice) $msg) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract) = $self;
+    var ($msg'project_id, $msg'funding_period, $msg'round_contract_jetton_wallet, $msg'convert_rate, $msg'upcoming_token_jetton_wallet, $msg'second_owner) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(49280, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body(($self'project_id, $self'owner, $self'staking_contract)~$Launchpad$_fun_get_round_address($msg'project_id), 0, (64 + 2), true, $AdminUploadJettonWalletData$_store_cell($AdminUploadJettonWalletData$_constructor_funding_period_round_contract_jetton_wallet_convert_rate_upcoming_token_jetton_wallet_second_owner($msg'funding_period, $msg'round_contract_jetton_wallet, $msg'convert_rate, $msg'upcoming_token_jetton_wallet, $msg'second_owner))));
+    return (($self'project_id, $self'owner, $self'staking_contract), ());
+}
+
+(((int, slice, slice)), ()) $Launchpad$_internal_binary_AdminExecute((int, slice, slice) $self, (int) $msg) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract) = $self;
+    var ($msg'target_project_id) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    throw_unless(49280, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body(($self'project_id, $self'owner, $self'staking_contract)~$Launchpad$_fun_get_round_address($msg'target_project_id), 0, (64 + 2), true, __gen_cell_comment_75098fd44fb540e04accece784264ef2abeecd9d941721f24b735d694472a8a3()));
+    return (($self'project_id, $self'owner, $self'staking_contract), ());
+}
+
+((int, slice, slice), ()) $Launchpad$_internal_text_91418869be3aad39ee6d6e884fd779b91fad1e25fe8ee805edc6d40f6ecf4b8e((int, slice, slice) $self) impure inline {
+    var ($self'project_id, $self'owner, $self'staking_contract) = $self;
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'owner, 0, (64 + 2), true, __gen_cell_comment_0d90999934b499216b26d241d9ba75e11798de92f2af6d80b82b77624735a328()));
+    return (($self'project_id, $self'owner, $self'staking_contract), ());
+}
+
+;;
+;; Get methods of a Contract Launchpad
+;;
+
+_ %get_round_address(int $$project_id) method_id(111576) {
+    int $project_id = $$project_id;
+    var self = $Launchpad$_contract_load();
+    var res = self~$Launchpad$_fun_get_round_address($project_id);
+    return res;
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://QmNWWgSdMkax3NTQgdG61W5dXQ8V7jTNDLweN4L9PKP4WN";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract Launchpad
+;;
+
+((int, slice, slice), int) $Launchpad$_contract_router_internal((int, slice, slice) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive UploadJettonWalletData message
+    if (op == 2160290321) {
+        var msg = in_msg~$UploadJettonWalletData$_load();
+        self~$Launchpad$_internal_binary_UploadJettonWalletData(msg);
+        return (self, true);
+    }
+    
+    ;; Receive AdminExecute message
+    if (op == 2512676617) {
+        var msg = in_msg~$AdminExecute$_load();
+        self~$Launchpad$_internal_binary_AdminExecute(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "Admin:CreateNewRound" message
+        if (text_op == 0xdd75a2e63fc7adf8c26fc6c9deb71ae7cd221b94496a215cf1e3d95376d23425) {
+            self~$Launchpad$_internal_text_dd75a2e63fc7adf8c26fc6c9deb71ae7cd221b94496a215cf1e3d95376d23425();
+            return (self, true);
+        }
+        
+        ;; Receive "Update Success" message
+        if (text_op == 0x91418869be3aad39ee6d6e884fd779b91fad1e25fe8ee805edc6d40f6ecf4b8e) {
+            self~$Launchpad$_internal_text_91418869be3aad39ee6d6e884fd779b91fad1e25fe8ee805edc6d40f6ecf4b8e();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $Launchpad$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Launchpad$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $Launchpad$_contract_store(self);
+}

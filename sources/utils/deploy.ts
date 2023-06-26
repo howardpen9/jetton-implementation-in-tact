@@ -2,7 +2,7 @@ import { beginCell, Cell, contractAddress, storeStateInit } from "ton-core";
 import { prompt } from 'enquirer';
 import open from 'open';
 import base64url from "base64url";
-import { printSeparator } from "./print";
+import { printSeparator, printWrite } from "./print";
 import qs from 'qs';
 
 function getLink(prefix: string, init: { code: Cell, data: Cell }, value: bigint, command: Cell | string, testnet: boolean) {

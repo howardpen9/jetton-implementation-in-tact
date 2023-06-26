@@ -1,0 +1,143 @@
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_code_data(slice to, int value, int mode, int bounce, cell code, cell data) inline {
+    return (bounce, to, value, mode, null(), code, data);
+}
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
+;;
+;; Type: UploadJettonWalletData
+;; Header: 0x80c36a11
+;; TLB: upload_jetton_wallet_data#80c36a11 project_id:uint16 funding_period:uint32 round_contract_jetton_wallet:address convert_rate:uint16 upcoming_token_jetton_wallet:address second_owner:address = UploadJettonWalletData
+;;
+
+(slice, ((int, int, slice, int, slice, slice))) $UploadJettonWalletData$_load(slice sc_0) inline_ref {
+    throw_unless(129, sc_0~load_uint(32) == 2160290321);
+    var v'project_id = sc_0~load_uint(16);
+    var v'funding_period = sc_0~load_uint(32);
+    var v'round_contract_jetton_wallet = sc_0~__tact_load_address();
+    var v'convert_rate = sc_0~load_uint(16);
+    var v'upcoming_token_jetton_wallet = sc_0~__tact_load_address();
+    var v'second_owner = sc_0~__tact_load_address();
+    return (sc_0, (v'project_id, v'funding_period, v'round_contract_jetton_wallet, v'convert_rate, v'upcoming_token_jetton_wallet, v'second_owner));
+}
+
+;;
+;; Type: AdminExecute
+;; Header: 0x95c46709
+;; TLB: admin_execute#95c46709 target_project_id:uint16 = AdminExecute
+;;
+
+(slice, ((int))) $AdminExecute$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2512676617);
+    var v'target_project_id = sc_0~load_uint(16);
+    return (sc_0, (v'target_project_id));
+}
+
+;;
+;; Type: AdminUploadJettonWalletData
+;; Header: 0xe5042c03
+;; TLB: admin_upload_jetton_wallet_data#e5042c03 funding_period:uint32 round_contract_jetton_wallet:address convert_rate:uint16 upcoming_token_jetton_wallet:address second_owner:address = AdminUploadJettonWalletData
+;;
+
+builder $AdminUploadJettonWalletData$_store(builder build_0, (int, slice, int, slice, slice) v) inline {
+    var (v'funding_period, v'round_contract_jetton_wallet, v'convert_rate, v'upcoming_token_jetton_wallet, v'second_owner) = v;
+    build_0 = store_uint(build_0, 3842255875, 32);
+    build_0 = build_0.store_uint(v'funding_period, 32);
+    build_0 = __tact_store_address(build_0, v'round_contract_jetton_wallet);
+    build_0 = build_0.store_uint(v'convert_rate, 16);
+    build_0 = __tact_store_address(build_0, v'upcoming_token_jetton_wallet);
+    build_0 = __tact_store_address(build_0, v'second_owner);
+    return build_0;
+}
+
+cell $AdminUploadJettonWalletData$_store_cell((int, slice, int, slice, slice) v) inline {
+    return $AdminUploadJettonWalletData$_store(begin_cell(), v).end_cell();
+}
+
+((int, slice, int, slice, slice)) $AdminUploadJettonWalletData$_constructor_funding_period_round_contract_jetton_wallet_convert_rate_upcoming_token_jetton_wallet_second_owner(int funding_period, slice round_contract_jetton_wallet, int convert_rate, slice upcoming_token_jetton_wallet, slice second_owner) inline {
+    return (funding_period, round_contract_jetton_wallet, convert_rate, upcoming_token_jetton_wallet, second_owner);
+}
+
+;;
+;; Type: Launchpad
+;;
+
+builder $Launchpad$_store(builder build_0, (int, slice, slice) v) inline {
+    var (v'project_id, v'owner, v'staking_contract) = v;
+    build_0 = build_0.store_uint(v'project_id, 16);
+    build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = __tact_store_address(build_0, v'staking_contract);
+    return build_0;
+}
+
+(slice, ((int, slice, slice))) $Launchpad$_load(slice sc_0) inline {
+    var v'project_id = sc_0~load_uint(16);
+    var v'owner = sc_0~__tact_load_address();
+    var v'staking_contract = sc_0~__tact_load_address();
+    return (sc_0, (v'project_id, v'owner, v'staking_contract));
+}
+
+(slice, ((slice, slice))) $Launchpad$init$_load(slice sc_0) inline {
+    var v'owner = sc_0~__tact_load_address();
+    var v'staking_contract = sc_0~__tact_load_address();
+    return (sc_0, (v'owner, v'staking_contract));
+}
+
+(int, slice, slice) $Launchpad$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$Launchpad$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        (slice owner, slice staking_contract) = $sc~$Launchpad$init$_load();
+        $sc.end_parse();
+        return $Launchpad$_contract_init(owner, staking_contract);
+    }
+}
+
+() $Launchpad$_contract_store((int, slice, slice) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $Launchpad$_store(b, v);
+    set_data(b.end_cell());
+}
+
+;;
+;; Type: Round
+;;
+
+builder $Round$init$_store(builder build_0, (int, slice, slice) v) inline {
+    var (v'project_id, v'ido_contract, v'staking_contract) = v;
+    build_0 = build_0.store_int(v'project_id, 257);
+    build_0 = __tact_store_address(build_0, v'ido_contract);
+    build_0 = __tact_store_address(build_0, v'staking_contract);
+    return build_0;
+}
+
+(cell, cell) $Round$_init_child(cell sys', int $project_id, slice $ido_contract, slice $staking_contract) inline_ref {
+    slice sc' = sys'.begin_parse();
+    cell source = sc'~load_dict();
+    cell contracts = new_dict();
+    
+    ;; Contract Code: Round
+    cell mine = __tact_dict_get_code(source, 60274);
+    contracts = __tact_dict_set_code(contracts, 60274, mine);
+    
+    ;; Build cell
+    builder b = begin_cell();
+    b = b.store_ref(begin_cell().store_dict(contracts).end_cell());
+    b = b.store_int(false, 1);
+    b = $Round$init$_store(b, ($project_id, $ido_contract, $staking_contract));
+    return (mine, b.end_cell());
+}

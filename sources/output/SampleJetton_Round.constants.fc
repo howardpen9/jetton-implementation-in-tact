@@ -1,0 +1,8 @@
+;; Comment "Update Success"
+cell __gen_cell_comment_91418869be3aad39ee6d6e884fd779b91fad1e25fe8ee805edc6d40f6ecf4b8e() asm "B{b5ee9c724101010100140000240000000055706461746520537563636573733ff119ef} B>boc PUSHREF";
+
+;; Comment "Inject Funds Success"
+cell __gen_cell_comment_b3bc9cdf51385d4acd78d8a6e96940eeecf37a655401caa06f8decf06f703f21() asm "B{b5ee9c7241010101001a00003000000000496e6a6563742046756e64732053756363657373610e67f9} B>boc PUSHREF";
+
+;; Comment "CloseRound"
+cell __gen_cell_comment_2b01c455cea993d8bbe1d89385d1bbb64ec7ff124fb0c8b9b186c1badc9ad368() asm "B{b5ee9c7241010101001000001c00000000436c6f7365526f756e6492e844dc} B>boc PUSHREF";

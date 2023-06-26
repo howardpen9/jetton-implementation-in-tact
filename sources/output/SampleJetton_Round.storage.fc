@@ -1,0 +1,229 @@
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body(slice to, int value, int bounce, int mode, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
+;;
+;; Type: TokenTransfer
+;; Header: 0x0f8a7ea5
+;; TLB: token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
+;;
+
+builder $TokenTransfer$_store(builder build_0, (int, int, slice, slice, cell, int, slice) v) inline_ref {
+    var (v'queryId, v'amount, v'destination, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload) = v;
+    build_0 = store_uint(build_0, 260734629, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    build_0 = build_0.store_coins(v'amount);
+    build_0 = __tact_store_address(build_0, v'destination);
+    build_0 = __tact_store_address(build_0, v'response_destination);
+    build_0 = ~ null?(v'custom_payload) ? build_0.store_int(true, 1).store_ref(v'custom_payload) : build_0.store_int(false, 1);
+    build_0 = build_0.store_coins(v'forward_ton_amount);
+    build_0 = build_0.store_slice(v'forward_payload);
+    return build_0;
+}
+
+cell $TokenTransfer$_store_cell((int, int, slice, slice, cell, int, slice) v) inline {
+    return $TokenTransfer$_store(begin_cell(), v).end_cell();
+}
+
+((int, int, slice, slice, cell, int, slice)) $TokenTransfer$_constructor_queryId_amount_destination_response_destination_custom_payload_forward_ton_amount_forward_payload(int queryId, int amount, slice destination, slice response_destination, cell custom_payload, int forward_ton_amount, slice forward_payload) inline {
+    return (queryId, amount, destination, response_destination, custom_payload, forward_ton_amount, forward_payload);
+}
+
+;;
+;; Type: TokenNotification
+;; Header: 0x7362d09c
+;; TLB: token_notification#7362d09c queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification
+;;
+
+(slice, ((int, int, slice, slice))) $TokenNotification$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1935855772);
+    var v'queryId = sc_0~load_uint(64);
+    var v'amount = sc_0~load_coins();
+    var v'from = sc_0~__tact_load_address();
+    var v'forward_payload = sc_0;
+    return (sc_0, (v'queryId, v'amount, v'from, v'forward_payload));
+}
+
+;;
+;; Type: GetWeighted
+;; Header: 0x134c687a
+;; TLB: get_weighted#134c687a applied_user_address:address = GetWeighted
+;;
+
+builder $GetWeighted$_store(builder build_0, (slice) v) inline {
+    var (v'applied_user_address) = v;
+    build_0 = store_uint(build_0, 323774586, 32);
+    build_0 = __tact_store_address(build_0, v'applied_user_address);
+    return build_0;
+}
+
+cell $GetWeighted$_store_cell((slice) v) inline {
+    return $GetWeighted$_store(begin_cell(), v).end_cell();
+}
+
+((slice)) $GetWeighted$_constructor_applied_user_address(slice applied_user_address) inline {
+    return (applied_user_address);
+}
+
+;;
+;; Type: PassScoreToRoundContract
+;; Header: 0xe5fd7f29
+;; TLB: pass_score_to_round_contract#e5fd7f29 checked_address:address return_score:uint64 = PassScoreToRoundContract
+;;
+
+(slice, ((slice, int))) $PassScoreToRoundContract$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3858595625);
+    var v'checked_address = sc_0~__tact_load_address();
+    var v'return_score = sc_0~load_uint(64);
+    return (sc_0, (v'checked_address, v'return_score));
+}
+
+;;
+;; Type: AdminUploadJettonWalletData
+;; Header: 0xe5042c03
+;; TLB: admin_upload_jetton_wallet_data#e5042c03 funding_period:uint32 round_contract_jetton_wallet:address convert_rate:uint16 upcoming_token_jetton_wallet:address second_owner:address = AdminUploadJettonWalletData
+;;
+
+(slice, ((int, slice, int, slice, slice))) $AdminUploadJettonWalletData$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3842255875);
+    var v'funding_period = sc_0~load_uint(32);
+    var v'round_contract_jetton_wallet = sc_0~__tact_load_address();
+    var v'convert_rate = sc_0~load_uint(16);
+    var v'upcoming_token_jetton_wallet = sc_0~__tact_load_address();
+    var v'second_owner = sc_0~__tact_load_address();
+    return (sc_0, (v'funding_period, v'round_contract_jetton_wallet, v'convert_rate, v'upcoming_token_jetton_wallet, v'second_owner));
+}
+
+;;
+;; Type: UserClaim
+;; Header: 0x9f618b86
+;; TLB: user_claim#9f618b86 queryId:uint64 = UserClaim
+;;
+
+(slice, ((int))) $UserClaim$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2673970054);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+;;
+;; Type: RoundData
+;; TLB: _ project_id:uint16 owner:address second_owner:address end_time:uint32 round_contract_jetton_wallet:Maybe address convert_rate:uint16 upcoming_token_jetton_wallet:Maybe address amount_of_upcoming_token:coins is_inject_funds:bool is_open:Maybe bool pariticipators:uint16 weights_total:uint64 = RoundData
+;;
+
+(int, slice, slice, int, slice, int, slice, int, int, int, int, int) $RoundData$_to_external(((int, slice, slice, int, slice, int, slice, int, int, int, int, int)) v) inline {
+    var (v'project_id, v'owner, v'second_owner, v'end_time, v'round_contract_jetton_wallet, v'convert_rate, v'upcoming_token_jetton_wallet, v'amount_of_upcoming_token, v'is_inject_funds, v'is_open, v'pariticipators, v'weights_total) = v; 
+    return (v'project_id, v'owner, v'second_owner, v'end_time, v'round_contract_jetton_wallet, v'convert_rate, v'upcoming_token_jetton_wallet, v'amount_of_upcoming_token, v'is_inject_funds, v'is_open, v'pariticipators, v'weights_total);
+}
+
+((int, slice, slice, int, slice, int, slice, int, int, int, int, int)) $RoundData$_constructor_project_id_owner_second_owner_end_time_round_contract_jetton_wallet_convert_rate_upcoming_token_jetton_wallet_amount_of_upcoming_token_is_inject_funds_is_open_pariticipators_weights_total(int project_id, slice owner, slice second_owner, int end_time, slice round_contract_jetton_wallet, int convert_rate, slice upcoming_token_jetton_wallet, int amount_of_upcoming_token, int is_inject_funds, int is_open, int pariticipators, int weights_total) inline {
+    return (project_id, owner, second_owner, end_time, round_contract_jetton_wallet, convert_rate, upcoming_token_jetton_wallet, amount_of_upcoming_token, is_inject_funds, is_open, pariticipators, weights_total);
+}
+
+;;
+;; Type: WeightLog
+;; Header: 0xd696aa87
+;; TLB: weight_log#d696aa87 weight_total:uint64 pariticipator:address return_score:uint64 = WeightLog
+;;
+
+builder $WeightLog$_store(builder build_0, (int, slice, int) v) inline {
+    var (v'weight_total, v'pariticipator, v'return_score) = v;
+    build_0 = store_uint(build_0, 3600198279, 32);
+    build_0 = build_0.store_uint(v'weight_total, 64);
+    build_0 = __tact_store_address(build_0, v'pariticipator);
+    build_0 = build_0.store_uint(v'return_score, 64);
+    return build_0;
+}
+
+cell $WeightLog$_store_cell((int, slice, int) v) inline {
+    return $WeightLog$_store(begin_cell(), v).end_cell();
+}
+
+((int, slice, int)) $WeightLog$_constructor_weight_total_pariticipator_return_score(int weight_total, slice pariticipator, int return_score) inline {
+    return (weight_total, pariticipator, return_score);
+}
+
+;;
+;; Type: Round
+;;
+
+builder $Round$_store(builder build_0, (int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) v) inline {
+    var (v'project_id, v'owner, v'staking_contract, v'end_time, v'round_contract_jetton_wallet, v'convert_rate, v'upcoming_token_jetton_wallet, v'amount_of_upcoming_token, v'is_open, v'user_register_list, v'pariticipators, v'user_score_list, v'weights_total, v'second_owner, v'is_inject_funds) = v;
+    build_0 = build_0.store_uint(v'project_id, 16);
+    build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = __tact_store_address(build_0, v'staking_contract);
+    build_0 = build_0.store_uint(v'end_time, 32);
+    build_0 = __tact_store_address_opt(build_0, v'round_contract_jetton_wallet);
+    build_0 = build_0.store_uint(v'convert_rate, 16);
+    var build_1 = begin_cell();
+    build_1 = __tact_store_address_opt(build_1, v'upcoming_token_jetton_wallet);
+    build_1 = build_1.store_coins(v'amount_of_upcoming_token);
+    build_1 = ~ null?(v'is_open) ? build_1.store_int(true, 1).store_int(v'is_open, 1) : build_1.store_int(false, 1);
+    build_1 = build_1.store_dict(v'user_register_list);
+    build_1 = build_1.store_uint(v'pariticipators, 16);
+    build_1 = build_1.store_dict(v'user_score_list);
+    build_1 = build_1.store_uint(v'weights_total, 64);
+    build_1 = __tact_store_address(build_1, v'second_owner);
+    build_1 = build_1.store_int(v'is_inject_funds, 1);
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+(slice, ((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int))) $Round$_load(slice sc_0) inline {
+    var v'project_id = sc_0~load_uint(16);
+    var v'owner = sc_0~__tact_load_address();
+    var v'staking_contract = sc_0~__tact_load_address();
+    var v'end_time = sc_0~load_uint(32);
+    var v'round_contract_jetton_wallet = sc_0~__tact_load_address_opt();
+    var v'convert_rate = sc_0~load_uint(16);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'upcoming_token_jetton_wallet = sc_1~__tact_load_address_opt();
+    var v'amount_of_upcoming_token = sc_1~load_coins();
+    var v'is_open = sc_1~load_int(1) ? sc_1~load_int(1) : null();
+    var v'user_register_list = sc_1~load_dict();
+    var v'pariticipators = sc_1~load_uint(16);
+    var v'user_score_list = sc_1~load_dict();
+    var v'weights_total = sc_1~load_uint(64);
+    var v'second_owner = sc_1~__tact_load_address();
+    var v'is_inject_funds = sc_1~load_int(1);
+    return (sc_0, (v'project_id, v'owner, v'staking_contract, v'end_time, v'round_contract_jetton_wallet, v'convert_rate, v'upcoming_token_jetton_wallet, v'amount_of_upcoming_token, v'is_open, v'user_register_list, v'pariticipators, v'user_score_list, v'weights_total, v'second_owner, v'is_inject_funds));
+}
+
+(slice, ((int, slice, slice))) $Round$init$_load(slice sc_0) inline {
+    var v'project_id = sc_0~load_int(257);
+    var v'ido_contract = sc_0~__tact_load_address();
+    var v'staking_contract = sc_0~__tact_load_address();
+    return (sc_0, (v'project_id, v'ido_contract, v'staking_contract));
+}
+
+(int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) $Round$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$Round$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        (int project_id, slice ido_contract, slice staking_contract) = $sc~$Round$init$_load();
+        $sc.end_parse();
+        return $Round$_contract_init(project_id, ido_contract, staking_contract);
+    }
+}
+
+() $Round$_contract_store((int, slice, slice, int, slice, int, slice, int, int, cell, int, cell, int, slice, int) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $Round$_store(b, v);
+    set_data(b.end_cell());
+}
