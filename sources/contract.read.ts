@@ -1,13 +1,23 @@
-import { WalletContractV4, beginCell, Address, contractAddress, ContractProvider, TonClient4, TonClient, fromNano, toNano } from "ton";
+import {
+    WalletContractV4,
+    beginCell,
+    Address,
+    contractAddress,
+    ContractProvider,
+    TonClient4,
+    TonClient,
+    fromNano,
+    toNano,
+} from "ton";
 import { printSeparator } from "./utils/print";
 
 // Contract Abi //
-import {buildOnchainMetadata} from "./utils/jetton-helpers";
-import {mnemonicToPrivateKey} from "ton-crypto";
+import { buildOnchainMetadata } from "./utils/jetton-helpers";
+import { mnemonicToPrivateKey } from "ton-crypto";
 
 import { SampleJetton } from "./output/SampleJetton_SampleJetton";
 import { JettonDefaultWallet } from "./output/SampleJetton_JettonDefaultWallet";
-    
+
 (async () => {
     //create client for testnet sandboxv4 API - alternative endpoint
     const client = new TonClient4({
@@ -15,12 +25,12 @@ import { JettonDefaultWallet } from "./output/SampleJetton_JettonDefaultWallet";
     });
 
     const mnemonics = "YOUR OWN mnemonics";
-    
+
     let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));
     let secretKey = keyPair.secretKey;
     let workchain = 0; //we are working in basechain.
 
-    let deploy_wallet = WalletContractV4.create({ workchain, publicKey: keyPair.publicKey});
+    let deploy_wallet = WalletContractV4.create({ workchain, publicKey: keyPair.publicKey });
     let deploy_wallet_contract = client.open(deploy_wallet);
 
     // Get deployment wallet balance
@@ -30,18 +40,22 @@ import { JettonDefaultWallet } from "./output/SampleJetton_JettonDefaultWallet";
         name: "Test 123 Best Practice",
         description: "This is description of Test tact jetton",
         symbol: "PPPPPPPP",
-        image: "https://cdn.logo.com/hotlink-ok/logo-social.png" 
+        image: "https://cdn.logo.com/hotlink-ok/logo-social.png",
     };
 
     let max_supply = toNano(1234567666666689011); // Set the specific total supply in nano
 
     // Create content Cell
     let content = buildOnchainMetadata(jettonParams);
-    let init = await SampleJetton.init(deploy_wallet_contract.address, content, max_supply);
-    let jetton_minter_contract_address = contractAddress(workchain, init);
+    // let init = await SampleJetton.init(deploy_wallet_contract.address, content, max_supply);
+    // let jetton_minter_contract_address = contractAddress(workchain, init);
+    let jetton_minter_contract_address = await SampleJetton.fromAddress(
+        Address.parse("EQCSZJ4dDJKreFrf_vIMCZqgoore1lndUVQR3XkLtpLUB7m5")
+    );
+
     console.log("Jetton Master: " + jetton_minter_contract_address);
 
-    let contract_ddd = await client.open(SampleJetton.fromAddress(jetton_minter_contract_address));
+    let contract_ddd = await client.open(jetton_minter_contract_address);
     let jetton_wallet = await contract_ddd.getGetWalletAddress(deploy_wallet_contract.address);
 
     let contract_dataFormat = JettonDefaultWallet.fromAddress(jetton_wallet);

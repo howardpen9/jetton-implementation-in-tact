@@ -36,16 +36,16 @@ _ $StateInit$_get_code((cell, cell) v) inline {
 
 ;;
 ;; Type: JettonData
-;; TLB: _ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell = JettonData
+;; TLB: _ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell max_supply:int257 = JettonData
 ;;
 
-(int, int, slice, cell, cell) $JettonData$_to_external(((int, int, slice, cell, cell)) v) inline {
-    var (v'totalSupply, v'mintable, v'owner, v'content, v'walletCode) = v; 
-    return (v'totalSupply, v'mintable, v'owner, v'content, v'walletCode);
+(int, int, slice, cell, cell, int) $JettonData$_to_external(((int, int, slice, cell, cell, int)) v) inline {
+    var (v'totalSupply, v'mintable, v'owner, v'content, v'walletCode, v'max_supply) = v; 
+    return (v'totalSupply, v'mintable, v'owner, v'content, v'walletCode, v'max_supply);
 }
 
-((int, int, slice, cell, cell)) $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode(int totalSupply, int mintable, slice owner, cell content, cell walletCode) inline {
-    return (totalSupply, mintable, owner, content, walletCode);
+((int, int, slice, cell, cell, int)) $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode_max_supply(int totalSupply, int mintable, slice owner, cell content, cell walletCode, int max_supply) inline {
+    return (totalSupply, mintable, owner, content, walletCode, max_supply);
 }
 
 ;;

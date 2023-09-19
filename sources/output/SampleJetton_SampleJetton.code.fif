@@ -28,16 +28,18 @@ PROGRAM{
   DECLPROC $SampleJetton$_contract_init
   DECLPROC $SampleJetton$_contract_load
   DECLPROC $SampleJetton$_contract_store
+  DECLPROC $global_emptyCell
+  DECLPROC $Cell$_fun_asSlice
+  DECLPROC $global_emptySlice
   DECLPROC $global_contractAddress
   DECLPROC $global_send
-  DECLPROC $Cell$_fun_asSlice
   DECLPROC $SendParameters$_constructor_to_value_bounce_mode_body_code_data
   DECLPROC $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload
   DECLPROC $JettonDefaultWallet$_init_child
   DECLPROC $SampleJetton$_fun_getJettonWalletInit
   DECLPROC $SampleJetton$_fun_mint
   DECLPROC $SampleJetton$_fun_requireWallet
-  DECLPROC $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode
+  DECLPROC $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode_max_supply
   DECLPROC $SampleJetton$_fun_get_jetton_data
   DECLPROC $SampleJetton$_fun_get_wallet_address
   DECLPROC $SampleJetton$_fun_requireOwner
@@ -312,6 +314,17 @@ PROGRAM{
     ENDC
     c4 POP
   }>
+  $global_emptyCell PROCINLINE:<{
+    NEWC
+    ENDC
+  }>
+  $Cell$_fun_asSlice PROCINLINE:<{
+    CTOS
+  }>
+  $global_emptySlice PROCINLINE:<{
+    $global_emptyCell INLINECALLDICT
+    $Cell$_fun_asSlice INLINECALLDICT
+  }>
   $global_contractAddress PROCINLINE:<{
     0 PUSHINT
     -ROT
@@ -419,9 +432,6 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
-  $Cell$_fun_asSlice PROCINLINE:<{
-    CTOS
-  }>
   $SendParameters$_constructor_to_value_bounce_mode_body_code_data PROCINLINE:<{
     s4 s6 XCHG
     s4 s5 XCHG
@@ -480,8 +490,7 @@ PROGRAM{
     s2 PUSH
     MYADDR
     OVER
-    B{b5ee9c7241010101001100001e00000000417070726f76653132333426c1b169} B>boc PUSHREF
-    $Cell$_fun_asSlice INLINECALLDICT
+    $global_emptySlice INLINECALLDICT
     s3 s5 XCHG
     s4 s15 XCHG
     s2 s3 XCHG
@@ -512,7 +521,7 @@ PROGRAM{
     THROWANYIFNOT
     4 ROLL
   }>
-  $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode PROCINLINE:<{
+  $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode_max_supply PROCINLINE:<{
   }>
   $SampleJetton$_fun_get_jetton_data PROCREF:<{
     MYADDR
@@ -520,7 +529,8 @@ PROGRAM{
     $StateInit$_get_code INLINECALLDICT
     s5 s1 s(-2) PU2XC
     s5 s4 s(-2) PU2XC
-    $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode INLINECALLDICT
+    s8 PUSH
+    $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode_max_supply INLINECALLDICT
   }>
   $SampleJetton$_fun_get_wallet_address PROCREF:<{
     $SampleJetton$_fun_getJettonWalletInit INLINECALLDICT
@@ -624,7 +634,7 @@ PROGRAM{
   %get_jetton_data PROC:<{
     $SampleJetton$_contract_load INLINECALLDICT
     $SampleJetton$_fun_get_jetton_data INLINECALLDICT
-    5 5 BLKDROP2
+    5 6 BLKDROP2
     $JettonData$_to_external INLINECALLDICT
   }>
   %get_wallet_address PROC:<{
@@ -648,7 +658,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6243413261336e6b4e5541576f357656674a646a505831396a417a5139753436753832446d4a516a505a454b} PUSHSLICE
+    x{697066733a2f2f516d5754677962484d69356b3465645071427735374667746b754b38716d3779754d386b5139363664346a417665} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SampleJetton
-BOC Size: 1759 bytes
+BOC Size: 1743 bytes
 
 # Types
 Total Types: 15
@@ -30,8 +30,8 @@ TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
 Signature: `Mint{amount:int257,receiver:address}`
 
 ## JettonData
-TLB: `_ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell = JettonData`
-Signature: `JettonData{totalSupply:int257,mintable:bool,owner:address,content:^cell,walletCode:^cell}`
+TLB: `_ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell max_supply:int257 = JettonData`
+Signature: `JettonData{totalSupply:int257,mintable:bool,owner:address,content:^cell,walletCode:^cell,max_supply:int257}`
 
 ## TokenTransfer
 TLB: `token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
@@ -106,6 +106,5 @@ Argument: owner
 6898: The total supply will be overlapping.
 13650: Invalid bounced message
 18668: Can't Mint Anymore
-42708: Invalid sender!
 43422: Invalid value - Burn
 62972: Invalid balance

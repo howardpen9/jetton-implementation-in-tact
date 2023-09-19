@@ -80,6 +80,19 @@ cell __tact_dict_get_code(cell dict, int id) inline {
     return data;
 }
 
+cell $global_emptyCell() impure inline {
+    return end_cell(begin_cell());
+}
+
+slice $Cell$_fun_asSlice(cell $self) impure inline {
+    var ($self) = $self;
+    return begin_parse($self);
+}
+
+slice $global_emptySlice() impure inline {
+    return $Cell$_fun_asSlice($global_emptyCell());
+}
+
 slice $global_contractAddress((cell, cell) $s) impure inline {
     var (($s'code, $s'data)) = $s;
     return __tact_compute_contract_address(0, $s'code, $s'data);
@@ -126,9 +139,4 @@ slice $global_contractAddress((cell, cell) $s) impure inline {
     }
     cell $c = end_cell($b);
     send_raw_message($c, $params'mode);
-}
-
-slice $Cell$_fun_asSlice(cell $self) impure inline {
-    var ($self) = $self;
-    return begin_parse($self);
 }
