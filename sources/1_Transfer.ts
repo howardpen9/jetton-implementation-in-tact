@@ -1,4 +1,14 @@
-import { Address, beginCell, contractAddress, toNano, TonClient4, internal, fromNano, WalletContractV4 } from "ton";
+import {
+    Address,
+    beginCell,
+    contractAddress,
+    toNano,
+    TonClient4,
+    internal,
+    fromNano,
+    WalletContractV4,
+    Cell,
+} from "ton";
 import { deploy } from "./utils/deploy";
 import { printAddress, printDeploy, printHeader, printSeparator } from "./utils/print";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
@@ -45,28 +55,35 @@ let NewOnwer_Address = Address.parse("kQAgzVlCkPrK9r8F3J1Dgxf8OGwY46yTynBWrU_s4W
     let jetton_wallet = await contract.getGetWalletAddress(wallet_contract.address);
     console.log("✨ " + wallet_contract.address + "'s JettonWallet ==> ");
 
-    // TODO: Pack the message into a cell
-    let test_message = beginCell().storeStringTail("12345").endCell();
-    let forward_string_test = beginCell().storeStringTail("EEEEEE").endCell();
-    // console.log(test_message.toString());
-    // console.log(forward_string_test.toString());
+    // ✨Pack the forward message into a cell
+    const test_message = beginCell()
+        .storeBit(1) // 🔴 whether you want to store the forward payload in the same cell or not. 0 means no, 1 means yes.
+        .storeRef(beginCell().storeUint(0, 32).storeBuffer(Buffer.from("Hello, GM. -- Right", "utf-8")).endCell())
+        .endCell();
 
+    const test_message_left = beginCell()
+        .storeBit(0) // 🔴  whether you want to store the forward payload in the same cell or not. 0 means no, 1 means yes.
+        .storeUint(0, 32)
+        .storeBuffer(Buffer.from("Hello, GM -- Left.", "utf-8"))
+        .endCell();
+
+    let forward_string_test = beginCell().storeBit(1).storeUint(0, 32).storeStringTail("EEEEEE").endCell();
     let packed = beginCell()
         .store(
             storeTokenTransfer({
                 $$type: "TokenTransfer",
                 queryId: 0n,
-                amount: toNano(88888),
+                amount: toNano(2),
                 destination: NewOnwer_Address,
                 response_destination: wallet_contract.address, // Original Owner, aka. First Minter's Jetton Wallet
                 custom_payload: forward_string_test,
                 forward_ton_amount: toNano("0.000000001"),
-                forward_payload: test_message,
+                forward_payload: test_message_left,
             })
         )
         .endCell();
 
-    let deployAmount = toNano("0.15");
+    let deployAmount = toNano("0.3");
     let seqno: number = await wallet_contract.getSeqno();
     let balance: bigint = await wallet_contract.getBalance();
 
