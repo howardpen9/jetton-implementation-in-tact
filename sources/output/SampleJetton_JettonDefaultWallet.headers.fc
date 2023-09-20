@@ -54,6 +54,9 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
 ;; $TokenTransferInternal$_load
 (slice, ((int, int, slice, slice, int, slice))) $TokenTransferInternal$_load(slice sc_0) inline_ref;
 
+;; $TokenTransferInternal$_load_bounced
+(slice, ((int, int))) $TokenTransferInternal$_load_bounced(slice sc_0) inline;
+
 ;; $TokenNotification$_store
 builder $TokenNotification$_store(builder build_0, (int, int, slice, slice) v) inline;
 
@@ -68,6 +71,9 @@ builder $TokenBurnNotification$_store(builder build_0, (int, int, slice, slice) 
 
 ;; $TokenBurnNotification$_store_cell
 cell $TokenBurnNotification$_store_cell((int, int, slice, slice) v) inline;
+
+;; $TokenBurnNotification$_load_bounced
+(slice, ((int, int))) $TokenBurnNotification$_load_bounced(slice sc_0) inline;
 
 ;; $TokenExcesses$_store
 builder $TokenExcesses$_store(builder build_0, (int) v) inline;
@@ -129,8 +135,8 @@ int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_r
 ;; $SendParameters$_constructor_to_value_mode_bounce_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body_code_data(slice to, int value, int mode, int bounce, cell body, cell code, cell data) inline;
 
-;; $SendParameters$_constructor_to_value_bounce_body
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body(slice to, int value, int bounce, cell body) inline;
+;; $SendParameters$_constructor_to_value_mode_bounce_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline;
 
 ;; $TokenNotification$_constructor_queryId_amount_from_forward_payload
 ((int, int, slice, slice)) $TokenNotification$_constructor_queryId_amount_from_forward_payload(int queryId, int amount, slice from, slice forward_payload) inline;
@@ -140,9 +146,6 @@ int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_r
 
 ;; $TokenExcesses$_constructor_queryId
 ((int)) $TokenExcesses$_constructor_queryId(int queryId) inline;
-
-;; $SendParameters$_constructor_to_value_mode_bounce_body
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline;
 
 ;; $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination
 ((int, int, slice, slice)) $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination(int queryId, int amount, slice owner, slice response_destination) inline;

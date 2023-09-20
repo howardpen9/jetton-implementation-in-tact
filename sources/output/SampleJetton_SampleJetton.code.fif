@@ -28,9 +28,11 @@ PROGRAM{
   DECLPROC $SampleJetton$_contract_init
   DECLPROC $SampleJetton$_contract_load
   DECLPROC $SampleJetton$_contract_store
+  DECLPROC $global_emptyCell
+  DECLPROC $Cell$_fun_asSlice
+  DECLPROC $global_emptySlice
   DECLPROC $global_contractAddress
   DECLPROC $global_send
-  DECLPROC $Cell$_fun_asSlice
   DECLPROC $SendParameters$_constructor_to_value_bounce_mode_body_code_data
   DECLPROC $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload
   DECLPROC $JettonDefaultWallet$_init_child
@@ -236,20 +238,20 @@ PROGRAM{
     s5 s4 XCHG2
     STGRAMS
     ROT
-    STGRAMS
-    SWAP
     __tact_store_address INLINECALLDICT
-    s1 s2 XCHG
     STREF
+    s1 s2 XCHG
     1 STI
+    SWAP
+    STGRAMS
   }>
   $SampleJetton$_load PROCINLINE:<{
-    LDGRAMS
     LDGRAMS
     __tact_load_address INLINECALLDICT
     SWAP
     LDREF
     1 LDI
+    LDGRAMS
     5 -ROLL
   }>
   $StateInit$_get_code PROCINLINE:<{
@@ -273,8 +275,9 @@ PROGRAM{
   }>
   $SampleJetton$_contract_init PROCREF:<{
     0 PUSHINT
-    s1 s3 s3 XCHG3
+    3 -ROLL
     TRUE
+    SWAP
   }>
   $SampleJetton$_contract_load PROCREF:<{
     c4 PUSH
@@ -311,6 +314,17 @@ PROGRAM{
     $SampleJetton$_store INLINECALLDICT
     ENDC
     c4 POP
+  }>
+  $global_emptyCell PROCINLINE:<{
+    NEWC
+    ENDC
+  }>
+  $Cell$_fun_asSlice PROCINLINE:<{
+    CTOS
+  }>
+  $global_emptySlice PROCINLINE:<{
+    $global_emptyCell INLINECALLDICT
+    $Cell$_fun_asSlice INLINECALLDICT
   }>
   $global_contractAddress PROCINLINE:<{
     0 PUSHINT
@@ -419,9 +433,6 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
-  $Cell$_fun_asSlice PROCINLINE:<{
-    CTOS
-  }>
   $SendParameters$_constructor_to_value_bounce_mode_body_code_data PROCINLINE:<{
     s4 s6 XCHG
     s4 s5 XCHG
@@ -465,7 +476,7 @@ PROGRAM{
     6898 PUSHINT
     s8 s2 PUSH2
     ADD
-    s8 PUSH
+    s5 PUSH
     LEQ
     THROWANYIFNOT
     s7 s1 XCPU
@@ -480,8 +491,7 @@ PROGRAM{
     s2 PUSH
     MYADDR
     OVER
-    B{b5ee9c7241010101001100001e00000000417070726f76653132333426c1b169} B>boc PUSHREF
-    $Cell$_fun_asSlice INLINECALLDICT
+    $global_emptySlice INLINECALLDICT
     s3 s5 XCHG
     s4 s15 XCHG
     s2 s3 XCHG
@@ -518,8 +528,8 @@ PROGRAM{
     MYADDR
     $SampleJetton$_fun_getJettonWalletInit INLINECALLDICT
     $StateInit$_get_code INLINECALLDICT
-    s5 s1 s(-2) PU2XC
-    s5 s4 s(-2) PU2XC
+    s5 s2 s(-2) PU2XC
+    s6 s5 s(-2) PU2XC
     $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode INLINECALLDICT
   }>
   $SampleJetton$_fun_get_wallet_address PROCREF:<{
@@ -528,12 +538,12 @@ PROGRAM{
   }>
   $SampleJetton$_fun_requireOwner PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
-    s3 s(-1) PUXC
+    s4 s(-1) PUXC
     __tact_slice_eq_bits INLINECALLDICT
     132 THROWIFNOT
   }>
   $SampleJetton$_fun_owner PROCREF:<{
-    s2 PUSH
+    s3 PUSH
   }>
   $SendParameters$_constructor_to_value_bounce_mode_body PROCINLINE:<{
     s2 s4 XCHG
@@ -547,15 +557,15 @@ PROGRAM{
     __tact_context_get INLINECALLDICT
     s2 s3 XCHG
     3 BLKDROP
-    s5 PUSH
+    s6 PUSH
     3734 PUSHINT
     s0 s2 XCHG
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     18668 PUSHINT
-    s3 PUSH
+    s4 PUSH
     THROWANYIFNOT
-    s1 s4 XCPU
+    s1 s5 XCPU
     $SampleJetton$_fun_mint INLINECALLDICT
   }>
   $SampleJetton$_internal_text_fcbeb9a480966477480639c7cea4a578aa6a113b2903b26d01bc384663eceef6 PROCINLINE:<{
@@ -563,30 +573,31 @@ PROGRAM{
     s2 s3 XCHG
     3 BLKDROP
     18668 PUSHINT
-    s2 PUSH
+    s3 PUSH
     THROWANYIFNOT
     100 PUSHINT
-    s4 PUSH
+    s5 PUSH
     $SampleJetton$_fun_mint INLINECALLDICT
   }>
   $SampleJetton$_internal_text_dc004c5b75be74376bd79df8713f2390620cc8a3095068b0583eb28ca3ac8ba0 PROCINLINE:<{
-    DROP
+    NIP
     __tact_context_get INLINECALLDICT
     s2 s3 XCHG
     3 BLKDROP
-    s2 PUSH
+    s3 PUSH
     3734 PUSHINT
     s0 s2 XCHG
     __tact_slice_eq_bits INLINECALLDICT
     THROWANYIFNOT
     FALSE
+    SWAP
   }>
   $SampleJetton$_internal_binary_TokenUpdateContent PROCINLINE:<{
     5 -ROLL
     $SampleJetton$_fun_requireOwner INLINECALLDICT
-    NIP
+    s2 POP
     s3 s4 XCHG
-    s1 s3 s0 XCHG3
+    s3 s0 s0 XCHG3
   }>
   $SampleJetton$_internal_binary_TokenBurnNotification PROCINLINE:<{
     s5 s8 XCHG
@@ -648,7 +659,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6243413261336e6b4e5541576f357656674a646a505831396a417a5139753436753832446d4a516a505a454b} PUSHSLICE
+    x{697066733a2f2f516d617844697a576939356172457a71506d683970773741756a6f58786670747271345a7170656f4c6743464256} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

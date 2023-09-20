@@ -126,23 +126,23 @@ cell $TokenExcesses$_store_cell((int) v) inline {
 ;; Type: SampleJetton
 ;;
 
-builder $SampleJetton$_store(builder build_0, (int, int, slice, cell, int) v) inline {
-    var (v'totalSupply, v'max_supply, v'owner, v'content, v'mintable) = v;
+builder $SampleJetton$_store(builder build_0, (int, slice, cell, int, int) v) inline {
+    var (v'totalSupply, v'owner, v'content, v'mintable, v'max_supply) = v;
     build_0 = build_0.store_coins(v'totalSupply);
-    build_0 = build_0.store_coins(v'max_supply);
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = build_0.store_ref(v'content);
     build_0 = build_0.store_int(v'mintable, 1);
+    build_0 = build_0.store_coins(v'max_supply);
     return build_0;
 }
 
-(slice, ((int, int, slice, cell, int))) $SampleJetton$_load(slice sc_0) inline {
+(slice, ((int, slice, cell, int, int))) $SampleJetton$_load(slice sc_0) inline {
     var v'totalSupply = sc_0~load_coins();
-    var v'max_supply = sc_0~load_coins();
     var v'owner = sc_0~__tact_load_address();
     var v'content = sc_0~load_ref();
     var v'mintable = sc_0~load_int(1);
-    return (sc_0, (v'totalSupply, v'max_supply, v'owner, v'content, v'mintable));
+    var v'max_supply = sc_0~load_coins();
+    return (sc_0, (v'totalSupply, v'owner, v'content, v'mintable, v'max_supply));
 }
 
 (slice, ((slice, cell, int))) $SampleJetton$init$_load(slice sc_0) inline {
@@ -152,7 +152,7 @@ builder $SampleJetton$_store(builder build_0, (int, int, slice, cell, int) v) in
     return (sc_0, (v'owner, v'content, v'max_supply));
 }
 
-(int, int, slice, cell, int) $SampleJetton$_contract_load() impure inline_ref {
+(int, slice, cell, int, int) $SampleJetton$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -167,7 +167,7 @@ builder $SampleJetton$_store(builder build_0, (int, int, slice, cell, int) v) in
     }
 }
 
-() $SampleJetton$_contract_store((int, int, slice, cell, int) v) impure inline {
+() $SampleJetton$_contract_store((int, slice, cell, int, int) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

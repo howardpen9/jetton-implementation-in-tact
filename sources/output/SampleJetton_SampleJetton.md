@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SampleJetton
-BOC Size: 1759 bytes
+BOC Size: 1744 bytes
 
 # Types
 Total Types: 15
@@ -104,7 +104,6 @@ Argument: owner
 4159: Invalid value!!
 4429: Invalid sender
 6898: The total supply will be overlapping.
-13650: Invalid bounced message
 18668: Can't Mint Anymore
 42708: Invalid sender!
 43422: Invalid value - Burn
