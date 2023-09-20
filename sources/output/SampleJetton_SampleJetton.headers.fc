@@ -64,10 +64,10 @@ cell $TokenExcesses$_store_cell((int) v) inline;
 (slice, ((cell))) $TokenUpdateContent$_load(slice sc_0) inline;
 
 ;; $SampleJetton$_store
-builder $SampleJetton$_store(builder build_0, (int, int, slice, cell, int) v) inline;
+builder $SampleJetton$_store(builder build_0, (int, slice, cell, int, int) v) inline;
 
 ;; $SampleJetton$_load
-(slice, ((int, int, slice, cell, int))) $SampleJetton$_load(slice sc_0) inline;
+(slice, ((int, slice, cell, int, int))) $SampleJetton$_load(slice sc_0) inline;
 
 ;; $StateInit$_get_code
 _ $StateInit$_get_code((cell, cell) v) inline;
@@ -82,22 +82,28 @@ _ $StateInit$_get_code((cell, cell) v) inline;
 builder $JettonDefaultWallet$init$_store(builder build_0, (slice, slice) v) inline;
 
 ;; $SampleJetton$_contract_init
-(int, int, slice, cell, int) $SampleJetton$_contract_init(slice $owner, cell $content, int $max_supply) impure inline_ref;
+(int, slice, cell, int, int) $SampleJetton$_contract_init(slice $owner, cell $content, int $max_supply) impure inline_ref;
 
 ;; $SampleJetton$_contract_load
-(int, int, slice, cell, int) $SampleJetton$_contract_load() impure inline_ref;
+(int, slice, cell, int, int) $SampleJetton$_contract_load() impure inline_ref;
 
 ;; $SampleJetton$_contract_store
-() $SampleJetton$_contract_store((int, int, slice, cell, int) v) impure inline;
+() $SampleJetton$_contract_store((int, slice, cell, int, int) v) impure inline;
+
+;; $global_emptyCell
+cell $global_emptyCell() impure inline;
+
+;; $Cell$_fun_asSlice
+slice $Cell$_fun_asSlice(cell $self) impure inline;
+
+;; $global_emptySlice
+slice $global_emptySlice() impure inline;
 
 ;; $global_contractAddress
 slice $global_contractAddress((cell, cell) $s) impure inline;
 
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
-
-;; $Cell$_fun_asSlice
-slice $Cell$_fun_asSlice(cell $self) impure inline;
 
 ;; $SendParameters$_constructor_to_value_bounce_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline;
@@ -109,28 +115,28 @@ slice $Cell$_fun_asSlice(cell $self) impure inline;
 (cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $master, slice $owner) inline_ref;
 
 ;; $SampleJetton$_fun_getJettonWalletInit
-((int, int, slice, cell, int), (cell, cell)) $SampleJetton$_fun_getJettonWalletInit((int, int, slice, cell, int) $self, slice $address) impure inline_ref;
+((int, slice, cell, int, int), (cell, cell)) $SampleJetton$_fun_getJettonWalletInit((int, slice, cell, int, int) $self, slice $address) impure inline_ref;
 
 ;; $SampleJetton$_fun_mint
-((int, int, slice, cell, int), ()) $SampleJetton$_fun_mint((int, int, slice, cell, int) $self, slice $to, int $amount, slice $response_destination) impure inline_ref;
+((int, slice, cell, int, int), ()) $SampleJetton$_fun_mint((int, slice, cell, int, int) $self, slice $to, int $amount, slice $response_destination) impure inline_ref;
 
 ;; $SampleJetton$_fun_requireWallet
-((int, int, slice, cell, int), ()) $SampleJetton$_fun_requireWallet((int, int, slice, cell, int) $self, slice $owner) impure inline_ref;
+((int, slice, cell, int, int), ()) $SampleJetton$_fun_requireWallet((int, slice, cell, int, int) $self, slice $owner) impure inline_ref;
 
 ;; $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode
 ((int, int, slice, cell, cell)) $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode(int totalSupply, int mintable, slice owner, cell content, cell walletCode) inline;
 
 ;; $SampleJetton$_fun_get_jetton_data
-((int, int, slice, cell, int), (int, int, slice, cell, cell)) $SampleJetton$_fun_get_jetton_data((int, int, slice, cell, int) $self) impure inline_ref;
+((int, slice, cell, int, int), (int, int, slice, cell, cell)) $SampleJetton$_fun_get_jetton_data((int, slice, cell, int, int) $self) impure inline_ref;
 
 ;; $SampleJetton$_fun_get_wallet_address
-((int, int, slice, cell, int), slice) $SampleJetton$_fun_get_wallet_address((int, int, slice, cell, int) $self, slice $owner) impure inline_ref;
+((int, slice, cell, int, int), slice) $SampleJetton$_fun_get_wallet_address((int, slice, cell, int, int) $self, slice $owner) impure inline_ref;
 
 ;; $SampleJetton$_fun_requireOwner
-((int, int, slice, cell, int), ()) $SampleJetton$_fun_requireOwner((int, int, slice, cell, int) $self) impure inline_ref;
+((int, slice, cell, int, int), ()) $SampleJetton$_fun_requireOwner((int, slice, cell, int, int) $self) impure inline_ref;
 
 ;; $SampleJetton$_fun_owner
-((int, int, slice, cell, int), slice) $SampleJetton$_fun_owner((int, int, slice, cell, int) $self) impure inline_ref;
+((int, slice, cell, int, int), slice) $SampleJetton$_fun_owner((int, slice, cell, int, int) $self) impure inline_ref;
 
 ;; $SendParameters$_constructor_to_value_bounce_mode_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body(slice to, int value, int bounce, int mode, cell body) inline;

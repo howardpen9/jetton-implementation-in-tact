@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: JettonDefaultWallet
-BOC Size: 2059 bytes
+BOC Size: 2096 bytes
 
 # Types
 Total Types: 15
@@ -102,7 +102,6 @@ Argument: value
 4159: Invalid value!!
 4429: Invalid sender
 6898: The total supply will be overlapping.
-13650: Invalid bounced message
 18668: Can't Mint Anymore
 42708: Invalid sender!
 43422: Invalid value - Burn

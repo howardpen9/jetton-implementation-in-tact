@@ -17,15 +17,11 @@ _ $StateInit$_get_code((cell, cell) v) inline {
     return (bounce, to, value, mode, body, code, data);
 }
 
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body(slice to, int value, int bounce, cell body) inline {
-    return (bounce, to, value, 0, body, null(), null());
-}
-
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body_mode(slice to, int value, int bounce, cell body, int mode) inline {
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
     return (bounce, to, value, mode, body, null(), null());
 }
 
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline {
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body_mode(slice to, int value, int bounce, cell body, int mode) inline {
     return (bounce, to, value, mode, body, null(), null());
 }
 
@@ -78,6 +74,13 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
     var v'forward_ton_amount = sc_0~load_coins();
     var v'forward_payload = sc_0;
     return (sc_0, (v'queryId, v'amount, v'from, v'response_destination, v'forward_ton_amount, v'forward_payload));
+}
+
+(slice, ((int, int))) $TokenTransferInternal$_load_bounced(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 395134233);
+    var v'queryId = sc_0~load_uint(64);
+    var v'amount = sc_0~load_coins();
+    return (sc_0, (v'queryId, v'amount));
 }
 
 ((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload(int queryId, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline {
@@ -141,6 +144,13 @@ builder $TokenBurnNotification$_store(builder build_0, (int, int, slice, slice) 
 
 cell $TokenBurnNotification$_store_cell((int, int, slice, slice) v) inline {
     return $TokenBurnNotification$_store(begin_cell(), v).end_cell();
+}
+
+(slice, ((int, int))) $TokenBurnNotification$_load_bounced(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2078119902);
+    var v'queryId = sc_0~load_uint(64);
+    var v'amount = sc_0~load_coins();
+    return (sc_0, (v'queryId, v'amount));
 }
 
 ((int, int, slice, slice)) $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination(int queryId, int amount, slice owner, slice response_destination) inline {
