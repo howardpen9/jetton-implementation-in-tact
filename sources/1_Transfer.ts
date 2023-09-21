@@ -9,7 +9,7 @@ dotenv.config();
 import { SampleJetton, storeTokenTransfer } from "./output/SampleJetton_SampleJetton";
 
 // 🔴 Owner should usually be the deploying wallet's address.
-let NewOnwer_Address = Address.parse("kQD1ptyvitBi3JbHaDQt_6j-15ABn9BqdABTFA1vgzs3AVU5");
+let NewOnwer_Address = Address.parse("");
 
 (async () => {
     //create client for testnet sandboxv4 API - alternative endpoint
