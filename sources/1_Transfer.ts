@@ -1,14 +1,4 @@
-import {
-    Address,
-    beginCell,
-    contractAddress,
-    toNano,
-    TonClient4,
-    internal,
-    fromNano,
-    WalletContractV4,
-    Cell,
-} from "ton";
+import { Address, beginCell, contractAddress, toNano, TonClient4, internal, fromNano, WalletContractV4 } from "ton";
 import { deploy } from "./utils/deploy";
 import { printAddress, printDeploy, printHeader, printSeparator } from "./utils/print";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
@@ -19,7 +9,7 @@ dotenv.config();
 import { SampleJetton, storeTokenTransfer } from "./output/SampleJetton_SampleJetton";
 
 // 🔴 Owner should usually be the deploying wallet's address.
-let NewOnwer_Address = Address.parse("kQAgzVlCkPrK9r8F3J1Dgxf8OGwY46yTynBWrU_s4WaJRPtQ");
+let NewOnwer_Address = Address.parse("kQD1ptyvitBi3JbHaDQt_6j-15ABn9BqdABTFA1vgzs3AVU5");
 
 (async () => {
     //create client for testnet sandboxv4 API - alternative endpoint
@@ -73,7 +63,7 @@ let NewOnwer_Address = Address.parse("kQAgzVlCkPrK9r8F3J1Dgxf8OGwY46yTynBWrU_s4W
             storeTokenTransfer({
                 $$type: "TokenTransfer",
                 queryId: 0n,
-                amount: toNano(2),
+                amount: toNano(20000),
                 destination: NewOnwer_Address,
                 response_destination: wallet_contract.address, // Original Owner, aka. First Minter's Jetton Wallet
                 custom_payload: forward_string_test,

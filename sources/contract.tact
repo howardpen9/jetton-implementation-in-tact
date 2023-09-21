@@ -5,14 +5,6 @@ message Mint {
     receiver: Address;
 }
 
-struct JettonData {
-    totalSupply: Int;
-    mintable: Bool;
-    owner: Address;
-    content: Cell;
-    walletCode: Cell;
-}
-
 contract SampleJetton with Jetton {
     totalSupply: Int as coins;
     owner: Address;
@@ -23,10 +15,11 @@ contract SampleJetton with Jetton {
 
     init(owner: Address, content: Cell, max_supply: Int) {
         self.totalSupply = 0;
-        self.max_supply = max_supply;
         self.owner = owner;
         self.mintable = true;
         self.content = content;
+
+        self.max_supply = max_supply;
     }
 
     receive(msg: Mint) {
@@ -48,6 +41,14 @@ contract SampleJetton with Jetton {
         self.mintable = false;
     }
 } 
+
+struct JettonData {
+    totalSupply: Int;
+    mintable: Bool;
+    owner: Address;
+    content: Cell;
+    walletCode: Cell;
+}
 
 // ============================================================================================================ //
 @interface("org.ton.jetton.master")
