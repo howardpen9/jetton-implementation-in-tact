@@ -6,7 +6,7 @@
     "deploy": "ts-node ./sources/contract.deploy.ts",
     "read": "ts-node ./sources/contract.read.ts",
     "d1": "ts-node ./sources/1_Transfer.ts",
-    "d2": "ts-node ./sources/2_UsingURLTransfer.ts"
+    "d2": "ts-node ./sources/2_TransferURL.ts"
   },
   "dependencies": {
     "@ton-community/sandbox": "^0.11.0",

@@ -1,27 +1,27 @@
-import { 
+import {
     Cell,
-    Slice, 
-    Address, 
-    Builder, 
-    beginCell, 
-    ComputeError, 
-    TupleItem, 
-    TupleReader, 
-    Dictionary, 
-    contractAddress, 
-    ContractProvider, 
-    Sender, 
-    Contract, 
-    ContractABI, 
+    Slice,
+    Address,
+    Builder,
+    beginCell,
+    ComputeError,
+    TupleItem,
+    TupleReader,
+    Dictionary,
+    contractAddress,
+    ContractProvider,
+    Sender,
+    Contract,
+    ContractABI,
     TupleBuilder,
-    DictionaryValue
-} from 'ton-core';
+    DictionaryValue,
+} from "ton-core";
 
 export type StateInit = {
-    $$type: 'StateInit';
+    $$type: "StateInit";
     code: Cell;
     data: Cell;
-}
+};
 
 export function storeStateInit(src: StateInit) {
     return (builder: Builder) => {
@@ -35,13 +35,13 @@ export function loadStateInit(slice: Slice) {
     let sc_0 = slice;
     let _code = sc_0.loadRef();
     let _data = sc_0.loadRef();
-    return { $$type: 'StateInit' as const, code: _code, data: _data };
+    return { $$type: "StateInit" as const, code: _code, data: _data };
 }
 
 function loadTupleStateInit(source: TupleReader) {
     let _code = source.readCell();
     let _data = source.readCell();
-    return { $$type: 'StateInit' as const, code: _code, data: _data };
+    return { $$type: "StateInit" as const, code: _code, data: _data };
 }
 
 function storeTupleStateInit(source: StateInit) {
@@ -58,17 +58,17 @@ function dictValueParserStateInit(): DictionaryValue<StateInit> {
         },
         parse: (src) => {
             return loadStateInit(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type Context = {
-    $$type: 'Context';
+    $$type: "Context";
     bounced: boolean;
     sender: Address;
     value: bigint;
     raw: Cell;
-}
+};
 
 export function storeContext(src: Context) {
     return (builder: Builder) => {
@@ -86,7 +86,7 @@ export function loadContext(slice: Slice) {
     let _sender = sc_0.loadAddress();
     let _value = sc_0.loadIntBig(257);
     let _raw = sc_0.loadRef();
-    return { $$type: 'Context' as const, bounced: _bounced, sender: _sender, value: _value, raw: _raw };
+    return { $$type: "Context" as const, bounced: _bounced, sender: _sender, value: _value, raw: _raw };
 }
 
 function loadTupleContext(source: TupleReader) {
@@ -94,7 +94,7 @@ function loadTupleContext(source: TupleReader) {
     let _sender = source.readAddress();
     let _value = source.readBigNumber();
     let _raw = source.readCell();
-    return { $$type: 'Context' as const, bounced: _bounced, sender: _sender, value: _value, raw: _raw };
+    return { $$type: "Context" as const, bounced: _bounced, sender: _sender, value: _value, raw: _raw };
 }
 
 function storeTupleContext(source: Context) {
@@ -113,12 +113,12 @@ function dictValueParserContext(): DictionaryValue<Context> {
         },
         parse: (src) => {
             return loadContext(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type SendParameters = {
-    $$type: 'SendParameters';
+    $$type: "SendParameters";
     bounce: boolean;
     to: Address;
     value: bigint;
@@ -126,7 +126,7 @@ export type SendParameters = {
     body: Cell | null;
     code: Cell | null;
     data: Cell | null;
-}
+};
 
 export function storeSendParameters(src: SendParameters) {
     return (builder: Builder) => {
@@ -135,9 +135,21 @@ export function storeSendParameters(src: SendParameters) {
         b_0.storeAddress(src.to);
         b_0.storeInt(src.value, 257);
         b_0.storeInt(src.mode, 257);
-        if (src.body !== null && src.body !== undefined) { b_0.storeBit(true).storeRef(src.body); } else { b_0.storeBit(false); }
-        if (src.code !== null && src.code !== undefined) { b_0.storeBit(true).storeRef(src.code); } else { b_0.storeBit(false); }
-        if (src.data !== null && src.data !== undefined) { b_0.storeBit(true).storeRef(src.data); } else { b_0.storeBit(false); }
+        if (src.body !== null && src.body !== undefined) {
+            b_0.storeBit(true).storeRef(src.body);
+        } else {
+            b_0.storeBit(false);
+        }
+        if (src.code !== null && src.code !== undefined) {
+            b_0.storeBit(true).storeRef(src.code);
+        } else {
+            b_0.storeBit(false);
+        }
+        if (src.data !== null && src.data !== undefined) {
+            b_0.storeBit(true).storeRef(src.data);
+        } else {
+            b_0.storeBit(false);
+        }
     };
 }
 
@@ -150,7 +162,16 @@ export function loadSendParameters(slice: Slice) {
     let _body = sc_0.loadBit() ? sc_0.loadRef() : null;
     let _code = sc_0.loadBit() ? sc_0.loadRef() : null;
     let _data = sc_0.loadBit() ? sc_0.loadRef() : null;
-    return { $$type: 'SendParameters' as const, bounce: _bounce, to: _to, value: _value, mode: _mode, body: _body, code: _code, data: _data };
+    return {
+        $$type: "SendParameters" as const,
+        bounce: _bounce,
+        to: _to,
+        value: _value,
+        mode: _mode,
+        body: _body,
+        code: _code,
+        data: _data,
+    };
 }
 
 function loadTupleSendParameters(source: TupleReader) {
@@ -161,7 +182,16 @@ function loadTupleSendParameters(source: TupleReader) {
     let _body = source.readCellOpt();
     let _code = source.readCellOpt();
     let _data = source.readCellOpt();
-    return { $$type: 'SendParameters' as const, bounce: _bounce, to: _to, value: _value, mode: _mode, body: _body, code: _code, data: _data };
+    return {
+        $$type: "SendParameters" as const,
+        bounce: _bounce,
+        to: _to,
+        value: _value,
+        mode: _mode,
+        body: _body,
+        code: _code,
+        data: _data,
+    };
 }
 
 function storeTupleSendParameters(source: SendParameters) {
@@ -183,15 +213,15 @@ function dictValueParserSendParameters(): DictionaryValue<SendParameters> {
         },
         parse: (src) => {
             return loadSendParameters(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type ChangeOwner = {
-    $$type: 'ChangeOwner';
+    $$type: "ChangeOwner";
     queryId: bigint;
     newOwner: Address;
-}
+};
 
 export function storeChangeOwner(src: ChangeOwner) {
     return (builder: Builder) => {
@@ -204,16 +234,18 @@ export function storeChangeOwner(src: ChangeOwner) {
 
 export function loadChangeOwner(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2174598809) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 2174598809) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
     let _newOwner = sc_0.loadAddress();
-    return { $$type: 'ChangeOwner' as const, queryId: _queryId, newOwner: _newOwner };
+    return { $$type: "ChangeOwner" as const, queryId: _queryId, newOwner: _newOwner };
 }
 
 function loadTupleChangeOwner(source: TupleReader) {
     let _queryId = source.readBigNumber();
     let _newOwner = source.readAddress();
-    return { $$type: 'ChangeOwner' as const, queryId: _queryId, newOwner: _newOwner };
+    return { $$type: "ChangeOwner" as const, queryId: _queryId, newOwner: _newOwner };
 }
 
 function storeTupleChangeOwner(source: ChangeOwner) {
@@ -230,15 +262,15 @@ function dictValueParserChangeOwner(): DictionaryValue<ChangeOwner> {
         },
         parse: (src) => {
             return loadChangeOwner(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type ChangeOwnerOk = {
-    $$type: 'ChangeOwnerOk';
+    $$type: "ChangeOwnerOk";
     queryId: bigint;
     newOwner: Address;
-}
+};
 
 export function storeChangeOwnerOk(src: ChangeOwnerOk) {
     return (builder: Builder) => {
@@ -251,16 +283,18 @@ export function storeChangeOwnerOk(src: ChangeOwnerOk) {
 
 export function loadChangeOwnerOk(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 846932810) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 846932810) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
     let _newOwner = sc_0.loadAddress();
-    return { $$type: 'ChangeOwnerOk' as const, queryId: _queryId, newOwner: _newOwner };
+    return { $$type: "ChangeOwnerOk" as const, queryId: _queryId, newOwner: _newOwner };
 }
 
 function loadTupleChangeOwnerOk(source: TupleReader) {
     let _queryId = source.readBigNumber();
     let _newOwner = source.readAddress();
-    return { $$type: 'ChangeOwnerOk' as const, queryId: _queryId, newOwner: _newOwner };
+    return { $$type: "ChangeOwnerOk" as const, queryId: _queryId, newOwner: _newOwner };
 }
 
 function storeTupleChangeOwnerOk(source: ChangeOwnerOk) {
@@ -277,15 +311,15 @@ function dictValueParserChangeOwnerOk(): DictionaryValue<ChangeOwnerOk> {
         },
         parse: (src) => {
             return loadChangeOwnerOk(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type Mint = {
-    $$type: 'Mint';
+    $$type: "Mint";
     amount: bigint;
     receiver: Address;
-}
+};
 
 export function storeMint(src: Mint) {
     return (builder: Builder) => {
@@ -298,16 +332,18 @@ export function storeMint(src: Mint) {
 
 export function loadMint(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 4235234258) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 4235234258) {
+        throw Error("Invalid prefix");
+    }
     let _amount = sc_0.loadIntBig(257);
     let _receiver = sc_0.loadAddress();
-    return { $$type: 'Mint' as const, amount: _amount, receiver: _receiver };
+    return { $$type: "Mint" as const, amount: _amount, receiver: _receiver };
 }
 
 function loadTupleMint(source: TupleReader) {
     let _amount = source.readBigNumber();
     let _receiver = source.readAddress();
-    return { $$type: 'Mint' as const, amount: _amount, receiver: _receiver };
+    return { $$type: "Mint" as const, amount: _amount, receiver: _receiver };
 }
 
 function storeTupleMint(source: Mint) {
@@ -324,18 +360,18 @@ function dictValueParserMint(): DictionaryValue<Mint> {
         },
         parse: (src) => {
             return loadMint(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type JettonData = {
-    $$type: 'JettonData';
+    $$type: "JettonData";
     totalSupply: bigint;
     mintable: boolean;
     owner: Address;
     content: Cell;
     walletCode: Cell;
-}
+};
 
 export function storeJettonData(src: JettonData) {
     return (builder: Builder) => {
@@ -355,7 +391,14 @@ export function loadJettonData(slice: Slice) {
     let _owner = sc_0.loadAddress();
     let _content = sc_0.loadRef();
     let _walletCode = sc_0.loadRef();
-    return { $$type: 'JettonData' as const, totalSupply: _totalSupply, mintable: _mintable, owner: _owner, content: _content, walletCode: _walletCode };
+    return {
+        $$type: "JettonData" as const,
+        totalSupply: _totalSupply,
+        mintable: _mintable,
+        owner: _owner,
+        content: _content,
+        walletCode: _walletCode,
+    };
 }
 
 function loadTupleJettonData(source: TupleReader) {
@@ -364,7 +407,14 @@ function loadTupleJettonData(source: TupleReader) {
     let _owner = source.readAddress();
     let _content = source.readCell();
     let _walletCode = source.readCell();
-    return { $$type: 'JettonData' as const, totalSupply: _totalSupply, mintable: _mintable, owner: _owner, content: _content, walletCode: _walletCode };
+    return {
+        $$type: "JettonData" as const,
+        totalSupply: _totalSupply,
+        mintable: _mintable,
+        owner: _owner,
+        content: _content,
+        walletCode: _walletCode,
+    };
 }
 
 function storeTupleJettonData(source: JettonData) {
@@ -384,12 +434,12 @@ function dictValueParserJettonData(): DictionaryValue<JettonData> {
         },
         parse: (src) => {
             return loadJettonData(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type TokenTransfer = {
-    $$type: 'TokenTransfer';
+    $$type: "TokenTransfer";
     queryId: bigint;
     amount: bigint;
     destination: Address;
@@ -397,7 +447,7 @@ export type TokenTransfer = {
     custom_payload: Cell | null;
     forward_ton_amount: bigint;
     forward_payload: Cell;
-}
+};
 
 export function storeTokenTransfer(src: TokenTransfer) {
     return (builder: Builder) => {
@@ -407,7 +457,11 @@ export function storeTokenTransfer(src: TokenTransfer) {
         b_0.storeCoins(src.amount);
         b_0.storeAddress(src.destination);
         b_0.storeAddress(src.response_destination);
-        if (src.custom_payload !== null && src.custom_payload !== undefined) { b_0.storeBit(true).storeRef(src.custom_payload); } else { b_0.storeBit(false); }
+        if (src.custom_payload !== null && src.custom_payload !== undefined) {
+            b_0.storeBit(true).storeRef(src.custom_payload);
+        } else {
+            b_0.storeBit(false);
+        }
         b_0.storeCoins(src.forward_ton_amount);
         b_0.storeBuilder(src.forward_payload.asBuilder());
     };
@@ -415,7 +469,9 @@ export function storeTokenTransfer(src: TokenTransfer) {
 
 export function loadTokenTransfer(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 260734629) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 260734629) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
     let _destination = sc_0.loadAddress();
@@ -423,7 +479,16 @@ export function loadTokenTransfer(slice: Slice) {
     let _custom_payload = sc_0.loadBit() ? sc_0.loadRef() : null;
     let _forward_ton_amount = sc_0.loadCoins();
     let _forward_payload = sc_0.asCell();
-    return { $$type: 'TokenTransfer' as const, queryId: _queryId, amount: _amount, destination: _destination, response_destination: _response_destination, custom_payload: _custom_payload, forward_ton_amount: _forward_ton_amount, forward_payload: _forward_payload };
+    return {
+        $$type: "TokenTransfer" as const,
+        queryId: _queryId,
+        amount: _amount,
+        destination: _destination,
+        response_destination: _response_destination,
+        custom_payload: _custom_payload,
+        forward_ton_amount: _forward_ton_amount,
+        forward_payload: _forward_payload,
+    };
 }
 
 function loadTupleTokenTransfer(source: TupleReader) {
@@ -434,7 +499,16 @@ function loadTupleTokenTransfer(source: TupleReader) {
     let _custom_payload = source.readCellOpt();
     let _forward_ton_amount = source.readBigNumber();
     let _forward_payload = source.readCell();
-    return { $$type: 'TokenTransfer' as const, queryId: _queryId, amount: _amount, destination: _destination, response_destination: _response_destination, custom_payload: _custom_payload, forward_ton_amount: _forward_ton_amount, forward_payload: _forward_payload };
+    return {
+        $$type: "TokenTransfer" as const,
+        queryId: _queryId,
+        amount: _amount,
+        destination: _destination,
+        response_destination: _response_destination,
+        custom_payload: _custom_payload,
+        forward_ton_amount: _forward_ton_amount,
+        forward_payload: _forward_payload,
+    };
 }
 
 function storeTupleTokenTransfer(source: TokenTransfer) {
@@ -456,19 +530,19 @@ function dictValueParserTokenTransfer(): DictionaryValue<TokenTransfer> {
         },
         parse: (src) => {
             return loadTokenTransfer(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type TokenTransferInternal = {
-    $$type: 'TokenTransferInternal';
+    $$type: "TokenTransferInternal";
     queryId: bigint;
     amount: bigint;
     from: Address;
     response_destination: Address;
     forward_ton_amount: bigint;
     forward_payload: Cell;
-}
+};
 
 export function storeTokenTransferInternal(src: TokenTransferInternal) {
     return (builder: Builder) => {
@@ -485,14 +559,24 @@ export function storeTokenTransferInternal(src: TokenTransferInternal) {
 
 export function loadTokenTransferInternal(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 395134233) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 395134233) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
     let _from = sc_0.loadAddress();
     let _response_destination = sc_0.loadAddress();
     let _forward_ton_amount = sc_0.loadCoins();
     let _forward_payload = sc_0.asCell();
-    return { $$type: 'TokenTransferInternal' as const, queryId: _queryId, amount: _amount, from: _from, response_destination: _response_destination, forward_ton_amount: _forward_ton_amount, forward_payload: _forward_payload };
+    return {
+        $$type: "TokenTransferInternal" as const,
+        queryId: _queryId,
+        amount: _amount,
+        from: _from,
+        response_destination: _response_destination,
+        forward_ton_amount: _forward_ton_amount,
+        forward_payload: _forward_payload,
+    };
 }
 
 function loadTupleTokenTransferInternal(source: TupleReader) {
@@ -502,7 +586,15 @@ function loadTupleTokenTransferInternal(source: TupleReader) {
     let _response_destination = source.readAddress();
     let _forward_ton_amount = source.readBigNumber();
     let _forward_payload = source.readCell();
-    return { $$type: 'TokenTransferInternal' as const, queryId: _queryId, amount: _amount, from: _from, response_destination: _response_destination, forward_ton_amount: _forward_ton_amount, forward_payload: _forward_payload };
+    return {
+        $$type: "TokenTransferInternal" as const,
+        queryId: _queryId,
+        amount: _amount,
+        from: _from,
+        response_destination: _response_destination,
+        forward_ton_amount: _forward_ton_amount,
+        forward_payload: _forward_payload,
+    };
 }
 
 function storeTupleTokenTransferInternal(source: TokenTransferInternal) {
@@ -523,17 +615,17 @@ function dictValueParserTokenTransferInternal(): DictionaryValue<TokenTransferIn
         },
         parse: (src) => {
             return loadTokenTransferInternal(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type TokenNotification = {
-    $$type: 'TokenNotification';
+    $$type: "TokenNotification";
     queryId: bigint;
     amount: bigint;
     from: Address;
     forward_payload: Cell;
-}
+};
 
 export function storeTokenNotification(src: TokenNotification) {
     return (builder: Builder) => {
@@ -548,12 +640,20 @@ export function storeTokenNotification(src: TokenNotification) {
 
 export function loadTokenNotification(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 1935855772) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 1935855772) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
     let _from = sc_0.loadAddress();
     let _forward_payload = sc_0.asCell();
-    return { $$type: 'TokenNotification' as const, queryId: _queryId, amount: _amount, from: _from, forward_payload: _forward_payload };
+    return {
+        $$type: "TokenNotification" as const,
+        queryId: _queryId,
+        amount: _amount,
+        from: _from,
+        forward_payload: _forward_payload,
+    };
 }
 
 function loadTupleTokenNotification(source: TupleReader) {
@@ -561,7 +661,13 @@ function loadTupleTokenNotification(source: TupleReader) {
     let _amount = source.readBigNumber();
     let _from = source.readAddress();
     let _forward_payload = source.readCell();
-    return { $$type: 'TokenNotification' as const, queryId: _queryId, amount: _amount, from: _from, forward_payload: _forward_payload };
+    return {
+        $$type: "TokenNotification" as const,
+        queryId: _queryId,
+        amount: _amount,
+        from: _from,
+        forward_payload: _forward_payload,
+    };
 }
 
 function storeTupleTokenNotification(source: TokenNotification) {
@@ -580,17 +686,17 @@ function dictValueParserTokenNotification(): DictionaryValue<TokenNotification> 
         },
         parse: (src) => {
             return loadTokenNotification(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type TokenBurn = {
-    $$type: 'TokenBurn';
+    $$type: "TokenBurn";
     queryId: bigint;
     amount: bigint;
     owner: Address;
     response_destination: Address;
-}
+};
 
 export function storeTokenBurn(src: TokenBurn) {
     return (builder: Builder) => {
@@ -605,12 +711,20 @@ export function storeTokenBurn(src: TokenBurn) {
 
 export function loadTokenBurn(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 1499400124) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 1499400124) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
     let _owner = sc_0.loadAddress();
     let _response_destination = sc_0.loadAddress();
-    return { $$type: 'TokenBurn' as const, queryId: _queryId, amount: _amount, owner: _owner, response_destination: _response_destination };
+    return {
+        $$type: "TokenBurn" as const,
+        queryId: _queryId,
+        amount: _amount,
+        owner: _owner,
+        response_destination: _response_destination,
+    };
 }
 
 function loadTupleTokenBurn(source: TupleReader) {
@@ -618,7 +732,13 @@ function loadTupleTokenBurn(source: TupleReader) {
     let _amount = source.readBigNumber();
     let _owner = source.readAddress();
     let _response_destination = source.readAddress();
-    return { $$type: 'TokenBurn' as const, queryId: _queryId, amount: _amount, owner: _owner, response_destination: _response_destination };
+    return {
+        $$type: "TokenBurn" as const,
+        queryId: _queryId,
+        amount: _amount,
+        owner: _owner,
+        response_destination: _response_destination,
+    };
 }
 
 function storeTupleTokenBurn(source: TokenBurn) {
@@ -637,17 +757,17 @@ function dictValueParserTokenBurn(): DictionaryValue<TokenBurn> {
         },
         parse: (src) => {
             return loadTokenBurn(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type TokenBurnNotification = {
-    $$type: 'TokenBurnNotification';
+    $$type: "TokenBurnNotification";
     queryId: bigint;
     amount: bigint;
     owner: Address;
     response_destination: Address | null;
-}
+};
 
 export function storeTokenBurnNotification(src: TokenBurnNotification) {
     return (builder: Builder) => {
@@ -662,12 +782,20 @@ export function storeTokenBurnNotification(src: TokenBurnNotification) {
 
 export function loadTokenBurnNotification(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2078119902) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 2078119902) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
     let _amount = sc_0.loadCoins();
     let _owner = sc_0.loadAddress();
     let _response_destination = sc_0.loadMaybeAddress();
-    return { $$type: 'TokenBurnNotification' as const, queryId: _queryId, amount: _amount, owner: _owner, response_destination: _response_destination };
+    return {
+        $$type: "TokenBurnNotification" as const,
+        queryId: _queryId,
+        amount: _amount,
+        owner: _owner,
+        response_destination: _response_destination,
+    };
 }
 
 function loadTupleTokenBurnNotification(source: TupleReader) {
@@ -675,7 +803,13 @@ function loadTupleTokenBurnNotification(source: TupleReader) {
     let _amount = source.readBigNumber();
     let _owner = source.readAddress();
     let _response_destination = source.readAddressOpt();
-    return { $$type: 'TokenBurnNotification' as const, queryId: _queryId, amount: _amount, owner: _owner, response_destination: _response_destination };
+    return {
+        $$type: "TokenBurnNotification" as const,
+        queryId: _queryId,
+        amount: _amount,
+        owner: _owner,
+        response_destination: _response_destination,
+    };
 }
 
 function storeTupleTokenBurnNotification(source: TokenBurnNotification) {
@@ -694,14 +828,14 @@ function dictValueParserTokenBurnNotification(): DictionaryValue<TokenBurnNotifi
         },
         parse: (src) => {
             return loadTokenBurnNotification(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type TokenExcesses = {
-    $$type: 'TokenExcesses';
+    $$type: "TokenExcesses";
     queryId: bigint;
-}
+};
 
 export function storeTokenExcesses(src: TokenExcesses) {
     return (builder: Builder) => {
@@ -713,14 +847,16 @@ export function storeTokenExcesses(src: TokenExcesses) {
 
 export function loadTokenExcesses(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 3576854235) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 3576854235) {
+        throw Error("Invalid prefix");
+    }
     let _queryId = sc_0.loadUintBig(64);
-    return { $$type: 'TokenExcesses' as const, queryId: _queryId };
+    return { $$type: "TokenExcesses" as const, queryId: _queryId };
 }
 
 function loadTupleTokenExcesses(source: TupleReader) {
     let _queryId = source.readBigNumber();
-    return { $$type: 'TokenExcesses' as const, queryId: _queryId };
+    return { $$type: "TokenExcesses" as const, queryId: _queryId };
 }
 
 function storeTupleTokenExcesses(source: TokenExcesses) {
@@ -736,14 +872,14 @@ function dictValueParserTokenExcesses(): DictionaryValue<TokenExcesses> {
         },
         parse: (src) => {
             return loadTokenExcesses(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type TokenUpdateContent = {
-    $$type: 'TokenUpdateContent';
+    $$type: "TokenUpdateContent";
     content: Cell;
-}
+};
 
 export function storeTokenUpdateContent(src: TokenUpdateContent) {
     return (builder: Builder) => {
@@ -755,14 +891,16 @@ export function storeTokenUpdateContent(src: TokenUpdateContent) {
 
 export function loadTokenUpdateContent(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2937889386) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 2937889386) {
+        throw Error("Invalid prefix");
+    }
     let _content = sc_0.loadRef();
-    return { $$type: 'TokenUpdateContent' as const, content: _content };
+    return { $$type: "TokenUpdateContent" as const, content: _content };
 }
 
 function loadTupleTokenUpdateContent(source: TupleReader) {
     let _content = source.readCell();
-    return { $$type: 'TokenUpdateContent' as const, content: _content };
+    return { $$type: "TokenUpdateContent" as const, content: _content };
 }
 
 function storeTupleTokenUpdateContent(source: TokenUpdateContent) {
@@ -778,17 +916,17 @@ function dictValueParserTokenUpdateContent(): DictionaryValue<TokenUpdateContent
         },
         parse: (src) => {
             return loadTokenUpdateContent(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
 export type JettonWalletData = {
-    $$type: 'JettonWalletData';
+    $$type: "JettonWalletData";
     balance: bigint;
     owner: Address;
     master: Address;
     walletCode: Cell;
-}
+};
 
 export function storeJettonWalletData(src: JettonWalletData) {
     return (builder: Builder) => {
@@ -806,7 +944,13 @@ export function loadJettonWalletData(slice: Slice) {
     let _owner = sc_0.loadAddress();
     let _master = sc_0.loadAddress();
     let _walletCode = sc_0.loadRef();
-    return { $$type: 'JettonWalletData' as const, balance: _balance, owner: _owner, master: _master, walletCode: _walletCode };
+    return {
+        $$type: "JettonWalletData" as const,
+        balance: _balance,
+        owner: _owner,
+        master: _master,
+        walletCode: _walletCode,
+    };
 }
 
 function loadTupleJettonWalletData(source: TupleReader) {
@@ -814,7 +958,13 @@ function loadTupleJettonWalletData(source: TupleReader) {
     let _owner = source.readAddress();
     let _master = source.readAddress();
     let _walletCode = source.readCell();
-    return { $$type: 'JettonWalletData' as const, balance: _balance, owner: _owner, master: _master, walletCode: _walletCode };
+    return {
+        $$type: "JettonWalletData" as const,
+        balance: _balance,
+        owner: _owner,
+        master: _master,
+        walletCode: _walletCode,
+    };
 }
 
 function storeTupleJettonWalletData(source: JettonWalletData) {
@@ -833,16 +983,16 @@ function dictValueParserJettonWalletData(): DictionaryValue<JettonWalletData> {
         },
         parse: (src) => {
             return loadJettonWalletData(src.loadRef().beginParse());
-        }
-    }
+        },
+    };
 }
 
- type SampleJetton_init_args = {
-    $$type: 'SampleJetton_init_args';
+type SampleJetton_init_args = {
+    $$type: "SampleJetton_init_args";
     owner: Address;
     content: Cell;
     max_supply: bigint;
-}
+};
 
 function initSampleJetton_init_args(src: SampleJetton_init_args) {
     return (builder: Builder) => {
@@ -854,12 +1004,16 @@ function initSampleJetton_init_args(src: SampleJetton_init_args) {
 }
 
 async function SampleJetton_init(owner: Address, content: Cell, max_supply: bigint) {
-    const __code = Cell.fromBase64('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');
-    const __system = Cell.fromBase64('te6cckECQwEADYEAAQHAAQIBICECAQW+xXwDART/APSkE/S88sgLBAIBYg8FAgEgDQYCASAMBwIBSAkIAHWybuNDVpcGZzOi8vUW1aa1pYaExrSlVuY001Q2hlYjhjVkxkcEM3M2gyYW9CbjhVQUtNSnltZEtZa4IAIDeKALCgAPu+7UTQ0gABgCE7kts8VQLbPGwxgeFwC5u70YJwXOw9XSyuex6E7DnWSoUbZoJwndY1LStkfLMi068t/fFiOYJwIFXAG4BnY5TOWDquRyWyw4JwnZdOWrNOy3M6DpZtlGbopIJwndHgA+WzYDyfyDqyWayiE4AhG/2BbZ5tnjYaQeDgEY+ENTEts8MFRjMFIwQAN60AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRLbPPLggh4REACmyPhDAcx/AcoAVSBQI4EBAc8AASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbJ7VQC7gGOW4Ag1yFwIddJwh+VMCDXCx/eIIIQF41FGbqOGjDTHwGCEBeNRRm68uCB0z/6AFlsEjEToAJ/4IIQe92X3rqOGdMfAYIQe92X3rry4IHTP/oAWWwSMROgAn/gMH/gcCHXScIflTAg1wsf3iCCEA+KfqW64wIgGRID7IIQF41FGbqPCDDbPGwW2zx/4IIQWV8HvLqO2NMfAYIQWV8HvLry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIFEMwbBTbPH/gMHAYFRMCelv4QW8kgRFNU4PHBfL0UYShggD1/CHC//L0QzBSOds8ggCpngGCCTEtAKCCCJiWgKASvPL0cIBAA39UM2YcFAHSyFUwghB73ZfeUAXLHxPLPwH6AgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBIG6VMHABywGOHiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFuLJJEQUUDMUQzBtbds8PAT2+EFvJFOixwWzjtP4Q1O42zwBggCm1AJwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFJAxwXy9N5RyKCCAPX8IcL/8vRAuivbPBA0S83bPFGjoVAKQBccFgL2oSLCAI7Kc3AoSBNQdMhVMIIQc2LQnFAFyx8Tyz8B+gIBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WAc8WySdGFFBVFEMwbW3bPAGUEDVsQeIhbrOOm3ADyAGCENUydttYyx/LP8lBMHIQJEMAbW3bPJJfA+IBPDwALPgnbxAhoYIImJaAZrYIoYIImJaAoKEAstMfAYIQF41FGbry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfoAUVUVFEMwAhAw2zxsF9s8fx0aBIoy+EFvJIERTVPDxwXy9FRzISPbPEQwUkTbPKCCCcnDgAGggRA/AYIImJaAtggSvPL0UYShggD1/CHC//L0+ENUIHXbPFwcHEAbAsJwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFB2cIBAcCxIE1DnyFVQ2zzJEFZeIhA5AhA2EDUQNNs8PjwAZGwx+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiDD6ADFx1yH6ADH6ADCnA6sAAMbTHwGCEA+KfqW68uCB0z/6APpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHSAAGR1JJtAeL6AFFmFhUUQzABwO1E0NQB+GPSAAGOSIEBAdcA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIQzBsE+D4KNcLCoMJuvLgiR8BivpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBIC0QHbPCAABHACAQW9XCwiART/APSkE/S88sgLIwIBYjIkAgEgMCUCASApJgIBSCgnAHWybuNDVpcGZzOi8vUW1heERpeldpOTVhckV6cVBtaDlwdzdBdWpvWHhmcHRycTRacXBlb0xnQ0ZCVoIAARsK+7UTQ0gABgAgEgKyoA3bd6ME4LnYerpZXPY9CdhzrJUKNs0E4TusalpWyPlmRadeW/vixHME4ECrgDcAzscpnLB1XI5LZYcE4TsunLVmnZbmdB0s2yjN0UkE4YTIikya+3yRcvbDO06rpAsE4IGc6tPOK/OkoWA6wtxMj2UAIBWC4sAhGvFu2ebZ42KsBBLQEW+CjbPDBUZTBUZmA/Ak2tvJBrpMCAhd15cEQQa4WFEECCf915aETBhN15cERtniqCbZ42KMBBLwGG2zxwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiD8CEb4o7tnm2eNijEExAAIjAurQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVFNs88uCCyPhDAcx/AcoAVUBQVPoCWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFswSygAB+gLJ7VRBMwL07aLt+wGSMH/gcCHXScIflTAg1wsf3iCCEPxwi9K6jtEw0x8BghD8cIvSuvLggYEBAdcA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBJsEvhBbyQQI18DJoEOlgLHBfL0gUjsJPL0URXbPH/gIIIQrxyiaro6NANejpsw0x8BghCvHKJquvLggdQBMVVA2zwyEDRDAH/gIIIQe92X3rrjAsAAkTDjDXA5NjUB+vkBIILw/L65pICWZHdIBjnHzqSleKpqETspA7JtAbw4RmPs7va6jpcw+EFvJBAjXwOBSOwj8vSAZCXbPH/bMeCC8NwATFt1vnQ3a9ed+HE/I5BiDMijCVBosFg+soyjrIuguo4XMfhBbyQQI18DI4EOlgLHBfL0cAF/2zHgOgHEMNMfAYIQe92X3rry4IHTP/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QCHXCwHDAI4dASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IiSMW3iFEMwbBQ3AoQQWBBHEDZId9s8UEehJW6zjqgFIG7y0IBwcIBCB8gBghDVMnbbWMsfyz/JEDRBMBcQJBAjbW3bPBAjkjQ04kQTAn84PAG0+EFvJBAjXwNVUNs8AYERTQJwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBfHBRby9FUDPwAS+EJSQMcF8uCEA/SBGvJTgqAlu/L0UXGgVUHbPFxwWchwAcsBcwHLAXABywASzMzJ+QDIcgHLAXABywASygfL/8nQINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiHBwgEAi+CghyMnQEDUQTxAjAhEQAshVUNs8yUZQEEsQOkC6EEYQRT8+OwEI2zxANDwByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAPQCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzACqghAXjUUZUAfLHxXLP1AD+gIBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgH6AgHPFgEO+EP4KFjbPEAA2gLQ9AQwbQGCANivAYAQ9A9vofLghwGCANivIgKAEPQXyAHI9ADJAcxwAcoAQANZINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFskB4O1E0NQB+GPSAAGOK/oA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHU0gD6AFVAbBXg+CjXCwqDCbry4In6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdSBAQHXAFUgA9FY2zxCAApwVSB/AdPQIH0=');
+    const __code = Cell.fromBase64(
+        "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"
+    );
+    const __system = Cell.fromBase64(
+        "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"
+    );
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
-    initSampleJetton_init_args({ $$type: 'SampleJetton_init_args', owner, content, max_supply })(builder);
+    initSampleJetton_init_args({ $$type: "SampleJetton_init_args", owner, content, max_supply })(builder);
     const __data = builder.endCell();
     return { code: __code, data: __data };
 }
@@ -897,79 +1051,92 @@ const SampleJetton_errors: { [key: number]: { message: string } } = {
     42708: { message: `Invalid sender!` },
     43422: { message: `Invalid value - Burn` },
     62972: { message: `Invalid balance` },
-}
+};
 
 export class SampleJetton implements Contract {
-    
     static async init(owner: Address, content: Cell, max_supply: bigint) {
         return await SampleJetton_init(owner, content, max_supply);
     }
-    
+
     static async fromInit(owner: Address, content: Cell, max_supply: bigint) {
         const init = await SampleJetton_init(owner, content, max_supply);
         const address = contractAddress(0, init);
         return new SampleJetton(address, init);
     }
-    
+
     static fromAddress(address: Address) {
         return new SampleJetton(address);
     }
-    
-    readonly address: Address; 
-    readonly init?: { code: Cell, data: Cell };
+
+    readonly address: Address;
+    readonly init?: { code: Cell; data: Cell };
     readonly abi: ContractABI = {
-        errors: SampleJetton_errors
+        errors: SampleJetton_errors,
     };
-    
-    private constructor(address: Address, init?: { code: Cell, data: Cell }) {
+
+    private constructor(address: Address, init?: { code: Cell; data: Cell }) {
         this.address = address;
         this.init = init;
     }
-    
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: Mint | 'Mint: 100' | 'Owner: MintClose' | TokenUpdateContent | TokenBurnNotification) {
-        
+
+    async send(
+        provider: ContractProvider,
+        via: Sender,
+        args: { value: bigint; bounce?: boolean | null | undefined },
+        message: Mint | "Mint: 100" | "Owner: MintClose" | TokenUpdateContent | TokenBurnNotification
+    ) {
         let body: Cell | null = null;
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Mint') {
+        if (message && typeof message === "object" && !(message instanceof Slice) && message.$$type === "Mint") {
             body = beginCell().store(storeMint(message)).endCell();
         }
-        if (message === 'Mint: 100') {
+        if (message === "Mint: 100") {
             body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
         }
-        if (message === 'Owner: MintClose') {
+        if (message === "Owner: MintClose") {
             body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
         }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'TokenUpdateContent') {
+        if (
+            message &&
+            typeof message === "object" &&
+            !(message instanceof Slice) &&
+            message.$$type === "TokenUpdateContent"
+        ) {
             body = beginCell().store(storeTokenUpdateContent(message)).endCell();
         }
-        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'TokenBurnNotification') {
+        if (
+            message &&
+            typeof message === "object" &&
+            !(message instanceof Slice) &&
+            message.$$type === "TokenBurnNotification"
+        ) {
             body = beginCell().store(storeTokenBurnNotification(message)).endCell();
         }
-        if (body === null) { throw new Error('Invalid message type'); }
-        
+        if (body === null) {
+            throw new Error("Invalid message type");
+        }
+
         await provider.internal(via, { ...args, body: body });
-        
     }
-    
+
     async getGetJettonData(provider: ContractProvider) {
         let builder = new TupleBuilder();
-        let source = (await provider.get('get_jetton_data', builder.build())).stack;
+        let source = (await provider.get("get_jetton_data", builder.build())).stack;
         const result = loadTupleJettonData(source);
         return result;
     }
-    
+
     async getGetWalletAddress(provider: ContractProvider, owner: Address) {
         let builder = new TupleBuilder();
         builder.writeAddress(owner);
-        let source = (await provider.get('get_wallet_address', builder.build())).stack;
+        let source = (await provider.get("get_wallet_address", builder.build())).stack;
         let result = source.readAddress();
         return result;
     }
-    
+
     async getOwner(provider: ContractProvider) {
         let builder = new TupleBuilder();
-        let source = (await provider.get('owner', builder.build())).stack;
+        let source = (await provider.get("owner", builder.build())).stack;
         let result = source.readAddress();
         return result;
     }
-    
 }

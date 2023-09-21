@@ -1,58 +1,55 @@
 import { Address, beginCell, contractAddress, toNano, Cell, TonClient4 } from "ton";
 import { ContractSystem, testAddress } from "ton-emulator";
-import {buildOnchainMetadata} from "./utils/jetton-helpers";
+import { buildOnchainMetadata } from "./utils/jetton-helpers";
 import { printAddress, printHeader, printDeploy } from "./utils/print";
 import { deploy } from "./utils/deploy";
 
-import { SampleJetton} from "./output/SampleJetton_SampleJetton";
+import { SampleJetton } from "./output/SampleJetton_SampleJetton";
 import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_JettonDefaultWallet";
 
-let deploy_address = Address.parse(""); // The deployer wallet address from mnemonics 
-let new_owner_Address = Address.parse(""); // the 
+// 🔴 Jetton Root Address
+let jetton_minter_root = Address.parse("");
+
+// 🔴 the caller address that who wants to transfer the jetton(the person who will click the URL)
+let caller_wallet_address = Address.parse("");
+
+// 🔴 The Address of new Owner WalletV4 Address
+let new_owner_Address = Address.parse("");
 
 (async () => {
-    const jettonParams = {
-        name: "Test 123 Best Practice",
-        description: "This is description of Test tact jetton",
-        symbol: "PPPPPPPP",
-        image: "https://cdn.logo.com/hotlink-ok/logo-social.png" 
-    };
+    let contract_address = await SampleJetton.fromAddress(jetton_minter_root);
 
-    // Create content Cell
-    let content = buildOnchainMetadata(jettonParams);
-    let max_supply = toNano(123456766689011); // Set the specific total supply in nano
-    
+    // Get the Jetton Wallet Address of the deployer
+    let target_jetton_wallet_init = await JettonDefaultWallet.init(contract_address.address, caller_wallet_address);
 
-    // Compute init data for deployment
-    // NOTICE: the parameters inside the init functions were the input for the contract address
-    // which means any changes will change the smart contract address as well.
-    let init = await SampleJetton.init(deploy_address, content, max_supply);
-    
-    let contract_address = contractAddress(0, init); // Get the Master Jetton Minter Address
-    let target_jetton_wallet = await JettonDefaultWallet.fromInit(contract_address, new_owner_Address);
-    let new_owner_jetton_wallet = await JettonDefaultWallet.fromInit(contract_address, deploy_address);
-    let new_target_jettonWallet_init = await JettonDefaultWallet.init(deploy_address,new_owner_Address);
+    // Get the Jetton Wallet Address of the new owner
+    let new_owner_jetton_wallet = await JettonDefaultWallet.fromInit(contract_address.address, new_owner_Address);
 
     console.log("================================================================");
-    let deployAmount = toNano("0.55");
+    // ✨Pack the forward message into a cell
+    const test_message = beginCell()
+        .storeBit(1)
+        .storeRef(beginCell().storeUint(0, 32).storeBuffer(Buffer.from("Hello, GM. -- Right", "utf-8")).endCell())
+        .endCell();
 
-    let emptyCell = new Cell(); 
-
-    let packed = beginCell().store(
-        storeTokenTransfer({
-            $$type: 'TokenTransfer',
-            queryId: 0n,
-            amount: toNano(12345678),
-            destination: target_jetton_wallet.address,
-            response_destination: new_owner_jetton_wallet.address, // Original Owner, aka. First Minter's Jetton Wallet
-            custom_payload: null,
-            forward_ton_amount: toNano("0.1"),
-            forward_payload: emptyCell
-    })).endCell(); 
-
+    let deployAmount = toNano("0.3");
+    let packed = beginCell()
+        .store(
+            storeTokenTransfer({
+                $$type: "TokenTransfer",
+                queryId: 0n,
+                amount: toNano(1),
+                destination: new_owner_jetton_wallet.address,
+                response_destination: caller_wallet_address, // Original Owner, aka. First Minter's Jetton Wallet
+                custom_payload: null,
+                forward_ton_amount: toNano("0.000000001"),
+                forward_payload: test_message,
+            })
+        )
+        .endCell();
     printHeader("Write Contract");
-    printAddress(contract_address);
+    printAddress(contract_address.address);
 
     // printDeploy(init, deployAmount, packed);
-    await deploy(new_target_jettonWallet_init, deployAmount, packed);
+    await deploy(target_jetton_wallet_init, deployAmount, packed);
 })();
