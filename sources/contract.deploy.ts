@@ -1,9 +1,8 @@
 import { beginCell, contractAddress, toNano, TonClient4, WalletContractV4, internal, fromNano } from "ton";
 import { mnemonicToPrivateKey } from "ton-crypto";
-
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
+
 import { SampleJetton, storeMint } from "./output/SampleJetton_SampleJetton";
-import { JettonDefaultWallet } from "./output/SampleJetton_JettonDefaultWallet";
 import { printSeparator } from "./utils/print";
 import * as dotenv from "dotenv";
 dotenv.config();
