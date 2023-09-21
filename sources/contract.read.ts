@@ -59,20 +59,4 @@ import { JettonDefaultWallet } from "./output/SampleJetton_JettonDefaultWallet";
     // // loadOwnershipAssigned => msg.forwardload
     // let aa = loadTransferEvent(src.asSlice());
     // console.log("Mint MemberID: " + aa.item_index + ", by " + aa.minter);
-
-    const hexString = Cell.fromBase64("b5ee9c7201010101000700000a3132333435");
-    let aa = loadTokenTransfer(hexString.asSlice());
-    // const uint8ArrayData = hexToUint8Array(hexString);
-    console.log(aa.forward_payload);
 })();
-
-function hexToUint8Array(hex: string): Uint8Array {
-    const length = hex.length / 2;
-    const uint8Array = new Uint8Array(length);
-
-    for (let i = 0; i < length; i++) {
-        uint8Array[i] = parseInt(hex.substr(i * 2, 2), 16);
-    }
-
-    return uint8Array;
-}
