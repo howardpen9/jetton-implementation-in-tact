@@ -61,13 +61,13 @@ builder $TokenNotification$_store(builder build_0, (int, int, slice, slice) v) i
 cell $TokenNotification$_store_cell((int, int, slice, slice) v) inline;
 
 ;; $TokenBurn$_load
-(slice, ((int, int, slice, slice))) $TokenBurn$_load(slice sc_0) inline;
+(slice, ((int, int, slice, cell))) $TokenBurn$_load(slice sc_0) inline;
 
 ;; $TokenBurnNotification$_store
-builder $TokenBurnNotification$_store(builder build_0, (int, int, slice, slice) v) inline;
+builder $TokenBurnNotification$_store(builder build_0, (int, int, slice) v) inline;
 
 ;; $TokenBurnNotification$_store_cell
-cell $TokenBurnNotification$_store_cell((int, int, slice, slice) v) inline;
+cell $TokenBurnNotification$_store_cell((int, int, slice) v) inline;
 
 ;; $TokenBurnNotification$_load_bounced
 (slice, ((int, int))) $TokenBurnNotification$_load_bounced(slice sc_0) inline;
@@ -144,5 +144,5 @@ int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_r
 ;; $TokenExcesses$_constructor_queryId
 ((int)) $TokenExcesses$_constructor_queryId(int queryId) inline;
 
-;; $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination
-((int, int, slice, slice)) $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination(int queryId, int amount, slice owner, slice response_destination) inline;
+;; $TokenBurnNotification$_constructor_queryId_amount_response_destination
+((int, int, slice)) $TokenBurnNotification$_constructor_queryId_amount_response_destination(int queryId, int amount, slice response_destination) inline;

@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SampleJetton
-BOC Size: 1725 bytes
+BOC Size: 1687 bytes
 
 # Types
 Total Types: 15
@@ -46,12 +46,12 @@ TLB: `token_notification#7362d09c queryId:uint64 amount:coins from:address forwa
 Signature: `TokenNotification{queryId:uint64,amount:coins,from:address,forward_payload:remainder<slice>}`
 
 ## TokenBurn
-TLB: `token_burn#595f07bc queryId:uint64 amount:coins owner:address response_destination:address = TokenBurn`
-Signature: `TokenBurn{queryId:uint64,amount:coins,owner:address,response_destination:address}`
+TLB: `token_burn#595f07bc queryId:uint64 amount:coins response_destination:address custom_payload:Maybe ^cell = TokenBurn`
+Signature: `TokenBurn{queryId:uint64,amount:coins,response_destination:address,custom_payload:Maybe ^cell}`
 
 ## TokenBurnNotification
-TLB: `token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:address = TokenBurnNotification`
-Signature: `TokenBurnNotification{queryId:uint64,amount:coins,owner:address,response_destination:address}`
+TLB: `token_burn_notification#7bdd97de queryId:uint64 amount:coins response_destination:address = TokenBurnNotification`
+Signature: `TokenBurnNotification{queryId:uint64,amount:coins,response_destination:address}`
 
 ## TokenExcesses
 TLB: `token_excesses#d53276db queryId:uint64 = TokenExcesses`

@@ -1,6 +1,6 @@
 import { ContractSystem } from "@tact-lang/emulator";
-import { SampleJetton, loadJettonData, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
-import { JettonDefaultWallet } from "./output/SampleJetton_JettonDefaultWallet";
+import { SampleJetton, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
+import { JettonDefaultWallet, TokenBurn } from "./output/SampleJetton_JettonDefaultWallet";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
 
 import { Blockchain, SandboxContract, TreasuryContract } from "@ton-community/sandbox";
@@ -103,7 +103,7 @@ describe("contract", () => {
             forward_payload: beginCell().endCell(),
         };
         const transferResult = await senderWallet.send(sender.getSender(), { value: toNano("10") }, transferMessage);
-        console.log(transferResult.transactions);
+        // console.log(transferResult.transactions);
 
         const receiverWalletAddress = await token.getGetWalletAddress(receiver.address);
         const receiverWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(receiverWalletAddress));
@@ -115,6 +115,36 @@ describe("contract", () => {
         expect(receiverWalletDataAfterTransfer.balance).toEqual(transferAmount); // check that the receiver received the right amount of tokens
         // const balance1 = (await receiverWallet.getGetWalletData()).balance;
         // console.log(fromNano(balance1));
+    });
+
+    it("Mint tokens then Burn tokens", async () => {
+        // const sender = await blockchain.treasury("sender");
+        const deployerWalletAddress = await token.getGetWalletAddress(deployer.address);
+        const deployerWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(deployerWalletAddress));
+        let deployerBalanceInit = (await deployerWallet.getGetWalletData()).balance;
+        console.log("deployerBalanceInit = ", deployerBalanceInit);
+        const initMintAmount = toNano(100);
+        const mintMessage: Mint = {
+            $$type: "Mint",
+            amount: initMintAmount,
+            receiver: deployer.address,
+        };
+        await token.send(deployer.getSender(), { value: toNano("10") }, mintMessage);
+        let deployerBalance = (await deployerWallet.getGetWalletData()).balance;
+        expect(deployerBalance).toEqual(deployerBalanceInit + initMintAmount);
+
+        let burnAmount = toNano(10);
+        const burnMessage: TokenBurn = {
+            $$type: "TokenBurn",
+            queryId: 0n,
+            amount: burnAmount,
+            response_destination: deployer.address,
+            custom_payload: beginCell().endCell(),
+        };
+
+        const burnResult = await deployerWallet.send(deployer.getSender(), { value: toNano("10") }, burnMessage);
+        let deployerBalanceAfterBurn = (await deployerWallet.getGetWalletData()).balance;
+        expect(deployerBalanceAfterBurn).toEqual(deployerBalance - burnAmount);
     });
 
     // it("should deploy correctly", async () => {

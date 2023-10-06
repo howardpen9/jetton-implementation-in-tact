@@ -74,16 +74,16 @@
     return (($self'balance, $self'owner, $self'master), ());
 }
 
-(((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_TokenBurn((int, slice, slice) $self, (int, int, slice, slice) $msg) impure inline {
+(((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_TokenBurn((int, slice, slice) $self, (int, int, slice, cell) $msg) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
-    var ($msg'queryId, $msg'amount, $msg'owner, $msg'response_destination) = $msg;
+    var ($msg'queryId, $msg'amount, $msg'response_destination, $msg'custom_payload) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(4429, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
     $self'balance = ($self'balance - $msg'amount);
     throw_unless(62972, ($self'balance >= 0));
     int $fwdFee = $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw));
     throw_unless(43422, ($ctx'value > (($fwdFee + (2 * 10000000)) + 10000000)));
-    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'master, 0, 64, true, $TokenBurnNotification$_store_cell($TokenBurnNotification$_constructor_queryId_amount_owner_response_destination($msg'queryId, $msg'amount, $self'owner, $self'owner))));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'master, 0, 64, true, $TokenBurnNotification$_store_cell($TokenBurnNotification$_constructor_queryId_amount_response_destination($msg'queryId, $msg'amount, $self'owner))));
     return (($self'balance, $self'owner, $self'master), ());
 }
 
@@ -129,7 +129,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmdcFhm4JNNmqraRiJv6W86LzeumfUaWz8vzV8vd2m6dYj";
+    return "ipfs://QmVD4nZ2CXCRiccVMHp42eugHL7KJCp7g8TgJ3G7q9Wu5n";
 }
 
 _ lazy_deployment_completed() method_id {

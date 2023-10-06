@@ -42,14 +42,13 @@ message(0x7362d09c) TokenNotification {
 message(0x595f07bc) TokenBurn {
     queryId: Int as uint64;
     amount: Int as coins;
-    owner: Address;
     response_destination: Address;
+    custom_payload: Cell?;
 }
 
 message(0x7bdd97de) TokenBurnNotification {
     queryId: Int as uint64;
     amount: Int as coins;
-    owner: Address;
     response_destination: Address;
 }
 

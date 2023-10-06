@@ -57,6 +57,7 @@ let NewOnwer_Address = Address.parse("");
         .storeBuffer(Buffer.from("Hello, GM -- Left.", "utf-8"))
         .endCell();
 
+    // ========================================
     let forward_string_test = beginCell().storeBit(1).storeUint(0, 32).storeStringTail("EEEEEE").endCell();
     let packed = beginCell()
         .store(
