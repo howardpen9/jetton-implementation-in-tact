@@ -42,13 +42,7 @@ contract SampleJetton with Jetton {
     }
 } 
 
-struct JettonData {
-    totalSupply: Int;
-    mintable: Bool;
-    owner: Address;
-    content: Cell;
-    walletCode: Cell;
-}
+
 
 // ============================================================================================================ //
 @interface("org.ton.jetton.master")
@@ -67,9 +61,8 @@ trait Jetton with Ownable {
     }
 
     receive(msg: TokenBurnNotification) {
-        self.requireWallet(msg.owner);                     // Check wallet
+        self.requireSenderAsWalletOwner(msg.owner);       // Check wallet
         self.totalSupply = self.totalSupply - msg.amount; // Update supply
-
         if (msg.response_destination != null) { // Cashback
             send(SendParameters{
                 to: msg.response_destination!!, 
@@ -95,7 +88,7 @@ trait Jetton with Ownable {
         send(SendParameters{
             to: contractAddress(winit), 
             value: 0, 
-            bounce: false,
+            bounce: true,
             mode: SendRemainingValue,
             body: TokenTransferInternal{ 
                 queryId: 0,
@@ -110,7 +103,7 @@ trait Jetton with Ownable {
         });
     }
 
-    fun requireWallet(owner: Address) {
+    fun requireSenderAsWalletOwner(owner: Address) {
         let ctx: Context = context();
         let winit: StateInit = self.getJettonWalletInit(owner);
         require(contractAddress(winit) == ctx.sender, "Invalid sender");
@@ -138,53 +131,7 @@ trait Jetton with Ownable {
     }
 }
 // ============================================================ //
-message(0xf8a7ea5) TokenTransfer {
-    queryId: Int as uint64;
-    amount: Int as coins;
-    destination: Address;
-    response_destination: Address;
-    custom_payload: Cell?;
-    forward_ton_amount: Int as coins;
-    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
-}
 
-message(0x178d4519) TokenTransferInternal {
-    queryId: Int as uint64;
-    amount: Int as coins;
-    from: Address;
-    response_destination: Address;
-    forward_ton_amount: Int as coins;
-    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
-}
-
-message(0x7362d09c) TokenNotification {
-    queryId: Int as uint64;
-    amount: Int as coins;
-    from: Address;
-    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton 
-}
-
-message(0x595f07bc) TokenBurn {
-    queryId: Int as uint64;
-    amount: Int as coins;
-    owner: Address;
-    response_destination: Address;
-}
-
-message(0x7bdd97de) TokenBurnNotification {
-    queryId: Int as uint64;
-    amount: Int as coins;
-    owner: Address;
-    response_destination: Address?;
-}
-
-message(0xd53276db) TokenExcesses {
-    queryId: Int as uint64;
-}
-
-message TokenUpdateContent {
-    content: Cell;
-}
 
 @interface("org.ton.jetton.wallet")
 contract JettonDefaultWallet {
@@ -220,7 +167,7 @@ contract JettonDefaultWallet {
                 to: walletAddress, 
                 value: 0,
                 mode: SendRemainingValue, 
-                bounce: false,
+                bounce: true,
                 body: TokenTransferInternal{
                     queryId: msg.queryId,
                     amount: msg.amount,
@@ -340,11 +287,4 @@ contract JettonDefaultWallet {
             walletCode: (initOf JettonDefaultWallet(self.master, self.owner)).code
         };
     }
-}
-
-struct JettonWalletData {
-    balance: Int;
-    owner: Address;
-    master: Address;
-    walletCode: Cell;
 }
