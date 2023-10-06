@@ -1,7 +1,6 @@
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
-  DECLPROC __tact_load_address_opt
   DECLPROC __tact_store_address
   DECLPROC __tact_create_address
   DECLPROC __tact_compute_contract_address
@@ -12,13 +11,13 @@ PROGRAM{
   DECLPROC __tact_slice_eq_bits
   DECLPROC __tact_dict_set_code
   DECLPROC __tact_dict_get_code
-  DECLPROC $Mint$_load
   DECLPROC $TokenTransferInternal$_store
   DECLPROC $TokenTransferInternal$_store_cell
   DECLPROC $TokenBurnNotification$_load
   DECLPROC $TokenExcesses$_store
   DECLPROC $TokenExcesses$_store_cell
   DECLPROC $TokenUpdateContent$_load
+  DECLPROC $Mint$_load
   DECLPROC $SampleJetton$_store
   DECLPROC $SampleJetton$_load
   DECLPROC $StateInit$_get_code
@@ -38,7 +37,7 @@ PROGRAM{
   DECLPROC $JettonDefaultWallet$_init_child
   DECLPROC $SampleJetton$_fun_getJettonWalletInit
   DECLPROC $SampleJetton$_fun_mint
-  DECLPROC $SampleJetton$_fun_requireWallet
+  DECLPROC $SampleJetton$_fun_requireSenderAsWalletOwner
   DECLPROC $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode
   DECLPROC $SampleJetton$_fun_get_jetton_data
   DECLPROC $SampleJetton$_fun_get_wallet_address
@@ -83,19 +82,6 @@ PROGRAM{
     LDMSGADDR
     SWAP
     __tact_verify_address INLINECALLDICT
-  }>
-  __tact_load_address_opt PROCINLINE:<{
-    LDMSGADDR
-    OVER
-    2 PLDU
-    0 NEQINT
-    IF:<{
-      SWAP
-      __tact_verify_address INLINECALLDICT
-    }>ELSE<{
-      NIP
-      PUSHNULL
-    }>
   }>
   __tact_store_address PROCINLINE:<{
     __tact_verify_address INLINECALLDICT
@@ -165,17 +151,6 @@ PROGRAM{
     NULLSWAPIFNOT
     135 THROWIFNOT
   }>
-  $Mint$_load PROCINLINE:<{
-    32 LDU
-    SWAP
-    4235234258 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    257 PUSHINT
-    LDIX
-    __tact_load_address INLINECALLDICT
-    s1 s2 XCHG
-  }>
   $TokenTransferInternal$_store PROCREF:<{
     395134233 PUSHINT
     s0 s7 XCHG2
@@ -209,7 +184,7 @@ PROGRAM{
     LDGRAMS
     __tact_load_address INLINECALLDICT
     SWAP
-    __tact_load_address_opt INLINECALLDICT
+    __tact_load_address INLINECALLDICT
     s1 s4 XCHG
     s3 s3 s0 XCHG3
   }>
@@ -233,6 +208,17 @@ PROGRAM{
     129 THROWIFNOT
     LDREF
     SWAP
+  }>
+  $Mint$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    4235234258 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    __tact_load_address INLINECALLDICT
+    s1 s2 XCHG
   }>
   $SampleJetton$_store PROCINLINE:<{
     s5 s4 XCHG2
@@ -486,7 +472,7 @@ PROGRAM{
     2DUP
     $global_contractAddress INLINECALLDICT
     0 PUSHINT
-    FALSE
+    TRUE
     64 PUSHINT
     s2 PUSH
     MYADDR
@@ -506,7 +492,7 @@ PROGRAM{
     $global_send INLINECALLDICT
     s0 s3 s4 XCHG3
   }>
-  $SampleJetton$_fun_requireWallet PROCREF:<{
+  $SampleJetton$_fun_requireSenderAsWalletOwner PROCREF:<{
     __tact_context_get INLINECALLDICT
     s2 s3 XCHG
     3 BLKDROP
@@ -604,27 +590,24 @@ PROGRAM{
     s4 s7 XCHG
     s3 s6 XCHG
     s8 s7 s7 XCHG3
-    $SampleJetton$_fun_requireWallet INLINECALLDICT
+    $SampleJetton$_fun_requireSenderAsWalletOwner INLINECALLDICT
     s4 s7 XCHG2
     SUB
     s5 PUSH
     ISNULL
     NOT
     IF:<{
-      s0 s5 XCHG
-      __tact_not_null INLINECALLDICT
       0 PUSHINT
       FALSE
       66 PUSHINT
       s0 s7 XCHG
       $TokenExcesses$_constructor_queryId INLINECALLDICT
       $TokenExcesses$_store_cell INLINECALLDICT
-      s3 s4 XCHG
+      s4 s8 XCHG
       s1 s3 s0 XCHG3
       s1 s7 XCHG
       $SendParameters$_constructor_to_value_bounce_mode_body INLINECALLDICT
       $global_send INLINECALLDICT
-      s2 s3 XCHG
     }>ELSE<{
       s4 POP
       s4 POP
@@ -659,7 +642,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d617844697a576939356172457a71506d683970773741756a6f58786670747271345a7170656f4c6743464256} PUSHSLICE
+    x{697066733a2f2f516d627556574856506b4d584468366b554862525377787a4b3739596f523378434d5836544b563453635a34465a} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

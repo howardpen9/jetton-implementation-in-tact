@@ -9,9 +9,6 @@ slice __tact_verify_address(slice address) inline;
 ;; __tact_load_address
 (slice, slice) __tact_load_address(slice cs) inline;
 
-;; __tact_load_address_opt
-(slice, slice) __tact_load_address_opt(slice cs) inline;
-
 ;; __tact_store_address
 builder __tact_store_address(builder b, slice address) inline;
 
@@ -42,9 +39,6 @@ cell __tact_dict_set_code(cell dict, int id, cell code) inline;
 ;; __tact_dict_get_code
 cell __tact_dict_get_code(cell dict, int id) inline;
 
-;; $Mint$_load
-(slice, ((int, slice))) $Mint$_load(slice sc_0) inline;
-
 ;; $TokenTransferInternal$_store
 builder $TokenTransferInternal$_store(builder build_0, (int, int, slice, slice, int, slice) v) inline_ref;
 
@@ -62,6 +56,9 @@ cell $TokenExcesses$_store_cell((int) v) inline;
 
 ;; $TokenUpdateContent$_load
 (slice, ((cell))) $TokenUpdateContent$_load(slice sc_0) inline;
+
+;; $Mint$_load
+(slice, ((int, slice))) $Mint$_load(slice sc_0) inline;
 
 ;; $SampleJetton$_store
 builder $SampleJetton$_store(builder build_0, (int, slice, cell, int, int) v) inline;
@@ -120,8 +117,8 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $SampleJetton$_fun_mint
 ((int, slice, cell, int, int), ()) $SampleJetton$_fun_mint((int, slice, cell, int, int) $self, slice $to, int $amount, slice $response_destination) impure inline_ref;
 
-;; $SampleJetton$_fun_requireWallet
-((int, slice, cell, int, int), ()) $SampleJetton$_fun_requireWallet((int, slice, cell, int, int) $self, slice $owner) impure inline_ref;
+;; $SampleJetton$_fun_requireSenderAsWalletOwner
+((int, slice, cell, int, int), ()) $SampleJetton$_fun_requireSenderAsWalletOwner((int, slice, cell, int, int) $self, slice $owner) impure inline_ref;
 
 ;; $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode
 ((int, int, slice, cell, cell)) $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode(int totalSupply, int mintable, slice owner, cell content, cell walletCode) inline;

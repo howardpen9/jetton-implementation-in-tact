@@ -22,19 +22,6 @@ _ $StateInit$_get_code((cell, cell) v) inline {
 }
 
 ;;
-;; Type: Mint
-;; Header: 0xfc708bd2
-;; TLB: mint#fc708bd2 amount:int257 receiver:address = Mint
-;;
-
-(slice, ((int, slice))) $Mint$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 4235234258);
-    var v'amount = sc_0~load_int(257);
-    var v'receiver = sc_0~__tact_load_address();
-    return (sc_0, (v'amount, v'receiver));
-}
-
-;;
 ;; Type: JettonData
 ;; TLB: _ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell = JettonData
 ;;
@@ -77,7 +64,7 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
 ;;
 ;; Type: TokenBurnNotification
 ;; Header: 0x7bdd97de
-;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:Maybe address = TokenBurnNotification
+;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:address = TokenBurnNotification
 ;;
 
 (slice, ((int, int, slice, slice))) $TokenBurnNotification$_load(slice sc_0) inline {
@@ -85,7 +72,7 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
     var v'queryId = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
     var v'owner = sc_0~__tact_load_address();
-    var v'response_destination = sc_0~__tact_load_address_opt();
+    var v'response_destination = sc_0~__tact_load_address();
     return (sc_0, (v'queryId, v'amount, v'owner, v'response_destination));
 }
 
@@ -120,6 +107,19 @@ cell $TokenExcesses$_store_cell((int) v) inline {
     throw_unless(129, sc_0~load_uint(32) == 2937889386);
     var v'content = sc_0~load_ref();
     return (sc_0, (v'content));
+}
+
+;;
+;; Type: Mint
+;; Header: 0xfc708bd2
+;; TLB: mint#fc708bd2 amount:int257 receiver:address = Mint
+;;
+
+(slice, ((int, slice))) $Mint$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 4235234258);
+    var v'amount = sc_0~load_int(257);
+    var v'receiver = sc_0~__tact_load_address();
+    return (sc_0, (v'amount, v'receiver));
 }
 
 ;;

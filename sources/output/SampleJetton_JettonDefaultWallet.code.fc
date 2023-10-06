@@ -48,7 +48,7 @@
     throw_unless(62972, ($self'balance >= 0));
     var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $self'master, $msg'destination);
     slice $walletAddress = $global_contractAddress(($init'code, $init'data));
-    $global_send($SendParameters$_constructor_to_value_mode_bounce_body_code_data($walletAddress, 0, 64, false, $TokenTransferInternal$_store_cell($TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload($msg'queryId, $msg'amount, $self'owner, $msg'response_destination, $msg'forward_ton_amount, $msg'forward_payload)), $init'code, $init'data));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body_code_data($walletAddress, 0, 64, true, $TokenTransferInternal$_store_cell($TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload($msg'queryId, $msg'amount, $self'owner, $msg'response_destination, $msg'forward_ton_amount, $msg'forward_payload)), $init'code, $init'data));
     return (($self'balance, $self'owner, $self'master), ());
 }
 
@@ -129,7 +129,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmZkZXhLkJUncM5Cheb8cVLdpC73h2aoBn8UAKMJymdKYk";
+    return "ipfs://QmdcFhm4JNNmqraRiJv6W86LzeumfUaWz8vzV8vd2m6dYj";
 }
 
 _ lazy_deployment_completed() method_id {

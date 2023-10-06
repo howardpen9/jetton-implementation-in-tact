@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: JettonDefaultWallet
-BOC Size: 2096 bytes
+BOC Size: 2085 bytes
 
 # Types
 Total Types: 15
@@ -25,13 +25,13 @@ Signature: `ChangeOwner{queryId:uint64,newOwner:address}`
 TLB: `change_owner_ok#327b2b4a queryId:uint64 newOwner:address = ChangeOwnerOk`
 Signature: `ChangeOwnerOk{queryId:uint64,newOwner:address}`
 
-## Mint
-TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
-Signature: `Mint{amount:int257,receiver:address}`
-
 ## JettonData
 TLB: `_ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell = JettonData`
 Signature: `JettonData{totalSupply:int257,mintable:bool,owner:address,content:^cell,walletCode:^cell}`
+
+## JettonWalletData
+TLB: `_ balance:int257 owner:address master:address walletCode:^cell = JettonWalletData`
+Signature: `JettonWalletData{balance:int257,owner:address,master:address,walletCode:^cell}`
 
 ## TokenTransfer
 TLB: `token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
@@ -50,8 +50,8 @@ TLB: `token_burn#595f07bc queryId:uint64 amount:coins owner:address response_des
 Signature: `TokenBurn{queryId:uint64,amount:coins,owner:address,response_destination:address}`
 
 ## TokenBurnNotification
-TLB: `token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:Maybe address = TokenBurnNotification`
-Signature: `TokenBurnNotification{queryId:uint64,amount:coins,owner:address,response_destination:Maybe address}`
+TLB: `token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:address = TokenBurnNotification`
+Signature: `TokenBurnNotification{queryId:uint64,amount:coins,owner:address,response_destination:address}`
 
 ## TokenExcesses
 TLB: `token_excesses#d53276db queryId:uint64 = TokenExcesses`
@@ -61,9 +61,9 @@ Signature: `TokenExcesses{queryId:uint64}`
 TLB: `token_update_content#af1ca26a content:^cell = TokenUpdateContent`
 Signature: `TokenUpdateContent{content:^cell}`
 
-## JettonWalletData
-TLB: `_ balance:int257 owner:address master:address walletCode:^cell = JettonWalletData`
-Signature: `JettonWalletData{balance:int257,owner:address,master:address,walletCode:^cell}`
+## Mint
+TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
+Signature: `Mint{amount:int257,receiver:address}`
 
 # Get Methods
 Total Get Methods: 2
