@@ -62,7 +62,7 @@ trait Jetton with Ownable {
     }
 
     receive(msg: TokenBurnNotification) {
-        self.requireSenderAsWalletOwner(msg.owner);       // Check wallet
+        self.requireSenderAsWalletOwner(msg.response_destination);       // Check wallet
         self.totalSupply = self.totalSupply - msg.amount; // Update supply
         if (msg.response_destination != null) { // Cashback
             send(SendParameters{
@@ -70,9 +70,7 @@ trait Jetton with Ownable {
                 value: 0,
                 bounce: false,
                 mode: SendRemainingValue + SendIgnoreErrors,
-                body: TokenExcesses{
-                    queryId: msg.queryId
-                }.toCell()
+                body: TokenExcesses{ queryId: msg.queryId }.toCell()
             });
         }
     }
@@ -248,7 +246,6 @@ contract JettonDefaultWallet {
             body: TokenBurnNotification{
                 queryId: msg.queryId,
                 amount: msg.amount,
-                owner: self.owner,
                 response_destination: self.owner
             }.toCell()
         });

@@ -46,7 +46,7 @@ builder $TokenTransferInternal$_store(builder build_0, (int, int, slice, slice, 
 cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) inline;
 
 ;; $TokenBurnNotification$_load
-(slice, ((int, int, slice, slice))) $TokenBurnNotification$_load(slice sc_0) inline;
+(slice, ((int, int, slice))) $TokenBurnNotification$_load(slice sc_0) inline;
 
 ;; $TokenExcesses$_store
 builder $TokenExcesses$_store(builder build_0, (int) v) inline;

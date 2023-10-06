@@ -64,16 +64,15 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
 ;;
 ;; Type: TokenBurnNotification
 ;; Header: 0x7bdd97de
-;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:address = TokenBurnNotification
+;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins response_destination:address = TokenBurnNotification
 ;;
 
-(slice, ((int, int, slice, slice))) $TokenBurnNotification$_load(slice sc_0) inline {
+(slice, ((int, int, slice))) $TokenBurnNotification$_load(slice sc_0) inline {
     throw_unless(129, sc_0~load_uint(32) == 2078119902);
     var v'queryId = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
-    var v'owner = sc_0~__tact_load_address();
     var v'response_destination = sc_0~__tact_load_address();
-    return (sc_0, (v'queryId, v'amount, v'owner, v'response_destination));
+    return (sc_0, (v'queryId, v'amount, v'response_destination));
 }
 
 ;;

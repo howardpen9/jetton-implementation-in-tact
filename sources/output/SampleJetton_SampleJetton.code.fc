@@ -103,10 +103,10 @@
     return (($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply), ());
 }
 
-(((int, slice, cell, int, int)), ()) $SampleJetton$_internal_binary_TokenBurnNotification((int, slice, cell, int, int) $self, (int, int, slice, slice) $msg) impure inline {
+(((int, slice, cell, int, int)), ()) $SampleJetton$_internal_binary_TokenBurnNotification((int, slice, cell, int, int) $self, (int, int, slice) $msg) impure inline {
     var ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply) = $self;
-    var ($msg'queryId, $msg'amount, $msg'owner, $msg'response_destination) = $msg;
-    ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)~$SampleJetton$_fun_requireSenderAsWalletOwner($msg'owner);
+    var ($msg'queryId, $msg'amount, $msg'response_destination) = $msg;
+    ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)~$SampleJetton$_fun_requireSenderAsWalletOwner($msg'response_destination);
     $self'totalSupply = ($self'totalSupply - $msg'amount);
     if ((~ null?($msg'response_destination))) {
         $global_send($SendParameters$_constructor_to_value_bounce_mode_body($msg'response_destination, 0, false, (64 + 2), $TokenExcesses$_store_cell($TokenExcesses$_constructor_queryId($msg'queryId))));
@@ -149,7 +149,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmbuVWHVPkMXDh6kUHbRSwxzK79YoR3xCMX6TKV4ScZ4FZ";
+    return "ipfs://QmPyS4URxYAXub9jKVAhQzVv73LvEPYaFHWqwDm7fRaDFM";
 }
 
 _ lazy_deployment_completed() method_id {

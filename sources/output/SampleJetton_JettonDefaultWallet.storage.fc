@@ -128,35 +128,34 @@ cell $TokenNotification$_store_cell((int, int, slice, slice) v) inline {
 ;;
 ;; Type: TokenBurn
 ;; Header: 0x595f07bc
-;; TLB: token_burn#595f07bc queryId:uint64 amount:coins owner:address response_destination:address = TokenBurn
+;; TLB: token_burn#595f07bc queryId:uint64 amount:coins response_destination:address custom_payload:Maybe ^cell = TokenBurn
 ;;
 
-(slice, ((int, int, slice, slice))) $TokenBurn$_load(slice sc_0) inline {
+(slice, ((int, int, slice, cell))) $TokenBurn$_load(slice sc_0) inline {
     throw_unless(129, sc_0~load_uint(32) == 1499400124);
     var v'queryId = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
-    var v'owner = sc_0~__tact_load_address();
     var v'response_destination = sc_0~__tact_load_address();
-    return (sc_0, (v'queryId, v'amount, v'owner, v'response_destination));
+    var v'custom_payload = sc_0~load_int(1) ? sc_0~load_ref() : null();
+    return (sc_0, (v'queryId, v'amount, v'response_destination, v'custom_payload));
 }
 
 ;;
 ;; Type: TokenBurnNotification
 ;; Header: 0x7bdd97de
-;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:address = TokenBurnNotification
+;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins response_destination:address = TokenBurnNotification
 ;;
 
-builder $TokenBurnNotification$_store(builder build_0, (int, int, slice, slice) v) inline {
-    var (v'queryId, v'amount, v'owner, v'response_destination) = v;
+builder $TokenBurnNotification$_store(builder build_0, (int, int, slice) v) inline {
+    var (v'queryId, v'amount, v'response_destination) = v;
     build_0 = store_uint(build_0, 2078119902, 32);
     build_0 = build_0.store_uint(v'queryId, 64);
     build_0 = build_0.store_coins(v'amount);
-    build_0 = __tact_store_address(build_0, v'owner);
     build_0 = __tact_store_address(build_0, v'response_destination);
     return build_0;
 }
 
-cell $TokenBurnNotification$_store_cell((int, int, slice, slice) v) inline {
+cell $TokenBurnNotification$_store_cell((int, int, slice) v) inline {
     return $TokenBurnNotification$_store(begin_cell(), v).end_cell();
 }
 
@@ -167,8 +166,8 @@ cell $TokenBurnNotification$_store_cell((int, int, slice, slice) v) inline {
     return (sc_0, (v'queryId, v'amount));
 }
 
-((int, int, slice, slice)) $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination(int queryId, int amount, slice owner, slice response_destination) inline {
-    return (queryId, amount, owner, response_destination);
+((int, int, slice)) $TokenBurnNotification$_constructor_queryId_amount_response_destination(int queryId, int amount, slice response_destination) inline {
+    return (queryId, amount, response_destination);
 }
 
 ;;

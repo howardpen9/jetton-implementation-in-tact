@@ -46,7 +46,7 @@ PROGRAM{
   DECLPROC $TokenNotification$_constructor_queryId_amount_from_forward_payload
   DECLPROC $SendParameters$_constructor_to_value_bounce_body_mode
   DECLPROC $TokenExcesses$_constructor_queryId
-  DECLPROC $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination
+  DECLPROC $TokenBurnNotification$_constructor_queryId_amount_response_destination
   DECLPROC $JettonDefaultWallet$_internal_binary_TokenTransfer
   DECLPROC $JettonDefaultWallet$_internal_binary_TokenTransferInternal
   DECLPROC $JettonDefaultWallet$_internal_binary_TokenBurn
@@ -260,26 +260,30 @@ PROGRAM{
     LDGRAMS
     __tact_load_address INLINECALLDICT
     SWAP
-    __tact_load_address INLINECALLDICT
-    s1 s4 XCHG
-    s3 s3 s0 XCHG3
+    1 LDI
+    SWAP
+    IF:<{
+      LDREF
+    }>ELSE<{
+      PUSHNULL
+      SWAP
+    }>
+    4 -ROLL
   }>
   $TokenBurnNotification$_store PROCINLINE:<{
     2078119902 PUSHINT
-    s0 s5 XCHG2
+    s0 s4 XCHG2
     32 STU
-    s1 s3 XCHG
+    s1 s2 XCHG
     64 STU
     SWAP
     STGRAMS
     SWAP
     __tact_store_address INLINECALLDICT
-    SWAP
-    __tact_store_address INLINECALLDICT
   }>
   $TokenBurnNotification$_store_cell PROCINLINE:<{
     NEWC
-    4 -ROLL
+    3 -ROLL
     $TokenBurnNotification$_store INLINECALLDICT
     ENDC
   }>
@@ -574,7 +578,7 @@ PROGRAM{
   }>
   $TokenExcesses$_constructor_queryId PROCINLINE:<{
   }>
-  $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination PROCINLINE:<{
+  $TokenBurnNotification$_constructor_queryId_amount_response_destination PROCINLINE:<{
   }>
   $JettonDefaultWallet$_internal_binary_TokenTransfer PROCINLINE:<{
     s2 POP
@@ -726,8 +730,8 @@ PROGRAM{
     64 PUSHINT
     s0 s3 XCHG
     TRUE
-    s3 s6 s6 XCPU2
-    $TokenBurnNotification$_constructor_queryId_amount_owner_response_destination INLINECALLDICT
+    s3 s6 XCPU
+    $TokenBurnNotification$_constructor_queryId_amount_response_destination INLINECALLDICT
     $TokenBurnNotification$_store_cell INLINECALLDICT
     s4 PUSH
     s4 s1 s4 XCHG3
@@ -767,7 +771,7 @@ PROGRAM{
     209778528950190195973528115415557644819 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d646346686d344a4e4e6d71726152694a76365738364c7a65756d665561577a38767a56387664326d3664596a} PUSHSLICE
+    x{697066733a2f2f516d5644346e5a3243584352696363564d48703432657567484c374b4a437037673854674a33473771395775356e} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
