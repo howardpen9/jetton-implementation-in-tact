@@ -1,4 +1,5 @@
 import "@stdlib/ownable";
+import "./message";
 
 message Mint {
     amount: Int;
@@ -65,7 +66,7 @@ trait Jetton with Ownable {
         self.totalSupply = self.totalSupply - msg.amount; // Update supply
         if (msg.response_destination != null) { // Cashback
             send(SendParameters{
-                to: msg.response_destination!!, 
+                to: msg.response_destination, 
                 value: 0,
                 bounce: false,
                 mode: SendRemainingValue + SendIgnoreErrors,

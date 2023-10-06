@@ -103,6 +103,7 @@ describe("contract", () => {
             forward_payload: beginCell().endCell(),
         };
         const transferResult = await senderWallet.send(sender.getSender(), { value: toNano("10") }, transferMessage);
+        console.log(transferResult.transactions);
 
         const receiverWalletAddress = await token.getGetWalletAddress(receiver.address);
         const receiverWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(receiverWalletAddress));
@@ -110,11 +111,8 @@ describe("contract", () => {
         const senderWalletDataAfterTransfer = await senderWallet.getGetWalletData();
         const receiverWalletDataAfterTransfer = await receiverWallet.getGetWalletData();
 
-        // console.log("senderWalletDataAfterTransfer", senderWalletDataAfterTransfer.balance);
         expect(senderWalletDataAfterTransfer.balance).toEqual(initMintAmount - transferAmount); // check that the sender transferred the right amount of tokens
         expect(receiverWalletDataAfterTransfer.balance).toEqual(transferAmount); // check that the receiver received the right amount of tokens
-        // console.log(receiverWalletDataAfterTransfer.balance);
-
         // const balance1 = (await receiverWallet.getGetWalletData()).balance;
         // console.log(fromNano(balance1));
     });

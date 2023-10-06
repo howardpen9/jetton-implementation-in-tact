@@ -2,7 +2,6 @@ PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
   DECLPROC __tact_store_address
-  DECLPROC __tact_store_address_opt
   DECLPROC __tact_create_address
   DECLPROC __tact_compute_contract_address
   DECLPROC __tact_my_balance
@@ -88,18 +87,6 @@ PROGRAM{
   __tact_store_address PROCINLINE:<{
     __tact_verify_address INLINECALLDICT
     STSLICER
-  }>
-  __tact_store_address_opt PROCINLINE:<{
-    DUP
-    ISNULL
-    IF:<{
-      DROP
-      0 PUSHINT
-      SWAP
-      2 STU
-    }>ELSE<{
-      __tact_store_address INLINECALLDICT
-    }>
   }>
   __tact_create_address PROCINLINE:<{
     NEWC
@@ -288,7 +275,7 @@ PROGRAM{
     SWAP
     __tact_store_address INLINECALLDICT
     SWAP
-    __tact_store_address_opt INLINECALLDICT
+    __tact_store_address INLINECALLDICT
   }>
   $TokenBurnNotification$_store_cell PROCINLINE:<{
     NEWC
@@ -627,7 +614,7 @@ PROGRAM{
     s7 s6 XCHG2
     0 PUSHINT
     64 PUSHINT
-    FALSE
+    TRUE
     s12 PUSH
     s8 s1 s3 XCHG3
     s14 s7 XCHG2
@@ -780,7 +767,7 @@ PROGRAM{
     209778528950190195973528115415557644819 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5a6b5a58684c6b4a556e634d35436865623863564c64704337336832616f426e3855414b4d4a796d644b596b} PUSHSLICE
+    x{697066733a2f2f516d646346686d344a4e4e6d71726152694a76365738364c7a65756d665561577a38767a56387664326d3664596a} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

@@ -13,10 +13,10 @@
 (int, slice, cell, int, int) $SampleJetton$_contract_init(slice $owner, cell $content, int $max_supply) impure inline_ref {
     var (($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)) = (null(), null(), null(), null(), null());
     $self'totalSupply = 0;
-    $self'max_supply = $max_supply;
     $self'owner = $owner;
     $self'mintable = true;
     $self'content = $content;
+    $self'max_supply = $max_supply;
     return ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply);
 }
 
@@ -30,11 +30,11 @@
     throw_unless(6898, (($self'totalSupply + $amount) <= $self'max_supply));
     $self'totalSupply = ($self'totalSupply + $amount);
     var ($winit'code, $winit'data) = ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)~$SampleJetton$_fun_getJettonWalletInit($to);
-    $global_send($SendParameters$_constructor_to_value_bounce_mode_body_code_data($global_contractAddress(($winit'code, $winit'data)), 0, false, 64, $TokenTransferInternal$_store_cell($TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload(0, $amount, my_address(), $response_destination, 0, $global_emptySlice())), $winit'code, $winit'data));
+    $global_send($SendParameters$_constructor_to_value_bounce_mode_body_code_data($global_contractAddress(($winit'code, $winit'data)), 0, true, 64, $TokenTransferInternal$_store_cell($TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload(0, $amount, my_address(), $response_destination, 0, $global_emptySlice())), $winit'code, $winit'data));
     return (($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply), ());
 }
 
-((int, slice, cell, int, int), ()) $SampleJetton$_fun_requireWallet((int, slice, cell, int, int) $self, slice $owner) impure inline_ref {
+((int, slice, cell, int, int), ()) $SampleJetton$_fun_requireSenderAsWalletOwner((int, slice, cell, int, int) $self, slice $owner) impure inline_ref {
     var (($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)) = $self;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     var ($winit'code, $winit'data) = ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)~$SampleJetton$_fun_getJettonWalletInit($owner);
@@ -106,10 +106,10 @@
 (((int, slice, cell, int, int)), ()) $SampleJetton$_internal_binary_TokenBurnNotification((int, slice, cell, int, int) $self, (int, int, slice, slice) $msg) impure inline {
     var ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply) = $self;
     var ($msg'queryId, $msg'amount, $msg'owner, $msg'response_destination) = $msg;
-    ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)~$SampleJetton$_fun_requireWallet($msg'owner);
+    ($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply)~$SampleJetton$_fun_requireSenderAsWalletOwner($msg'owner);
     $self'totalSupply = ($self'totalSupply - $msg'amount);
     if ((~ null?($msg'response_destination))) {
-        $global_send($SendParameters$_constructor_to_value_bounce_mode_body(__tact_not_null($msg'response_destination), 0, false, (64 + 2), $TokenExcesses$_store_cell($TokenExcesses$_constructor_queryId($msg'queryId))));
+        $global_send($SendParameters$_constructor_to_value_bounce_mode_body($msg'response_destination, 0, false, (64 + 2), $TokenExcesses$_store_cell($TokenExcesses$_constructor_queryId($msg'queryId))));
     }
     return (($self'totalSupply, $self'owner, $self'content, $self'mintable, $self'max_supply), ());
 }
@@ -149,7 +149,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmaxDizWi95arEzqPmh9pw7AujoXxfptrq4ZqpeoLgCFBV";
+    return "ipfs://QmbuVWHVPkMXDh6kUHbRSwxzK79YoR3xCMX6TKV4ScZ4FZ";
 }
 
 _ lazy_deployment_completed() method_id {

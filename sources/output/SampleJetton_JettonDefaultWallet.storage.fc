@@ -26,6 +26,20 @@ _ $StateInit$_get_code((cell, cell) v) inline {
 }
 
 ;;
+;; Type: JettonWalletData
+;; TLB: _ balance:int257 owner:address master:address walletCode:^cell = JettonWalletData
+;;
+
+(int, slice, slice, cell) $JettonWalletData$_to_external(((int, slice, slice, cell)) v) inline {
+    var (v'balance, v'owner, v'master, v'walletCode) = v; 
+    return (v'balance, v'owner, v'master, v'walletCode);
+}
+
+((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_walletCode(int balance, slice owner, slice master, cell walletCode) inline {
+    return (balance, owner, master, walletCode);
+}
+
+;;
 ;; Type: TokenTransfer
 ;; Header: 0x0f8a7ea5
 ;; TLB: token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
@@ -129,7 +143,7 @@ cell $TokenNotification$_store_cell((int, int, slice, slice) v) inline {
 ;;
 ;; Type: TokenBurnNotification
 ;; Header: 0x7bdd97de
-;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:Maybe address = TokenBurnNotification
+;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins owner:address response_destination:address = TokenBurnNotification
 ;;
 
 builder $TokenBurnNotification$_store(builder build_0, (int, int, slice, slice) v) inline {
@@ -138,7 +152,7 @@ builder $TokenBurnNotification$_store(builder build_0, (int, int, slice, slice) 
     build_0 = build_0.store_uint(v'queryId, 64);
     build_0 = build_0.store_coins(v'amount);
     build_0 = __tact_store_address(build_0, v'owner);
-    build_0 = __tact_store_address_opt(build_0, v'response_destination);
+    build_0 = __tact_store_address(build_0, v'response_destination);
     return build_0;
 }
 
@@ -176,20 +190,6 @@ cell $TokenExcesses$_store_cell((int) v) inline {
 
 ((int)) $TokenExcesses$_constructor_queryId(int queryId) inline {
     return (queryId);
-}
-
-;;
-;; Type: JettonWalletData
-;; TLB: _ balance:int257 owner:address master:address walletCode:^cell = JettonWalletData
-;;
-
-(int, slice, slice, cell) $JettonWalletData$_to_external(((int, slice, slice, cell)) v) inline {
-    var (v'balance, v'owner, v'master, v'walletCode) = v; 
-    return (v'balance, v'owner, v'master, v'walletCode);
-}
-
-((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_walletCode(int balance, slice owner, slice master, cell walletCode) inline {
-    return (balance, owner, master, walletCode);
 }
 
 ;;
