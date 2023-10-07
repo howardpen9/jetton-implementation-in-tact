@@ -79,7 +79,7 @@ _ $StateInit$_get_code((cell, cell) v) inline;
 builder $JettonDefaultWallet$init$_store(builder build_0, (slice, slice) v) inline;
 
 ;; $SampleJetton$_contract_init
-(int, slice, cell, int, int) $SampleJetton$_contract_init(slice $owner, cell $content, int $max_supply) impure inline_ref;
+(int, slice, cell, int, int) $SampleJetton$_contract_init(slice $owner, cell $content, int $maxSupply) impure inline_ref;
 
 ;; $SampleJetton$_contract_load
 (int, slice, cell, int, int) $SampleJetton$_contract_load() impure inline_ref;

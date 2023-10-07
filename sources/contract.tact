@@ -12,15 +12,14 @@ contract SampleJetton with Jetton {
     content: Cell;
     mintable: Bool;
 
-    max_supply: Int as coins; // hhhhh 
+    maxSupply: Int as coins; // Extract parameter we set here. The Jetton Standards doesn't have this parameter.
 
-    init(owner: Address, content: Cell, max_supply: Int) {
+    init(owner: Address, content: Cell, maxSupply: Int) {
         self.totalSupply = 0;
         self.owner = owner;
         self.mintable = true;
         self.content = content;
-
-        self.max_supply = max_supply;
+        self.maxSupply = maxSupply;
     }
 
     receive(msg: Mint) {
@@ -43,8 +42,6 @@ contract SampleJetton with Jetton {
     }
 } 
 
-
-
 // ============================================================================================================ //
 @interface("org.ton.jetton.master")
 trait Jetton with Ownable {
@@ -54,7 +51,7 @@ trait Jetton with Ownable {
     owner: Address;
     content: Cell;
     
-    max_supply: Int;
+    maxSupply: Int;
 
     receive(msg: TokenUpdateContent) {
         self.requireOwner();                // Allow changing content only by owner
@@ -80,7 +77,7 @@ trait Jetton with Ownable {
     // @amount The amount of Jetton token being minted
     // @response_destination The previous owner address
     fun mint(to: Address, amount: Int, response_destination: Address) {
-        require(self.totalSupply + amount <= self.max_supply, "The total supply will be overlapping.");
+        require(self.totalSupply + amount <= self.maxSupply, "The total supply will be overlapping.");
         self.totalSupply = self.totalSupply + amount; // Update total supply
 
         let winit: StateInit = self.getJettonWalletInit(to); // Create message
@@ -129,9 +126,8 @@ trait Jetton with Ownable {
         return contractAddress(winit);
     }
 }
+
 // ============================================================ //
-
-
 @interface("org.ton.jetton.wallet")
 contract JettonDefaultWallet {
     const minTonsForStorage: Int = ton("0.01");
@@ -267,6 +263,15 @@ contract JettonDefaultWallet {
         self.balance = self.balance + src.amount;
     }
 
+    get fun get_wallet_data(): JettonWalletData {
+        return JettonWalletData{
+            balance: self.balance,
+            owner: self.owner,
+            master: self.master,
+            walletCode: (initOf JettonDefaultWallet(self.master, self.owner)).code
+        };
+    }
+    
     // bounced(msg: Slice) {
     //     // Parse bounced message
     //     msg.skipBits(32); // 0xFFFFFFFF 
@@ -276,13 +281,4 @@ contract JettonDefaultWallet {
     //     require(op == 0x178d4519 || op == 0x7bdd97de, "Invalid bounced message");
     //     self.balance = self.balance + jettonAmount; // Update balance
     // }
-
-    get fun get_wallet_data(): JettonWalletData {
-        return JettonWalletData{
-            balance: self.balance,
-            owner: self.owner,
-            master: self.master,
-            walletCode: (initOf JettonDefaultWallet(self.master, self.owner)).code
-        };
-    }
 }
