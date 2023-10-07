@@ -38,6 +38,7 @@ yarn d2 # (Optional) To generate the Transfer URL to let the new account to tran
 -   Tact Lang Community (https://t.me/tactlang)
 -   Ton101 (https://t.me/ton101)
 -   TON Dev Chat[EN] (https://t.me/tondev_eng)
+-   TON Dev 中文 (https://t.me/tondev_zh)
 
 ## Deployment
 
