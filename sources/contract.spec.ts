@@ -51,7 +51,7 @@ describe("contract", () => {
 
     it("should mint successfully", async () => {
         const player = await blockchain.treasury("player");
-        const totalSupplyBefore = (await token.getGetJettonData()).totalSupply;
+        const totalSupplyBefore = (await token.getGetJettonData()).total_supply;
         const mintAmount = toNano(100);
         const Mint: Mint = {
             $$type: "Mint",
@@ -65,7 +65,7 @@ describe("contract", () => {
             success: true,
         });
 
-        const totalSupplyAfter = (await token.getGetJettonData()).totalSupply;
+        const totalSupplyAfter = (await token.getGetJettonData()).total_supply;
         expect(totalSupplyBefore + mintAmount).toEqual(totalSupplyAfter);
 
         const playerWallet = await token.getGetWalletAddress(player.address);
@@ -94,7 +94,7 @@ describe("contract", () => {
         // Transfer tokens from sender's wallet to receiver's wallet
         const transferMessage: TokenTransfer = {
             $$type: "TokenTransfer",
-            queryId: 1n,
+            query_id: 1n,
             amount: transferAmount,
             destination: receiver.address,
             response_destination: sender.address,
@@ -136,7 +136,7 @@ describe("contract", () => {
         let burnAmount = toNano(10);
         const burnMessage: TokenBurn = {
             $$type: "TokenBurn",
-            queryId: 0n,
+            query_id: 0n,
             amount: burnAmount,
             response_destination: deployer.address,
             custom_payload: beginCell().endCell(),
