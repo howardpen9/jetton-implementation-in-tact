@@ -90,6 +90,7 @@
 (((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_ProvideWalletAddress((int, slice, slice) $self, (int, slice, int) $msg) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
     var ($msg'query_id, $msg'owner_address, $msg'include_address) = $msg;
+    throw_unless(23951, ($Context$_get_value(__tact_context_get()) >= 6100000));
     var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $self'master, $msg'owner_address);
     slice $wallet_address = $global_contractAddress(($init'code, $init'data));
     var ($response_body'query_id, $response_body'wallet_address, $response_body'owner_address) = $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address($msg'query_id, $wallet_address, null());
@@ -142,7 +143,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://Qmejr4D6DiDvTWCsTSbi9K5BYgiz3X9HCeomZxefxdniGt";
+    return "ipfs://QmadWUeijFYD81gyUTzk1jtiKnSUQFUeWq4dktF8piLnAk";
 }
 
 _ lazy_deployment_completed() method_id {

@@ -114,6 +114,7 @@ Argument: owner
 12241: Max supply exceeded
 14534: Not owner
 18668: Can't Mint Anymore
+23951: Insufficient gas
 42708: Invalid sender!
 43422: Invalid value - Burn
 62972: Invalid balance

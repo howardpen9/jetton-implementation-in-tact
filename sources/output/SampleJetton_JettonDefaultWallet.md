@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: JettonDefaultWallet
-BOC Size: 2293 bytes
+BOC Size: 2311 bytes
 
 # Types
 Total Types: 17
@@ -112,6 +112,7 @@ Argument: value
 12241: Max supply exceeded
 14534: Not owner
 18668: Can't Mint Anymore
+23951: Insufficient gas
 42708: Invalid sender!
 43422: Invalid value - Burn
 62972: Invalid balance

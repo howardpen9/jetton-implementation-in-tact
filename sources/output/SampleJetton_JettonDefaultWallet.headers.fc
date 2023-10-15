@@ -102,6 +102,9 @@ builder $JettonDefaultWallet$_store(builder build_0, (int, slice, slice) v) inli
 ;; $StateInit$_get_code
 _ $StateInit$_get_code((cell, cell) v) inline;
 
+;; $Context$_get_value
+_ $Context$_get_value((int, slice, int, slice) v) inline;
+
 ;; $JettonWalletData$_to_external
 (int, slice, slice, cell) $JettonWalletData$_to_external(((int, slice, slice, cell)) v) inline;
 

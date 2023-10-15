@@ -32,6 +32,7 @@ PROGRAM{
   DECLPROC $JettonDefaultWallet$_store
   DECLPROC $JettonDefaultWallet$_load
   DECLPROC $StateInit$_get_code
+  DECLPROC $Context$_get_value
   DECLPROC $JettonWalletData$_to_external
   DECLPROC $JettonDefaultWallet$init$_store
   DECLPROC $JettonDefaultWallet$init$_load
@@ -379,6 +380,10 @@ PROGRAM{
   }>
   $StateInit$_get_code PROCINLINE:<{
     DROP
+  }>
+  $Context$_get_value PROCINLINE:<{
+    s1 s3 XCHG
+    3 BLKDROP
   }>
   $JettonWalletData$_to_external PROCINLINE:<{
   }>
@@ -793,6 +798,12 @@ PROGRAM{
     $global_send INLINECALLDICT
   }>
   $JettonDefaultWallet$_internal_binary_ProvideWalletAddress PROCINLINE:<{
+    23951 PUSHINT
+    __tact_context_get INLINECALLDICT
+    $Context$_get_value INLINECALLDICT
+    6100000 PUSHINT
+    GEQ
+    THROWANYIFNOT
     __tact_context_sys GETGLOB
     s4 s2 PUSH2
     $JettonDefaultWallet$_init_child INLINECALLDICT
@@ -850,7 +861,7 @@ PROGRAM{
     209778528950190195973528115415557644819 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d656a72344436446944765457437354536269394b35425967697a3358394843656f6d5a78656678646e694774} PUSHSLICE
+    x{697066733a2f2f516d6164575565696a4659443831677955547a6b316a74694b6e535551465565577134646b74463870694c6e416b} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

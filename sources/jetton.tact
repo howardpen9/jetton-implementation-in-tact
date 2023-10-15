@@ -205,6 +205,7 @@ contract JettonDefaultWallet {
     }
 
     receive(msg: ProvideWalletAddress) {
+        require(context().value >= ton("0.0061"), "Insufficient gas");
         let init: StateInit = initOf JettonDefaultWallet(self.master, msg.owner_address);
         let wallet_address: Address = contractAddress(init);
 
