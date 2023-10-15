@@ -27,46 +27,46 @@ _ $StateInit$_get_code((cell, cell) v) inline {
 
 ;;
 ;; Type: JettonWalletData
-;; TLB: _ balance:int257 owner:address master:address walletCode:^cell = JettonWalletData
+;; TLB: _ balance:int257 owner:address master:address wallet_code:^cell = JettonWalletData
 ;;
 
 (int, slice, slice, cell) $JettonWalletData$_to_external(((int, slice, slice, cell)) v) inline {
-    var (v'balance, v'owner, v'master, v'walletCode) = v; 
-    return (v'balance, v'owner, v'master, v'walletCode);
+    var (v'balance, v'owner, v'master, v'wallet_code) = v; 
+    return (v'balance, v'owner, v'master, v'wallet_code);
 }
 
-((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_walletCode(int balance, slice owner, slice master, cell walletCode) inline {
-    return (balance, owner, master, walletCode);
+((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_wallet_code(int balance, slice owner, slice master, cell wallet_code) inline {
+    return (balance, owner, master, wallet_code);
 }
 
 ;;
 ;; Type: TokenTransfer
 ;; Header: 0x0f8a7ea5
-;; TLB: token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
+;; TLB: token_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
 ;;
 
 (slice, ((int, int, slice, slice, cell, int, slice))) $TokenTransfer$_load(slice sc_0) inline_ref {
     throw_unless(129, sc_0~load_uint(32) == 260734629);
-    var v'queryId = sc_0~load_uint(64);
+    var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
     var v'destination = sc_0~__tact_load_address();
     var v'response_destination = sc_0~__tact_load_address();
     var v'custom_payload = sc_0~load_int(1) ? sc_0~load_ref() : null();
     var v'forward_ton_amount = sc_0~load_coins();
     var v'forward_payload = sc_0;
-    return (sc_0, (v'queryId, v'amount, v'destination, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload));
+    return (sc_0, (v'query_id, v'amount, v'destination, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload));
 }
 
 ;;
 ;; Type: TokenTransferInternal
 ;; Header: 0x178d4519
-;; TLB: token_transfer_internal#178d4519 queryId:uint64 amount:coins from:address response_destination:address forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransferInternal
+;; TLB: token_transfer_internal#178d4519 query_id:uint64 amount:coins from:address response_destination:address forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransferInternal
 ;;
 
 builder $TokenTransferInternal$_store(builder build_0, (int, int, slice, slice, int, slice) v) inline_ref {
-    var (v'queryId, v'amount, v'from, v'response_destination, v'forward_ton_amount, v'forward_payload) = v;
+    var (v'query_id, v'amount, v'from, v'response_destination, v'forward_ton_amount, v'forward_payload) = v;
     build_0 = store_uint(build_0, 395134233, 32);
-    build_0 = build_0.store_uint(v'queryId, 64);
+    build_0 = build_0.store_uint(v'query_id, 64);
     build_0 = build_0.store_coins(v'amount);
     build_0 = __tact_store_address(build_0, v'from);
     build_0 = __tact_store_address(build_0, v'response_destination);
@@ -81,36 +81,36 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
 
 (slice, ((int, int, slice, slice, int, slice))) $TokenTransferInternal$_load(slice sc_0) inline_ref {
     throw_unless(129, sc_0~load_uint(32) == 395134233);
-    var v'queryId = sc_0~load_uint(64);
+    var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
     var v'from = sc_0~__tact_load_address();
     var v'response_destination = sc_0~__tact_load_address();
     var v'forward_ton_amount = sc_0~load_coins();
     var v'forward_payload = sc_0;
-    return (sc_0, (v'queryId, v'amount, v'from, v'response_destination, v'forward_ton_amount, v'forward_payload));
+    return (sc_0, (v'query_id, v'amount, v'from, v'response_destination, v'forward_ton_amount, v'forward_payload));
 }
 
 (slice, ((int, int))) $TokenTransferInternal$_load_bounced(slice sc_0) inline {
     throw_unless(129, sc_0~load_uint(32) == 395134233);
-    var v'queryId = sc_0~load_uint(64);
+    var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
-    return (sc_0, (v'queryId, v'amount));
+    return (sc_0, (v'query_id, v'amount));
 }
 
-((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload(int queryId, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline {
-    return (queryId, amount, from, response_destination, forward_ton_amount, forward_payload);
+((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload(int query_id, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline {
+    return (query_id, amount, from, response_destination, forward_ton_amount, forward_payload);
 }
 
 ;;
 ;; Type: TokenNotification
 ;; Header: 0x7362d09c
-;; TLB: token_notification#7362d09c queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification
+;; TLB: token_notification#7362d09c query_id:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification
 ;;
 
 builder $TokenNotification$_store(builder build_0, (int, int, slice, slice) v) inline {
-    var (v'queryId, v'amount, v'from, v'forward_payload) = v;
+    var (v'query_id, v'amount, v'from, v'forward_payload) = v;
     build_0 = store_uint(build_0, 1935855772, 32);
-    build_0 = build_0.store_uint(v'queryId, 64);
+    build_0 = build_0.store_uint(v'query_id, 64);
     build_0 = build_0.store_coins(v'amount);
     build_0 = __tact_store_address(build_0, v'from);
     build_0 = build_0.store_slice(v'forward_payload);
@@ -121,35 +121,35 @@ cell $TokenNotification$_store_cell((int, int, slice, slice) v) inline {
     return $TokenNotification$_store(begin_cell(), v).end_cell();
 }
 
-((int, int, slice, slice)) $TokenNotification$_constructor_queryId_amount_from_forward_payload(int queryId, int amount, slice from, slice forward_payload) inline {
-    return (queryId, amount, from, forward_payload);
+((int, int, slice, slice)) $TokenNotification$_constructor_query_id_amount_from_forward_payload(int query_id, int amount, slice from, slice forward_payload) inline {
+    return (query_id, amount, from, forward_payload);
 }
 
 ;;
 ;; Type: TokenBurn
 ;; Header: 0x595f07bc
-;; TLB: token_burn#595f07bc queryId:uint64 amount:coins response_destination:address custom_payload:Maybe ^cell = TokenBurn
+;; TLB: token_burn#595f07bc query_id:uint64 amount:coins response_destination:address custom_payload:Maybe ^cell = TokenBurn
 ;;
 
 (slice, ((int, int, slice, cell))) $TokenBurn$_load(slice sc_0) inline {
     throw_unless(129, sc_0~load_uint(32) == 1499400124);
-    var v'queryId = sc_0~load_uint(64);
+    var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
     var v'response_destination = sc_0~__tact_load_address();
     var v'custom_payload = sc_0~load_int(1) ? sc_0~load_ref() : null();
-    return (sc_0, (v'queryId, v'amount, v'response_destination, v'custom_payload));
+    return (sc_0, (v'query_id, v'amount, v'response_destination, v'custom_payload));
 }
 
 ;;
 ;; Type: TokenBurnNotification
 ;; Header: 0x7bdd97de
-;; TLB: token_burn_notification#7bdd97de queryId:uint64 amount:coins response_destination:address = TokenBurnNotification
+;; TLB: token_burn_notification#7bdd97de query_id:uint64 amount:coins response_destination:address = TokenBurnNotification
 ;;
 
 builder $TokenBurnNotification$_store(builder build_0, (int, int, slice) v) inline {
-    var (v'queryId, v'amount, v'response_destination) = v;
+    var (v'query_id, v'amount, v'response_destination) = v;
     build_0 = store_uint(build_0, 2078119902, 32);
-    build_0 = build_0.store_uint(v'queryId, 64);
+    build_0 = build_0.store_uint(v'query_id, 64);
     build_0 = build_0.store_coins(v'amount);
     build_0 = __tact_store_address(build_0, v'response_destination);
     return build_0;
@@ -161,25 +161,25 @@ cell $TokenBurnNotification$_store_cell((int, int, slice) v) inline {
 
 (slice, ((int, int))) $TokenBurnNotification$_load_bounced(slice sc_0) inline {
     throw_unless(129, sc_0~load_uint(32) == 2078119902);
-    var v'queryId = sc_0~load_uint(64);
+    var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
-    return (sc_0, (v'queryId, v'amount));
+    return (sc_0, (v'query_id, v'amount));
 }
 
-((int, int, slice)) $TokenBurnNotification$_constructor_queryId_amount_response_destination(int queryId, int amount, slice response_destination) inline {
-    return (queryId, amount, response_destination);
+((int, int, slice)) $TokenBurnNotification$_constructor_query_id_amount_response_destination(int query_id, int amount, slice response_destination) inline {
+    return (query_id, amount, response_destination);
 }
 
 ;;
 ;; Type: TokenExcesses
 ;; Header: 0xd53276db
-;; TLB: token_excesses#d53276db queryId:uint64 = TokenExcesses
+;; TLB: token_excesses#d53276db query_id:uint64 = TokenExcesses
 ;;
 
 builder $TokenExcesses$_store(builder build_0, (int) v) inline {
-    var (v'queryId) = v;
+    var (v'query_id) = v;
     build_0 = store_uint(build_0, 3576854235, 32);
-    build_0 = build_0.store_uint(v'queryId, 64);
+    build_0 = build_0.store_uint(v'query_id, 64);
     return build_0;
 }
 
@@ -187,8 +187,45 @@ cell $TokenExcesses$_store_cell((int) v) inline {
     return $TokenExcesses$_store(begin_cell(), v).end_cell();
 }
 
-((int)) $TokenExcesses$_constructor_queryId(int queryId) inline {
-    return (queryId);
+((int)) $TokenExcesses$_constructor_query_id(int query_id) inline {
+    return (query_id);
+}
+
+;;
+;; Type: ProvideWalletAddress
+;; Header: 0x2c76b973
+;; TLB: provide_wallet_address#2c76b973 query_id:uint64 owner_address:address include_address:bool = ProvideWalletAddress
+;;
+
+(slice, ((int, slice, int))) $ProvideWalletAddress$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 745978227);
+    var v'query_id = sc_0~load_uint(64);
+    var v'owner_address = sc_0~__tact_load_address();
+    var v'include_address = sc_0~load_int(1);
+    return (sc_0, (v'query_id, v'owner_address, v'include_address));
+}
+
+;;
+;; Type: TakeWalletAddress
+;; Header: 0xd1735400
+;; TLB: take_wallet_address#d1735400 query_id:uint64 wallet_address:address owner_address:Maybe address = TakeWalletAddress
+;;
+
+builder $TakeWalletAddress$_store(builder build_0, (int, slice, slice) v) inline {
+    var (v'query_id, v'wallet_address, v'owner_address) = v;
+    build_0 = store_uint(build_0, 3513996288, 32);
+    build_0 = build_0.store_uint(v'query_id, 64);
+    build_0 = __tact_store_address(build_0, v'wallet_address);
+    build_0 = __tact_store_address_opt(build_0, v'owner_address);
+    return build_0;
+}
+
+cell $TakeWalletAddress$_store_cell((int, slice, slice) v) inline {
+    return $TakeWalletAddress$_store(begin_cell(), v).end_cell();
+}
+
+((int, slice, slice)) $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address(int query_id, slice wallet_address, slice owner_address) inline {
+    return (query_id, wallet_address, owner_address);
 }
 
 ;;

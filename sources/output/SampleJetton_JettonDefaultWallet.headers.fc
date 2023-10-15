@@ -12,6 +12,9 @@ slice __tact_verify_address(slice address) inline;
 ;; __tact_store_address
 builder __tact_store_address(builder b, slice address) inline;
 
+;; __tact_store_address_opt
+builder __tact_store_address_opt(builder b, slice address) inline;
+
 ;; __tact_create_address
 slice __tact_create_address(int chain, int hash) inline;
 
@@ -26,6 +29,9 @@ forall X -> X __tact_not_null(X x) inline;
 
 ;; __tact_context_get
 (int, slice, int, slice) __tact_context_get() inline;
+
+;; __tact_context_get_sender
+slice __tact_context_get_sender() inline;
 
 ;; __tact_store_bool
 builder __tact_store_bool(builder b, int v) inline;
@@ -78,6 +84,15 @@ builder $TokenExcesses$_store(builder build_0, (int) v) inline;
 ;; $TokenExcesses$_store_cell
 cell $TokenExcesses$_store_cell((int) v) inline;
 
+;; $ProvideWalletAddress$_load
+(slice, ((int, slice, int))) $ProvideWalletAddress$_load(slice sc_0) inline;
+
+;; $TakeWalletAddress$_store
+builder $TakeWalletAddress$_store(builder build_0, (int, slice, slice) v) inline;
+
+;; $TakeWalletAddress$_store_cell
+cell $TakeWalletAddress$_store_cell((int, slice, slice) v) inline;
+
 ;; $JettonDefaultWallet$_store
 builder $JettonDefaultWallet$_store(builder build_0, (int, slice, slice) v) inline;
 
@@ -114,20 +129,20 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $Context$_fun_readForwardFee
 int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_ref;
 
-;; $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload
-((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload(int queryId, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline;
-
 ;; $JettonDefaultWallet$_init_child
 (cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $master, slice $owner) inline_ref;
 
-;; $JettonDefaultWallet$_fun_msgValue
-((int, slice, slice), int) $JettonDefaultWallet$_fun_msgValue((int, slice, slice) $self, int $value) impure inline_ref;
+;; $JettonDefaultWallet$_fun_msg_value
+((int, slice, slice), int) $JettonDefaultWallet$_fun_msg_value((int, slice, slice) $self, int $value) impure inline_ref;
 
-;; $JettonWalletData$_constructor_balance_owner_master_walletCode
-((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_walletCode(int balance, slice owner, slice master, cell walletCode) inline;
+;; $JettonWalletData$_constructor_balance_owner_master_wallet_code
+((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_wallet_code(int balance, slice owner, slice master, cell wallet_code) inline;
 
 ;; $JettonDefaultWallet$_fun_get_wallet_data
 ((int, slice, slice), (int, slice, slice, cell)) $JettonDefaultWallet$_fun_get_wallet_data((int, slice, slice) $self) impure inline_ref;
+
+;; $TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload
+((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload(int query_id, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline;
 
 ;; $SendParameters$_constructor_to_value_mode_bounce_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body_code_data(slice to, int value, int mode, int bounce, cell body, cell code, cell data) inline;
@@ -135,14 +150,17 @@ int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_r
 ;; $SendParameters$_constructor_to_value_mode_bounce_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline;
 
-;; $TokenNotification$_constructor_queryId_amount_from_forward_payload
-((int, int, slice, slice)) $TokenNotification$_constructor_queryId_amount_from_forward_payload(int queryId, int amount, slice from, slice forward_payload) inline;
+;; $TokenNotification$_constructor_query_id_amount_from_forward_payload
+((int, int, slice, slice)) $TokenNotification$_constructor_query_id_amount_from_forward_payload(int query_id, int amount, slice from, slice forward_payload) inline;
 
 ;; $SendParameters$_constructor_to_value_bounce_body_mode
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body_mode(slice to, int value, int bounce, cell body, int mode) inline;
 
-;; $TokenExcesses$_constructor_queryId
-((int)) $TokenExcesses$_constructor_queryId(int queryId) inline;
+;; $TokenExcesses$_constructor_query_id
+((int)) $TokenExcesses$_constructor_query_id(int query_id) inline;
 
-;; $TokenBurnNotification$_constructor_queryId_amount_response_destination
-((int, int, slice)) $TokenBurnNotification$_constructor_queryId_amount_response_destination(int queryId, int amount, slice response_destination) inline;
+;; $TokenBurnNotification$_constructor_query_id_amount_response_destination
+((int, int, slice)) $TokenBurnNotification$_constructor_query_id_amount_response_destination(int query_id, int amount, slice response_destination) inline;
+
+;; $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address
+((int, slice, slice)) $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address(int query_id, slice wallet_address, slice owner_address) inline;

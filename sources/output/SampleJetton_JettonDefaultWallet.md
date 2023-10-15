@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: JettonDefaultWallet
-BOC Size: 2025 bytes
+BOC Size: 2293 bytes
 
 # Types
-Total Types: 15
+Total Types: 17
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -26,40 +26,48 @@ TLB: `change_owner_ok#327b2b4a queryId:uint64 newOwner:address = ChangeOwnerOk`
 Signature: `ChangeOwnerOk{queryId:uint64,newOwner:address}`
 
 ## JettonData
-TLB: `_ totalSupply:int257 mintable:bool owner:address content:^cell walletCode:^cell = JettonData`
-Signature: `JettonData{totalSupply:int257,mintable:bool,owner:address,content:^cell,walletCode:^cell}`
+TLB: `_ total_supply:int257 mintable:bool owner:address content:^cell wallet_code:^cell = JettonData`
+Signature: `JettonData{total_supply:int257,mintable:bool,owner:address,content:^cell,wallet_code:^cell}`
 
 ## JettonWalletData
-TLB: `_ balance:int257 owner:address master:address walletCode:^cell = JettonWalletData`
-Signature: `JettonWalletData{balance:int257,owner:address,master:address,walletCode:^cell}`
+TLB: `_ balance:int257 owner:address master:address wallet_code:^cell = JettonWalletData`
+Signature: `JettonWalletData{balance:int257,owner:address,master:address,wallet_code:^cell}`
 
 ## TokenTransfer
-TLB: `token_transfer#0f8a7ea5 queryId:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
-Signature: `TokenTransfer{queryId:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
+TLB: `token_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
+Signature: `TokenTransfer{query_id:uint64,amount:coins,destination:address,response_destination:address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 ## TokenTransferInternal
-TLB: `token_transfer_internal#178d4519 queryId:uint64 amount:coins from:address response_destination:address forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransferInternal`
-Signature: `TokenTransferInternal{queryId:uint64,amount:coins,from:address,response_destination:address,forward_ton_amount:coins,forward_payload:remainder<slice>}`
+TLB: `token_transfer_internal#178d4519 query_id:uint64 amount:coins from:address response_destination:address forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransferInternal`
+Signature: `TokenTransferInternal{query_id:uint64,amount:coins,from:address,response_destination:address,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 ## TokenNotification
-TLB: `token_notification#7362d09c queryId:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification`
-Signature: `TokenNotification{queryId:uint64,amount:coins,from:address,forward_payload:remainder<slice>}`
+TLB: `token_notification#7362d09c query_id:uint64 amount:coins from:address forward_payload:remainder<slice> = TokenNotification`
+Signature: `TokenNotification{query_id:uint64,amount:coins,from:address,forward_payload:remainder<slice>}`
 
 ## TokenBurn
-TLB: `token_burn#595f07bc queryId:uint64 amount:coins response_destination:address custom_payload:Maybe ^cell = TokenBurn`
-Signature: `TokenBurn{queryId:uint64,amount:coins,response_destination:address,custom_payload:Maybe ^cell}`
+TLB: `token_burn#595f07bc query_id:uint64 amount:coins response_destination:address custom_payload:Maybe ^cell = TokenBurn`
+Signature: `TokenBurn{query_id:uint64,amount:coins,response_destination:address,custom_payload:Maybe ^cell}`
 
 ## TokenBurnNotification
-TLB: `token_burn_notification#7bdd97de queryId:uint64 amount:coins response_destination:address = TokenBurnNotification`
-Signature: `TokenBurnNotification{queryId:uint64,amount:coins,response_destination:address}`
+TLB: `token_burn_notification#7bdd97de query_id:uint64 amount:coins response_destination:address = TokenBurnNotification`
+Signature: `TokenBurnNotification{query_id:uint64,amount:coins,response_destination:address}`
 
 ## TokenExcesses
-TLB: `token_excesses#d53276db queryId:uint64 = TokenExcesses`
-Signature: `TokenExcesses{queryId:uint64}`
+TLB: `token_excesses#d53276db query_id:uint64 = TokenExcesses`
+Signature: `TokenExcesses{query_id:uint64}`
 
 ## TokenUpdateContent
 TLB: `token_update_content#af1ca26a content:^cell = TokenUpdateContent`
 Signature: `TokenUpdateContent{content:^cell}`
+
+## ProvideWalletAddress
+TLB: `provide_wallet_address#2c76b973 query_id:uint64 owner_address:address include_address:bool = ProvideWalletAddress`
+Signature: `ProvideWalletAddress{query_id:uint64,owner_address:address,include_address:bool}`
+
+## TakeWalletAddress
+TLB: `take_wallet_address#d1735400 query_id:uint64 wallet_address:address owner_address:Maybe address = TakeWalletAddress`
+Signature: `TakeWalletAddress{query_id:uint64,wallet_address:address,owner_address:Maybe address}`
 
 ## Mint
 TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
@@ -68,7 +76,7 @@ Signature: `Mint{amount:int257,receiver:address}`
 # Get Methods
 Total Get Methods: 2
 
-## msgValue
+## msg_value
 Argument: value
 
 ## get_wallet_data
@@ -98,10 +106,11 @@ Argument: value
 135: Code of a contract was not found
 136: Invalid address
 137: Masterchain support is not enabled for this contract
-3734: Not Owner
+3688: Not mintable
 4159: Invalid value!!
 4429: Invalid sender
-6898: The total supply will be overlapping.
+12241: Max supply exceeded
+14534: Not owner
 18668: Can't Mint Anymore
 42708: Invalid sender!
 43422: Invalid value - Burn
