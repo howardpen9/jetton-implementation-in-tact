@@ -18,18 +18,18 @@
     return ($self'balance, $self'owner, $self'master);
 }
 
-((int, slice, slice), int) $JettonDefaultWallet$_fun_msgValue((int, slice, slice) $self, int $value) impure inline_ref {
+((int, slice, slice), int) $JettonDefaultWallet$_fun_msg_value((int, slice, slice) $self, int $value) impure inline_ref {
     var (($self'balance, $self'owner, $self'master)) = $self;
-    int $msgValue = $value;
-    int $tonBalanceBeforeMsg = (__tact_my_balance() - $msgValue);
-    int $storageFee = (10000000 - min($tonBalanceBeforeMsg, 10000000));
-    $msgValue = ($msgValue - ($storageFee + 10000000));
-    return (($self'balance, $self'owner, $self'master), $msgValue);
+    int $msg_value = $value;
+    int $ton_balance_before_msg = (__tact_my_balance() - $msg_value);
+    int $storage_fee = (10000000 - min($ton_balance_before_msg, 10000000));
+    $msg_value = ($msg_value - ($storage_fee + 10000000));
+    return (($self'balance, $self'owner, $self'master), $msg_value);
 }
 
 ((int, slice, slice), (int, slice, slice, cell)) $JettonDefaultWallet$_fun_get_wallet_data((int, slice, slice) $self) impure inline_ref {
     var (($self'balance, $self'owner, $self'master)) = $self;
-    return (($self'balance, $self'owner, $self'master), $JettonWalletData$_constructor_balance_owner_master_walletCode($self'balance, $self'owner, $self'master, $StateInit$_get_code($JettonDefaultWallet$_init_child(__tact_context_sys, $self'master, $self'owner))));
+    return (($self'balance, $self'owner, $self'master), $JettonWalletData$_constructor_balance_owner_master_wallet_code($self'balance, $self'owner, $self'master, $StateInit$_get_code($JettonDefaultWallet$_init_child(__tact_context_sys, $self'master, $self'owner))));
 }
 
 ;;
@@ -38,23 +38,23 @@
 
 (((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_TokenTransfer((int, slice, slice) $self, (int, int, slice, slice, cell, int, slice) $msg) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
-    var ($msg'queryId, $msg'amount, $msg'destination, $msg'response_destination, $msg'custom_payload, $msg'forward_ton_amount, $msg'forward_payload) = $msg;
+    var ($msg'query_id, $msg'amount, $msg'destination, $msg'response_destination, $msg'custom_payload, $msg'forward_ton_amount, $msg'forward_payload) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(4429, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
-    int $fwdFee = ($Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)) + $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)));
-    int $final = (((2 * 10000000) + 10000000) + $fwdFee);
+    int $fwd_fee = ($Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)) + $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)));
+    int $final = (((2 * 10000000) + 10000000) + $fwd_fee);
     throw_unless(4159, ($ctx'value > min($final, 10000000)));
     $self'balance = ($self'balance - $msg'amount);
     throw_unless(62972, ($self'balance >= 0));
     var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $self'master, $msg'destination);
-    slice $walletAddress = $global_contractAddress(($init'code, $init'data));
-    $global_send($SendParameters$_constructor_to_value_mode_bounce_body_code_data($walletAddress, 0, 64, true, $TokenTransferInternal$_store_cell($TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload($msg'queryId, $msg'amount, $self'owner, $msg'response_destination, $msg'forward_ton_amount, $msg'forward_payload)), $init'code, $init'data));
+    slice $wallet_address = $global_contractAddress(($init'code, $init'data));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body_code_data($wallet_address, 0, 64, true, $TokenTransferInternal$_store_cell($TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload($msg'query_id, $msg'amount, $self'owner, $msg'response_destination, $msg'forward_ton_amount, $msg'forward_payload)), $init'code, $init'data));
     return (($self'balance, $self'owner, $self'master), ());
 }
 
 (((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_TokenTransferInternal((int, slice, slice) $self, (int, int, slice, slice, int, slice) $msg) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
-    var ($msg'queryId, $msg'amount, $msg'from, $msg'response_destination, $msg'forward_ton_amount, $msg'forward_payload) = $msg;
+    var ($msg'query_id, $msg'amount, $msg'from, $msg'response_destination, $msg'forward_ton_amount, $msg'forward_payload) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     if (( ~ __tact_slice_eq_bits($self'master, $ctx'sender) )) {
         var ($sinit'code, $sinit'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $self'master, $msg'from);
@@ -62,41 +62,55 @@
     }
     $self'balance = ($self'balance + $msg'amount);
     throw_unless(62972, ($self'balance >= 0));
-    int $msgValue = ($self'balance, $self'owner, $self'master)~$JettonDefaultWallet$_fun_msgValue($ctx'value);
-    int $fwdFee = $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw));
-    $msgValue = (($msgValue - $msg'forward_ton_amount) - $fwdFee);
+    int $msg_value = ($self'balance, $self'owner, $self'master)~$JettonDefaultWallet$_fun_msg_value($ctx'value);
+    int $fwd_fee = $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw));
+    $msg_value = (($msg_value - $msg'forward_ton_amount) - $fwd_fee);
     if (($msg'forward_ton_amount > 0)) {
-        $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'owner, $msg'forward_ton_amount, (1 + 2), false, $TokenNotification$_store_cell($TokenNotification$_constructor_queryId_amount_from_forward_payload($msg'queryId, $msg'amount, $msg'from, $msg'forward_payload))));
+        $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'owner, $msg'forward_ton_amount, (1 + 2), false, $TokenNotification$_store_cell($TokenNotification$_constructor_query_id_amount_from_forward_payload($msg'query_id, $msg'amount, $msg'from, $msg'forward_payload))));
     }
     if ((~ null?($msg'response_destination))) {
-        $global_send($SendParameters$_constructor_to_value_bounce_body_mode($msg'response_destination, $msgValue, false, $TokenExcesses$_store_cell($TokenExcesses$_constructor_queryId($msg'queryId)), 2));
+        $global_send($SendParameters$_constructor_to_value_bounce_body_mode($msg'response_destination, $msg_value, false, $TokenExcesses$_store_cell($TokenExcesses$_constructor_query_id($msg'query_id)), 2));
     }
     return (($self'balance, $self'owner, $self'master), ());
 }
 
 (((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_TokenBurn((int, slice, slice) $self, (int, int, slice, cell) $msg) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
-    var ($msg'queryId, $msg'amount, $msg'response_destination, $msg'custom_payload) = $msg;
+    var ($msg'query_id, $msg'amount, $msg'response_destination, $msg'custom_payload) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(4429, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
     $self'balance = ($self'balance - $msg'amount);
     throw_unless(62972, ($self'balance >= 0));
-    int $fwdFee = $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw));
-    throw_unless(43422, ($ctx'value > (($fwdFee + (2 * 10000000)) + 10000000)));
-    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'master, 0, 64, true, $TokenBurnNotification$_store_cell($TokenBurnNotification$_constructor_queryId_amount_response_destination($msg'queryId, $msg'amount, $self'owner))));
+    int $fwd_fee = $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw));
+    throw_unless(43422, ($ctx'value > (($fwd_fee + (2 * 10000000)) + 10000000)));
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'master, 0, 64, true, $TokenBurnNotification$_store_cell($TokenBurnNotification$_constructor_query_id_amount_response_destination($msg'query_id, $msg'amount, $self'owner))));
+    return (($self'balance, $self'owner, $self'master), ());
+}
+
+(((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_ProvideWalletAddress((int, slice, slice) $self, (int, slice, int) $msg) impure inline {
+    var ($self'balance, $self'owner, $self'master) = $self;
+    var ($msg'query_id, $msg'owner_address, $msg'include_address) = $msg;
+    throw_unless(23951, ($Context$_get_value(__tact_context_get()) >= 6100000));
+    var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $self'master, $msg'owner_address);
+    slice $wallet_address = $global_contractAddress(($init'code, $init'data));
+    var ($response_body'query_id, $response_body'wallet_address, $response_body'owner_address) = $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address($msg'query_id, $wallet_address, null());
+    if ($msg'include_address) {
+        $response_body'owner_address = $msg'owner_address;
+    }
+    $global_send($SendParameters$_constructor_to_value_mode_bounce_body(__tact_context_get_sender(), 0, 64, true, $TakeWalletAddress$_store_cell(($response_body'query_id, $response_body'wallet_address, $response_body'owner_address))));
     return (($self'balance, $self'owner, $self'master), ());
 }
 
 (((int, slice, slice)), ()) $JettonDefaultWallet$_receive_binary_bounce_TokenTransferInternal((int, slice, slice) $self, (int, int) $src) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
-    var ($src'queryId, $src'amount) = $src;
+    var ($src'query_id, $src'amount) = $src;
     $self'balance = ($self'balance + $src'amount);
     return (($self'balance, $self'owner, $self'master), ());
 }
 
 (((int, slice, slice)), ()) $JettonDefaultWallet$_receive_binary_bounce_TokenBurnNotification((int, slice, slice) $self, (int, int) $src) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
-    var ($src'queryId, $src'amount) = $src;
+    var ($src'query_id, $src'amount) = $src;
     $self'balance = ($self'balance + $src'amount);
     return (($self'balance, $self'owner, $self'master), ());
 }
@@ -105,10 +119,10 @@
 ;; Get methods of a Contract JettonDefaultWallet
 ;;
 
-_ %msgValue(int $$value) method_id(115218) {
+_ %msg_value(int $$value) method_id(72550) {
     int $value = $$value;
     var self = $JettonDefaultWallet$_contract_load();
-    var res = self~$JettonDefaultWallet$_fun_msgValue($value);
+    var res = self~$JettonDefaultWallet$_fun_msg_value($value);
     return res;
 }
 
@@ -129,7 +143,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmVD4nZ2CXCRiccVMHp42eugHL7KJCp7g8TgJ3G7q9Wu5n";
+    return "ipfs://QmadWUeijFYD81gyUTzk1jtiKnSUQFUeWq4dktF8piLnAk";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -195,6 +209,13 @@ _ lazy_deployment_completed() method_id {
     if (op == 1499400124) {
         var msg = in_msg~$TokenBurn$_load();
         self~$JettonDefaultWallet$_internal_binary_TokenBurn(msg);
+        return (self, true);
+    }
+    
+    ;; Receive ProvideWalletAddress message
+    if (op == 745978227) {
+        var msg = in_msg~$ProvideWalletAddress$_load();
+        self~$JettonDefaultWallet$_internal_binary_ProvideWalletAddress(msg);
         return (self, true);
     }
     

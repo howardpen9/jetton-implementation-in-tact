@@ -72,14 +72,14 @@ _ $StateInit$_get_code((cell, cell) v) inline;
 ;; $JettonData$_to_external
 (int, int, slice, cell, cell) $JettonData$_to_external(((int, int, slice, cell, cell)) v) inline;
 
-;; $SampleJetton$init$_load
-(slice, ((slice, cell, int))) $SampleJetton$init$_load(slice sc_0) inline;
-
 ;; $JettonDefaultWallet$init$_store
 builder $JettonDefaultWallet$init$_store(builder build_0, (slice, slice) v) inline;
 
+;; $SampleJetton$init$_load
+(slice, ((slice, cell, int))) $SampleJetton$init$_load(slice sc_0) inline;
+
 ;; $SampleJetton$_contract_init
-(int, slice, cell, int, int) $SampleJetton$_contract_init(slice $owner, cell $content, int $maxSupply) impure inline_ref;
+(int, slice, cell, int, int) $SampleJetton$_contract_init(slice $owner, cell $content, int $max_supply) impure inline_ref;
 
 ;; $SampleJetton$_contract_load
 (int, slice, cell, int, int) $SampleJetton$_contract_load() impure inline_ref;
@@ -102,14 +102,14 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
 
+;; $JettonDefaultWallet$_init_child
+(cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $master, slice $owner) inline_ref;
+
 ;; $SendParameters$_constructor_to_value_bounce_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline;
 
-;; $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload
-((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_queryId_amount_from_response_destination_forward_ton_amount_forward_payload(int queryId, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline;
-
-;; $JettonDefaultWallet$_init_child
-(cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $master, slice $owner) inline_ref;
+;; $TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload
+((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload(int query_id, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline;
 
 ;; $SampleJetton$_fun_getJettonWalletInit
 ((int, slice, cell, int, int), (cell, cell)) $SampleJetton$_fun_getJettonWalletInit((int, slice, cell, int, int) $self, slice $address) impure inline_ref;
@@ -120,8 +120,8 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $SampleJetton$_fun_requireSenderAsWalletOwner
 ((int, slice, cell, int, int), ()) $SampleJetton$_fun_requireSenderAsWalletOwner((int, slice, cell, int, int) $self, slice $owner) impure inline_ref;
 
-;; $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode
-((int, int, slice, cell, cell)) $JettonData$_constructor_totalSupply_mintable_owner_content_walletCode(int totalSupply, int mintable, slice owner, cell content, cell walletCode) inline;
+;; $JettonData$_constructor_total_supply_mintable_owner_content_wallet_code
+((int, int, slice, cell, cell)) $JettonData$_constructor_total_supply_mintable_owner_content_wallet_code(int total_supply, int mintable, slice owner, cell content, cell wallet_code) inline;
 
 ;; $SampleJetton$_fun_get_jetton_data
 ((int, slice, cell, int, int), (int, int, slice, cell, cell)) $SampleJetton$_fun_get_jetton_data((int, slice, cell, int, int) $self) impure inline_ref;
@@ -138,5 +138,5 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $SendParameters$_constructor_to_value_bounce_mode_body
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body(slice to, int value, int bounce, int mode, cell body) inline;
 
-;; $TokenExcesses$_constructor_queryId
-((int)) $TokenExcesses$_constructor_queryId(int queryId) inline;
+;; $TokenExcesses$_constructor_query_id
+((int)) $TokenExcesses$_constructor_query_id(int query_id) inline;
