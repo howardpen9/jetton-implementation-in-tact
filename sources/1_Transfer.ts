@@ -21,9 +21,13 @@ let NewOnwer_Address = Address.parse("");
     let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));
     let secretKey = keyPair.secretKey;
     let workchain = 0;
-    let wallet = WalletContractV4.create({ workchain, publicKey: keyPair.publicKey });
-    let wallet_contract = client4.open(wallet);
 
+    let wallet = WalletContractV4.create({
+        workchain,
+        publicKey: keyPair.publicKey,
+    });
+
+    let wallet_contract = client4.open(wallet);
     const jettonParams = {
         name: "Test Token Name",
         description: "This is description of Test Jetton Token in Tact-lang",

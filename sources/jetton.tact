@@ -226,7 +226,7 @@ contract JettonDefaultWallet {
         });
     }
 
-    get fun msg_value(value: Int): Int {
+    fun msg_value(value: Int): Int {
         let msg_value: Int = value;
         let ton_balance_before_msg: Int = myBalance() - msg_value;
         let storage_fee: Int = self.minTonsForStorage - min(ton_balance_before_msg, self.minTonsForStorage);
@@ -260,5 +260,4 @@ contract JettonDefaultWallet {
     //     require(op == 0x178d4519 || op == 0x7bdd97de, "Invalid bounced message");
     //     self.balance = self.balance + jettonAmount; // Update balance
     // }
-
 }
