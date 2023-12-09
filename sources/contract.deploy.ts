@@ -23,9 +23,9 @@ dotenv.config();
     let deployer_wallet_contract = client4.open(deployer_wallet);
 
     const jettonParams = {
-        name: "Test Token Name",
+        name: "Token Name",
         description: "This is description of Test Jetton Token in Tact-lang",
-        symbol: "TTN",
+        symbol: "TNT",
         image: "https://avatars.githubusercontent.com/u/104382459?s=200&v=4",
     };
 
@@ -54,7 +54,7 @@ dotenv.config();
     // send a message on new address contract to deploy it
     let seqno: number = await deployer_wallet_contract.getSeqno();
     console.log("🛠️Preparing new outgoing massage from deployment wallet. \n" + deployer_wallet_contract.address);
-    console.log("Seqno = ", seqno + "\n");
+    console.log("Seqno: ", seqno + "\n");
     printSeparator();
 
     // Get deployment wallet balance

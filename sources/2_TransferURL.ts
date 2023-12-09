@@ -1,7 +1,7 @@
 import { Address, beginCell, contractAddress, toNano, Cell, TonClient4 } from "ton";
 import { ContractSystem, testAddress } from "ton-emulator";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
-import { printAddress, printHeader, printDeploy } from "./utils/print";
+import { printAddress, printHeader, printDeploy, printSeparator } from "./utils/print";
 import { deploy } from "./utils/deploy";
 
 import { SampleJetton } from "./output/SampleJetton_SampleJetton";
@@ -24,8 +24,8 @@ let new_owner_Address = Address.parse("");
 
     // Get the Jetton Wallet Address of the new owner
     let new_owner_jetton_wallet = await JettonDefaultWallet.fromInit(contract_address.address, new_owner_Address);
+    printSeparator();
 
-    console.log("================================================================");
     // ✨Pack the forward message into a cell
     const test_message = beginCell()
         .storeBit(1)
@@ -37,7 +37,7 @@ let new_owner_Address = Address.parse("");
         .store(
             storeTokenTransfer({
                 $$type: "TokenTransfer",
-                queryId: 0n,
+                query_id: 0n,
                 amount: toNano(1),
                 destination: new_owner_jetton_wallet.address,
                 response_destination: caller_wallet_address, // Original Owner, aka. First Minter's Jetton Wallet
