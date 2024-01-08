@@ -21,7 +21,7 @@ contract SampleJetton with Jetton {
         self.max_supply = max_supply;
     }
 
-    receive(msg: Mint) {
+    receive(msg: Mint) { // 0xfc708bd2
         let ctx: Context = context();
         require(ctx.sender == self.owner, "Not owner");
         require(self.mintable, "Not mintable");

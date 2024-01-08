@@ -234,13 +234,13 @@ contract JettonDefaultWallet {
         return msg_value;
     }
 
-    bounced(src: bounced<TokenTransferInternal>) {
-        self.balance = self.balance + src.amount;
-    }
+    // bounced(src: bounced<TokenTransferInternal>) {
+    //     self.balance = self.balance + src.amount;
+    // }
 
-    bounced(src: bounced<TokenBurnNotification>) {
-        self.balance = self.balance + src.amount;
-    }
+    // bounced(src: bounced<TokenBurnNotification>) {
+    //     self.balance = self.balance + src.amount;
+    // }
 
     get fun get_wallet_data(): JettonWalletData {
         return JettonWalletData{
@@ -251,13 +251,13 @@ contract JettonDefaultWallet {
         };
     }
     
-    // bounced(msg: Slice) {
-    //     // Parse bounced message
-    //     msg.skipBits(32); // 0xFFFFFFFF 
-    //     let op: Int = msg.loadUint(32);
-    //     let query_id: Int = msg.loadUint(64);
-    //     let jettonAmount: Int = msg.loadCoins();
-    //     require(op == 0x178d4519 || op == 0x7bdd97de, "Invalid bounced message");
-    //     self.balance = self.balance + jettonAmount; // Update balance
-    // }
+    bounced(msg: Slice) {
+        // Parse bounced message
+        msg.skipBits(32); // 0xFFFFFFFF 
+        let op: Int = msg.loadUint(32);
+        let query_id: Int = msg.loadUint(64);
+        let jettonAmount: Int = msg.loadCoins();
+        require(op == 0x178d4519 || op == 0x7bdd97de, "Invalid bounced message");
+        self.balance = self.balance + jettonAmount; // Update balance
+    }
 }

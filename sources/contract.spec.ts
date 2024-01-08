@@ -1,11 +1,18 @@
 import { ContractSystem } from "@tact-lang/emulator";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
-import { Blockchain, SandboxContract, TreasuryContract } from "@ton-community/sandbox";
+import {
+    Blockchain,
+    SandboxContract,
+    TreasuryContract,
+    printTransactionFees,
+    prettyLogTransactions,
+} from "@ton-community/sandbox";
 import { beginCell, contractAddress, fromNano, StateInit, toNano } from "ton-core";
 import "@ton-community/test-utils";
 
 import { SampleJetton, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
 import { JettonDefaultWallet, TokenBurn } from "./output/SampleJetton_JettonDefaultWallet";
+import exp from "constants";
 
 //
 // This version of test is based on "@ton-community/sandbox" package
@@ -145,5 +152,34 @@ describe("contract", () => {
         const burnResult = await deployerWallet.send(deployer.getSender(), { value: toNano("10") }, burnMessage);
         let deployerBalanceAfterBurn = (await deployerWallet.getGetWalletData()).balance;
         expect(deployerBalanceAfterBurn).toEqual(deployerBalance - burnAmount);
+    });
+
+    it("Should return value", async () => {
+        const player = await blockchain.treasury("player");
+        const mintAmount = 1119000n;
+        const Mint: Mint = {
+            $$type: "Mint",
+            amount: mintAmount,
+            receiver: player.address,
+        };
+
+        await token.send(deployer.getSender(), { value: toNano("1") }, Mint);
+
+        let totalSupply = (await token.getGetJettonData()).total_supply;
+        console.log("totalSupply = ", totalSupply);
+
+        const messateResult = await token.send(player.getSender(), { value: 10033460n }, Mint);
+        expect(messateResult.transactions).toHaveTransaction({
+            from: player.address,
+            to: token.address,
+        });
+
+        printTransactionFees(messateResult.transactions);
+        prettyLogTransactions(messateResult.transactions);
+
+        let totalSupply_later = (await token.getGetJettonData()).total_supply;
+        console.log("totalSupply = ", totalSupply_later);
+
+        expect(totalSupply_later).toEqual(totalSupply);
     });
 });
