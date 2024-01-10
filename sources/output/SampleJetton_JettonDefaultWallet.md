@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: JettonDefaultWallet
-BOC Size: 2311 bytes
+BOC Size: 2247 bytes
 
 # Types
 Total Types: 17
@@ -74,10 +74,7 @@ TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
 Signature: `Mint{amount:int257,receiver:address}`
 
 # Get Methods
-Total Get Methods: 2
-
-## msg_value
-Argument: value
+Total Get Methods: 1
 
 ## get_wallet_data
 
@@ -110,6 +107,7 @@ Argument: value
 4159: Invalid value!!
 4429: Invalid sender
 12241: Max supply exceeded
+13650: Invalid bounced message
 14534: Not owner
 18668: Can't Mint Anymore
 23951: Insufficient gas
