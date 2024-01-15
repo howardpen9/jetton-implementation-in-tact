@@ -12,6 +12,9 @@ slice __tact_verify_address(slice address) inline;
 ;; __tact_store_address
 builder __tact_store_address(builder b, slice address) inline;
 
+;; __tact_store_address_opt
+builder __tact_store_address_opt(builder b, slice address) inline;
+
 ;; __tact_create_address
 slice __tact_create_address(int chain, int hash) inline;
 
@@ -46,7 +49,7 @@ builder $TokenTransferInternal$_store(builder build_0, (int, int, slice, slice, 
 cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) inline;
 
 ;; $TokenBurnNotification$_load
-(slice, ((int, int, slice))) $TokenBurnNotification$_load(slice sc_0) inline;
+(slice, ((int, int, slice, slice))) $TokenBurnNotification$_load(slice sc_0) inline;
 
 ;; $TokenExcesses$_store
 builder $TokenExcesses$_store(builder build_0, (int) v) inline;
@@ -56,6 +59,15 @@ cell $TokenExcesses$_store_cell((int) v) inline;
 
 ;; $TokenUpdateContent$_load
 (slice, ((cell))) $TokenUpdateContent$_load(slice sc_0) inline;
+
+;; $ProvideWalletAddress$_load
+(slice, ((int, slice, int))) $ProvideWalletAddress$_load(slice sc_0) inline;
+
+;; $TakeWalletAddress$_store
+builder $TakeWalletAddress$_store(builder build_0, (int, slice, slice) v) inline;
+
+;; $TakeWalletAddress$_store_cell
+cell $TakeWalletAddress$_store_cell((int, slice, slice) v) inline;
 
 ;; $Mint$_load
 (slice, ((int, slice))) $Mint$_load(slice sc_0) inline;
@@ -68,6 +80,9 @@ builder $SampleJetton$_store(builder build_0, (int, slice, cell, int, int) v) in
 
 ;; $StateInit$_get_code
 _ $StateInit$_get_code((cell, cell) v) inline;
+
+;; $Context$_get_value
+_ $Context$_get_value((int, slice, int, slice) v) inline;
 
 ;; $JettonData$_to_external
 (int, int, slice, cell, cell) $JettonData$_to_external(((int, int, slice, cell, cell)) v) inline;
@@ -103,7 +118,7 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
 
 ;; $JettonDefaultWallet$_init_child
-(cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $master, slice $owner) inline_ref;
+(cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $owner, slice $master) inline_ref;
 
 ;; $SendParameters$_constructor_to_value_bounce_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline;
@@ -140,3 +155,9 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 
 ;; $TokenExcesses$_constructor_query_id
 ((int)) $TokenExcesses$_constructor_query_id(int query_id) inline;
+
+;; $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address
+((int, slice, slice)) $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address(int query_id, slice wallet_address, slice owner_address) inline;
+
+;; $SendParameters$_constructor_to_value_mode_bounce_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline;

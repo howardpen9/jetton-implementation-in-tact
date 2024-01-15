@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: SampleJetton
-BOC Size: 1702 bytes
+BOC Size: 2031 bytes
 
 # Types
 Total Types: 17
@@ -30,8 +30,8 @@ TLB: `_ total_supply:int257 mintable:bool owner:address content:^cell wallet_cod
 Signature: `JettonData{total_supply:int257,mintable:bool,owner:address,content:^cell,wallet_code:^cell}`
 
 ## JettonWalletData
-TLB: `_ balance:int257 owner:address master:address wallet_code:^cell = JettonWalletData`
-Signature: `JettonWalletData{balance:int257,owner:address,master:address,wallet_code:^cell}`
+TLB: `_ balance:int257 owner:address master:address code:^cell = JettonWalletData`
+Signature: `JettonWalletData{balance:int257,owner:address,master:address,code:^cell}`
 
 ## TokenTransfer
 TLB: `token_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address response_destination:address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
@@ -50,8 +50,8 @@ TLB: `token_burn#595f07bc query_id:uint64 amount:coins response_destination:addr
 Signature: `TokenBurn{query_id:uint64,amount:coins,response_destination:address,custom_payload:Maybe ^cell}`
 
 ## TokenBurnNotification
-TLB: `token_burn_notification#7bdd97de query_id:uint64 amount:coins response_destination:address = TokenBurnNotification`
-Signature: `TokenBurnNotification{query_id:uint64,amount:coins,response_destination:address}`
+TLB: `token_burn_notification#7bdd97de query_id:uint64 amount:coins sender:address response_destination:address = TokenBurnNotification`
+Signature: `TokenBurnNotification{query_id:uint64,amount:coins,sender:address,response_destination:address}`
 
 ## TokenExcesses
 TLB: `token_excesses#d53276db query_id:uint64 = TokenExcesses`
@@ -112,7 +112,6 @@ Argument: owner
 4159: Invalid value!!
 4429: Invalid sender
 12241: Max supply exceeded
-13650: Invalid bounced message
 14534: Not owner
 18668: Can't Mint Anymore
 23951: Insufficient gas

@@ -9,16 +9,6 @@ _ $StateInit$_get_code((cell, cell) v) inline {
 }
 
 ;;
-;; Type: Context
-;; TLB: _ bounced:bool sender:address value:int257 raw:^slice = Context
-;;
-
-_ $Context$_get_value((int, slice, int, slice) v) inline {
-    var (v'bounced, v'sender, v'value, v'raw) = v;
-    return v'value;
-}
-
-;;
 ;; Type: SendParameters
 ;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
 ;;
@@ -37,16 +27,16 @@ _ $Context$_get_value((int, slice, int, slice) v) inline {
 
 ;;
 ;; Type: JettonWalletData
-;; TLB: _ balance:int257 owner:address master:address wallet_code:^cell = JettonWalletData
+;; TLB: _ balance:int257 owner:address master:address code:^cell = JettonWalletData
 ;;
 
 (int, slice, slice, cell) $JettonWalletData$_to_external(((int, slice, slice, cell)) v) inline {
-    var (v'balance, v'owner, v'master, v'wallet_code) = v; 
-    return (v'balance, v'owner, v'master, v'wallet_code);
+    var (v'balance, v'owner, v'master, v'code) = v; 
+    return (v'balance, v'owner, v'master, v'code);
 }
 
-((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_wallet_code(int balance, slice owner, slice master, cell wallet_code) inline {
-    return (balance, owner, master, wallet_code);
+((int, slice, slice, cell)) $JettonWalletData$_constructor_balance_owner_master_code(int balance, slice owner, slice master, cell code) inline {
+    return (balance, owner, master, code);
 }
 
 ;;
@@ -100,6 +90,13 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
     return (sc_0, (v'query_id, v'amount, v'from, v'response_destination, v'forward_ton_amount, v'forward_payload));
 }
 
+(slice, ((int, int))) $TokenTransferInternal$_load_bounced(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 395134233);
+    var v'query_id = sc_0~load_uint(64);
+    var v'amount = sc_0~load_coins();
+    return (sc_0, (v'query_id, v'amount));
+}
+
 ((int, int, slice, slice, int, slice)) $TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload(int query_id, int amount, slice from, slice response_destination, int forward_ton_amount, slice forward_payload) inline {
     return (query_id, amount, from, response_destination, forward_ton_amount, forward_payload);
 }
@@ -146,24 +143,32 @@ cell $TokenNotification$_store_cell((int, int, slice, slice) v) inline {
 ;;
 ;; Type: TokenBurnNotification
 ;; Header: 0x7bdd97de
-;; TLB: token_burn_notification#7bdd97de query_id:uint64 amount:coins response_destination:address = TokenBurnNotification
+;; TLB: token_burn_notification#7bdd97de query_id:uint64 amount:coins sender:address response_destination:address = TokenBurnNotification
 ;;
 
-builder $TokenBurnNotification$_store(builder build_0, (int, int, slice) v) inline {
-    var (v'query_id, v'amount, v'response_destination) = v;
+builder $TokenBurnNotification$_store(builder build_0, (int, int, slice, slice) v) inline {
+    var (v'query_id, v'amount, v'sender, v'response_destination) = v;
     build_0 = store_uint(build_0, 2078119902, 32);
     build_0 = build_0.store_uint(v'query_id, 64);
     build_0 = build_0.store_coins(v'amount);
+    build_0 = __tact_store_address(build_0, v'sender);
     build_0 = __tact_store_address(build_0, v'response_destination);
     return build_0;
 }
 
-cell $TokenBurnNotification$_store_cell((int, int, slice) v) inline {
+cell $TokenBurnNotification$_store_cell((int, int, slice, slice) v) inline {
     return $TokenBurnNotification$_store(begin_cell(), v).end_cell();
 }
 
-((int, int, slice)) $TokenBurnNotification$_constructor_query_id_amount_response_destination(int query_id, int amount, slice response_destination) inline {
-    return (query_id, amount, response_destination);
+(slice, ((int, int))) $TokenBurnNotification$_load_bounced(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2078119902);
+    var v'query_id = sc_0~load_uint(64);
+    var v'amount = sc_0~load_coins();
+    return (sc_0, (v'query_id, v'amount));
+}
+
+((int, int, slice, slice)) $TokenBurnNotification$_constructor_query_id_amount_sender_response_destination(int query_id, int amount, slice sender, slice response_destination) inline {
+    return (query_id, amount, sender, response_destination);
 }
 
 ;;
@@ -188,72 +193,35 @@ cell $TokenExcesses$_store_cell((int) v) inline {
 }
 
 ;;
-;; Type: ProvideWalletAddress
-;; Header: 0x2c76b973
-;; TLB: provide_wallet_address#2c76b973 query_id:uint64 owner_address:address include_address:bool = ProvideWalletAddress
-;;
-
-(slice, ((int, slice, int))) $ProvideWalletAddress$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 745978227);
-    var v'query_id = sc_0~load_uint(64);
-    var v'owner_address = sc_0~__tact_load_address();
-    var v'include_address = sc_0~load_int(1);
-    return (sc_0, (v'query_id, v'owner_address, v'include_address));
-}
-
-;;
-;; Type: TakeWalletAddress
-;; Header: 0xd1735400
-;; TLB: take_wallet_address#d1735400 query_id:uint64 wallet_address:address owner_address:Maybe address = TakeWalletAddress
-;;
-
-builder $TakeWalletAddress$_store(builder build_0, (int, slice, slice) v) inline {
-    var (v'query_id, v'wallet_address, v'owner_address) = v;
-    build_0 = store_uint(build_0, 3513996288, 32);
-    build_0 = build_0.store_uint(v'query_id, 64);
-    build_0 = __tact_store_address(build_0, v'wallet_address);
-    build_0 = __tact_store_address_opt(build_0, v'owner_address);
-    return build_0;
-}
-
-cell $TakeWalletAddress$_store_cell((int, slice, slice) v) inline {
-    return $TakeWalletAddress$_store(begin_cell(), v).end_cell();
-}
-
-((int, slice, slice)) $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address(int query_id, slice wallet_address, slice owner_address) inline {
-    return (query_id, wallet_address, owner_address);
-}
-
-;;
 ;; Type: JettonDefaultWallet
 ;;
 
 builder $JettonDefaultWallet$_store(builder build_0, (int, slice, slice) v) inline {
     var (v'balance, v'owner, v'master) = v;
-    build_0 = build_0.store_int(v'balance, 257);
+    build_0 = build_0.store_coins(v'balance);
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = __tact_store_address(build_0, v'master);
     return build_0;
 }
 
 (slice, ((int, slice, slice))) $JettonDefaultWallet$_load(slice sc_0) inline {
-    var v'balance = sc_0~load_int(257);
+    var v'balance = sc_0~load_coins();
     var v'owner = sc_0~__tact_load_address();
     var v'master = sc_0~__tact_load_address();
     return (sc_0, (v'balance, v'owner, v'master));
 }
 
 builder $JettonDefaultWallet$init$_store(builder build_0, (slice, slice) v) inline {
-    var (v'master, v'owner) = v;
-    build_0 = __tact_store_address(build_0, v'master);
+    var (v'owner, v'master) = v;
     build_0 = __tact_store_address(build_0, v'owner);
+    build_0 = __tact_store_address(build_0, v'master);
     return build_0;
 }
 
 (slice, ((slice, slice))) $JettonDefaultWallet$init$_load(slice sc_0) inline {
-    var v'master = sc_0~__tact_load_address();
     var v'owner = sc_0~__tact_load_address();
-    return (sc_0, (v'master, v'owner));
+    var v'master = sc_0~__tact_load_address();
+    return (sc_0, (v'owner, v'master));
 }
 
 (int, slice, slice) $JettonDefaultWallet$_contract_load() impure inline_ref {
@@ -265,9 +233,9 @@ builder $JettonDefaultWallet$init$_store(builder build_0, (slice, slice) v) inli
     } else {
         ;; Allow only workchain deployments
         throw_unless(137, my_address().preload_uint(11) == 1024);
-        (slice master, slice owner) = $sc~$JettonDefaultWallet$init$_load();
+        (slice owner, slice master) = $sc~$JettonDefaultWallet$init$_load();
         $sc.end_parse();
-        return $JettonDefaultWallet$_contract_init(master, owner);
+        return $JettonDefaultWallet$_contract_init(owner, master);
     }
 }
 
@@ -279,7 +247,7 @@ builder $JettonDefaultWallet$init$_store(builder build_0, (slice, slice) v) inli
     set_data(b.end_cell());
 }
 
-(cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $master, slice $owner) inline_ref {
+(cell, cell) $JettonDefaultWallet$_init_child(cell sys', slice $owner, slice $master) inline_ref {
     slice sc' = sys'.begin_parse();
     cell source = sc'~load_dict();
     cell contracts = new_dict();
@@ -292,6 +260,6 @@ builder $JettonDefaultWallet$init$_store(builder build_0, (slice, slice) v) inli
     builder b = begin_cell();
     b = b.store_ref(begin_cell().store_dict(contracts).end_cell());
     b = b.store_int(false, 1);
-    b = $JettonDefaultWallet$init$_store(b, ($master, $owner));
+    b = $JettonDefaultWallet$init$_store(b, ($owner, $master));
     return (mine, b.end_cell());
 }

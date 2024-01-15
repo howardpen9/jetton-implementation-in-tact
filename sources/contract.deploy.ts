@@ -10,7 +10,8 @@ dotenv.config();
 (async () => {
     //create client for testnet sandboxv4 API - alternative endpoint
     const client4 = new TonClient4({
-        endpoint: "https://sandbox-v4.tonhubapi.com",
+        // endpoint: "https://sandbox-v4.tonhubapi.com",
+        endpoint: "https://mainnet-v4.tonhubapi.com",
     });
 
     let mnemonics = (process.env.mnemonics_2 || "").toString(); // 🔴 Change to your own, by creating .env file!

@@ -10,7 +10,7 @@ struct JettonWalletData {
     balance: Int;
     owner: Address;
     master: Address;
-    wallet_code: Cell;
+    code: Cell;
 }
 
 message(0xf8a7ea5) TokenTransfer {
@@ -49,6 +49,7 @@ message(0x595f07bc) TokenBurn {
 message(0x7bdd97de) TokenBurnNotification {
     query_id: Int as uint64;
     amount: Int as coins;
+    sender: Address;
     response_destination: Address;
 }
 
