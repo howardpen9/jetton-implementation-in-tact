@@ -21,8 +21,8 @@ _ $StateInit$_get_code((cell, cell) v) inline {
     return (bounce, to, value, mode, body, null(), null());
 }
 
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body_mode(slice to, int value, int bounce, cell body, int mode) inline {
-    return (bounce, to, value, mode, body, null(), null());
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body(slice to, int value, int bounce, cell body) inline {
+    return (bounce, to, value, 0, body, null(), null());
 }
 
 ;;

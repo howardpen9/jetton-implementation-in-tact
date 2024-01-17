@@ -109,7 +109,7 @@
     ($self'total_supply, $self'owner, $self'content, $self'mintable, $self'max_supply)~$SampleJetton$_fun_requireSenderAsWalletOwner($msg'response_destination);
     $self'total_supply = ($self'total_supply - $msg'amount);
     if ((~ null?($msg'response_destination))) {
-        $global_send($SendParameters$_constructor_to_value_bounce_mode_body($msg'response_destination, 0, false, (64 + 2), $TokenExcesses$_store_cell($TokenExcesses$_constructor_query_id($msg'query_id))));
+        $global_send($SendParameters$_constructor_to_value_bounce_mode_body($msg'response_destination, 0, false, 64, $TokenExcesses$_store_cell($TokenExcesses$_constructor_query_id($msg'query_id))));
     }
     return (($self'total_supply, $self'owner, $self'content, $self'mintable, $self'max_supply), ());
 }
@@ -118,13 +118,12 @@
     var ($self'total_supply, $self'owner, $self'content, $self'mintable, $self'max_supply) = $self;
     var ($msg'query_id, $msg'owner_address, $msg'include_address) = $msg;
     throw_unless(23951, ($Context$_get_value(__tact_context_get()) >= 6100000));
-    var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $msg'owner_address, $self'owner);
-    slice $wallet_address = $global_contractAddress(($init'code, $init'data));
-    var ($response_body'query_id, $response_body'wallet_address, $response_body'owner_address) = $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address($msg'query_id, $wallet_address, null());
+    var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $msg'owner_address, my_address());
     if ($msg'include_address) {
-        $response_body'owner_address = $msg'owner_address;
+        $global_send($SendParameters$_constructor_to_value_mode_body(__tact_context_get_sender(), 0, 64, $TakeWalletAddress$_store_cell($TakeWalletAddress$_constructor_query_id_wallet_address_owner_address($msg'query_id, $global_contractAddress(($init'code, $init'data)), $Cell$_fun_asSlice(end_cell(__tact_store_address(__tact_store_bool(begin_cell(), true), $msg'owner_address)))))));
+    } else {
+        $global_send($SendParameters$_constructor_to_value_mode_body(__tact_context_get_sender(), 0, 64, $TakeWalletAddress$_store_cell($TakeWalletAddress$_constructor_query_id_wallet_address_owner_address($msg'query_id, $global_contractAddress(($init'code, $init'data)), $Cell$_fun_asSlice(end_cell(__tact_store_bool(begin_cell(), false)))))));
     }
-    $global_send($SendParameters$_constructor_to_value_mode_bounce_body(__tact_context_get_sender(), 0, 64, true, $TakeWalletAddress$_store_cell(($response_body'query_id, $response_body'wallet_address, $response_body'owner_address))));
     return (($self'total_supply, $self'owner, $self'content, $self'mintable, $self'max_supply), ());
 }
 
@@ -163,7 +162,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmbH2VPgwAmTW24oY5rPT3eB8oVKkuC2xnLURzYCePQJuu";
+    return "ipfs://QmXAh72g7xiQ97SY5PaoE4RmdZMYcFBWjhKcrjocqAkgQG";
 }
 
 _ lazy_deployment_completed() method_id {

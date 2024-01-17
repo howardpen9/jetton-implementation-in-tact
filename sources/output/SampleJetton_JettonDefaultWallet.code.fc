@@ -66,10 +66,10 @@
     int $fwd_fee = $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw));
     if (($msg'forward_ton_amount > 0)) {
         $msg_value = (($msg_value - $msg'forward_ton_amount) - $fwd_fee);
-        $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'owner, $msg'forward_ton_amount, (1 + 2), false, $TokenNotification$_store_cell($TokenNotification$_constructor_query_id_amount_from_forward_payload($msg'query_id, $msg'amount, $msg'from, $msg'forward_payload))));
+        $global_send($SendParameters$_constructor_to_value_mode_bounce_body($self'owner, $msg'forward_ton_amount, 1, false, $TokenNotification$_store_cell($TokenNotification$_constructor_query_id_amount_from_forward_payload($msg'query_id, $msg'amount, $msg'from, $msg'forward_payload))));
     }
     if (( ((~ null?($msg'response_destination))) ? (($msg_value > 0)) : (false) )) {
-        $global_send($SendParameters$_constructor_to_value_bounce_body_mode($msg'response_destination, $msg_value, false, $TokenExcesses$_store_cell($TokenExcesses$_constructor_query_id($msg'query_id)), 2));
+        $global_send($SendParameters$_constructor_to_value_bounce_body($msg'response_destination, $msg_value, false, $TokenExcesses$_store_cell($TokenExcesses$_constructor_query_id($msg'query_id))));
     }
     return (($self'balance, $self'owner, $self'master), ());
 }
@@ -122,7 +122,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmQ8RRxfktiiGbNYzVNraXmkWs7YhbtgtkFExvnjZoZREB";
+    return "ipfs://QmUNqCv47cHeVhcSYDFB1dos6fsHRNLEJvKhjvAFGEuz9G";
 }
 
 _ lazy_deployment_completed() method_id {

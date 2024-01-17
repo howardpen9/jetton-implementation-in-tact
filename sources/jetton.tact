@@ -5,7 +5,7 @@ import "./messages";
 @interface("org.ton.jetton.master")
 trait Jetton with Ownable {
 
-    total_supply: Int; // Already set initially 
+    total_supply: Int; 
     mintable: Bool;
     owner: Address;
     content: Cell;
@@ -23,35 +23,40 @@ trait Jetton with Ownable {
                 to: msg.response_destination, 
                 value: 0,
                 bounce: false,
-                mode: SendRemainingValue + SendIgnoreErrors,
+                mode: SendRemainingValue,
                 body: TokenExcesses{ query_id: msg.query_id }.toCell()
             });
         }
     }
 
     // https://github.com/ton-blockchain/TEPs/blob/master/text/0089-jetton-wallet-discovery.md
-    receive(msg: ProvideWalletAddress) {
+    receive(msg: ProvideWalletAddress) { // 0x2c76b973
         require(context().value >= ton("0.0061"), "Insufficient gas");
-        let init: StateInit = initOf JettonDefaultWallet(msg.owner_address, self.owner);
-        let wallet_address: Address = contractAddress(init);
-
-        let response_body: TakeWalletAddress = TakeWalletAddress{
-                query_id: msg.query_id,
-                wallet_address: wallet_address,
-                owner_address: null
-            };
+        let init: StateInit = initOf JettonDefaultWallet(msg.owner_address, myAddress());
         if (msg.include_address) {
-            response_body.owner_address = msg.owner_address;
+            send(SendParameters{
+                to: sender(),
+                value: 0,
+                mode: SendRemainingValue,
+                body: TakeWalletAddress{
+                    query_id: msg.query_id,
+                    wallet_address: contractAddress(init),
+                    owner_address: beginCell().storeBool(true).storeAddress(msg.owner_address).endCell().asSlice()
+                }.toCell()
+            });
+        } else {
+            send(SendParameters{
+                to: sender(),
+                value: 0,
+                mode: SendRemainingValue,
+                body: TakeWalletAddress { // 0xd1735400
+                    query_id: msg.query_id,
+                    wallet_address: contractAddress(init),
+                    owner_address: beginCell().storeBool(false).endCell().asSlice()
+                }.toCell()
+            });
         }
-        send(SendParameters{
-            to: sender(),
-            value: 0,
-            mode: SendRemainingValue,
-            bounce: true,
-            body: response_body.toCell()
-        });
     }
-
 
     // Private Methods // 
     // @to The Address receive the Jetton token after minting
@@ -176,7 +181,7 @@ contract JettonDefaultWallet {
             send(SendParameters{
                 to: self.owner,
                 value: msg.forward_ton_amount,
-                mode: SendPayGasSeparately + SendIgnoreErrors,
+                mode: SendPayGasSeparately,
                 bounce: false,
                 body: TokenNotification {
                     query_id: msg.query_id,
@@ -193,8 +198,7 @@ contract JettonDefaultWallet {
                 to: msg.response_destination, 
                 value: msg_value,  
                 bounce: false,
-                body: TokenExcesses { query_id: msg.query_id }.toCell(),
-                mode: SendIgnoreErrors
+                body: TokenExcesses { query_id: msg.query_id }.toCell()
             });
         }
     }

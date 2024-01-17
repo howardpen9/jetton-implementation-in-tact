@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: JettonDefaultWallet
-BOC Size: 2046 bytes
+BOC Size: 2045 bytes
 
 # Types
 Total Types: 17
@@ -66,8 +66,8 @@ TLB: `provide_wallet_address#2c76b973 query_id:uint64 owner_address:address incl
 Signature: `ProvideWalletAddress{query_id:uint64,owner_address:address,include_address:bool}`
 
 ## TakeWalletAddress
-TLB: `take_wallet_address#d1735400 query_id:uint64 wallet_address:address owner_address:Maybe address = TakeWalletAddress`
-Signature: `TakeWalletAddress{query_id:uint64,wallet_address:address,owner_address:Maybe address}`
+TLB: `take_wallet_address#d1735400 query_id:uint64 wallet_address:address owner_address:remainder<slice> = TakeWalletAddress`
+Signature: `TakeWalletAddress{query_id:uint64,wallet_address:address,owner_address:remainder<slice>}`
 
 ## Mint
 TLB: `mint#fc708bd2 amount:int257 receiver:address = Mint`
