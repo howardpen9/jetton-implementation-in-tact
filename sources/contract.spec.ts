@@ -7,7 +7,7 @@ import {
     printTransactionFees,
     prettyLogTransactions,
 } from "@ton-community/sandbox";
-import { beginCell, contractAddress, fromNano, StateInit, toNano } from "ton-core";
+import { Address, beginCell, contractAddress, fromNano, StateInit, toNano } from "ton-core";
 import "@ton-community/test-utils";
 
 import { SampleJetton, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
@@ -162,24 +162,28 @@ describe("contract", () => {
             amount: mintAmount,
             receiver: player.address,
         };
-
         await token.send(deployer.getSender(), { value: toNano("1") }, Mint);
 
         let totalSupply = (await token.getGetJettonData()).total_supply;
-        console.log("totalSupply = ", totalSupply);
-
         const messateResult = await token.send(player.getSender(), { value: 10033460n }, Mint);
         expect(messateResult.transactions).toHaveTransaction({
             from: player.address,
             to: token.address,
         });
-
-        printTransactionFees(messateResult.transactions);
-        prettyLogTransactions(messateResult.transactions);
-
         let totalSupply_later = (await token.getGetJettonData()).total_supply;
-        console.log("totalSupply = ", totalSupply_later);
-
         expect(totalSupply_later).toEqual(totalSupply);
+        // printTransactionFees(messateResult.transactions);
+        // prettyLogTransactions(messateResult.transactions);
+        console.log("totalSupply = ", totalSupply_later);
+    });
+
+    it("Convert Address Format", async () => {
+        console.log("Example Address(Jetton Root Contract: " + token.address);
+
+        console.log("Is Friendly Address: " + Address.isFriendly(token.address.toString()));
+
+        const testAddr = Address.parse(token.address.toString());
+        console.log("✓ Address: " + testAddr.toString({ bounceable: false }));
+        console.log("✓ Raw Address: " + testAddr.toRawString());
     });
 });

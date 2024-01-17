@@ -12,9 +12,6 @@ slice __tact_verify_address(slice address) inline;
 ;; __tact_store_address
 builder __tact_store_address(builder b, slice address) inline;
 
-;; __tact_store_address_opt
-builder __tact_store_address_opt(builder b, slice address) inline;
-
 ;; __tact_create_address
 slice __tact_create_address(int chain, int hash) inline;
 
@@ -156,8 +153,8 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $TokenExcesses$_constructor_query_id
 ((int)) $TokenExcesses$_constructor_query_id(int query_id) inline;
 
+;; $SendParameters$_constructor_to_value_mode_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice to, int value, int mode, cell body) inline;
+
 ;; $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address
 ((int, slice, slice)) $TakeWalletAddress$_constructor_query_id_wallet_address_owner_address(int query_id, slice wallet_address, slice owner_address) inline;
-
-;; $SendParameters$_constructor_to_value_mode_bounce_body
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_bounce_body(slice to, int value, int mode, int bounce, cell body) inline;

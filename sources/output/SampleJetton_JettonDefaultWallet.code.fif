@@ -44,7 +44,7 @@ PROGRAM{
   DECLPROC $SendParameters$_constructor_to_value_mode_bounce_body_code_data
   DECLPROC $SendParameters$_constructor_to_value_mode_bounce_body
   DECLPROC $TokenNotification$_constructor_query_id_amount_from_forward_payload
-  DECLPROC $SendParameters$_constructor_to_value_bounce_body_mode
+  DECLPROC $SendParameters$_constructor_to_value_bounce_body
   DECLPROC $TokenExcesses$_constructor_query_id
   DECLPROC $TokenBurnNotification$_constructor_query_id_amount_sender_response_destination
   DECLPROC $JettonDefaultWallet$_internal_binary_TokenTransfer
@@ -569,9 +569,10 @@ PROGRAM{
   }>
   $TokenNotification$_constructor_query_id_amount_from_forward_payload PROCINLINE:<{
   }>
-  $SendParameters$_constructor_to_value_bounce_body_mode PROCINLINE:<{
-    s2 s4 XCHG
-    s3 s0 s0 XCHG3
+  $SendParameters$_constructor_to_value_bounce_body PROCINLINE:<{
+    s3 s3 s0 XCHG3
+    0 PUSHINT
+    SWAP
     PUSHNULL
     PUSHNULL
   }>
@@ -667,7 +668,7 @@ PROGRAM{
       SUB
       s0 s10 XCHG2
       SUB
-      3 PUSHINT
+      1 PUSHINT
       FALSE
       s8 PUSH
       s8 s1 s3 XCHG3
@@ -701,8 +702,7 @@ PROGRAM{
       $TokenExcesses$_store_cell INLINECALLDICT
       s3 s6 s0 XCHG3
       s1 s2 XCHG
-      2 PUSHINT
-      $SendParameters$_constructor_to_value_bounce_body_mode INLINECALLDICT
+      $SendParameters$_constructor_to_value_bounce_body INLINECALLDICT
       $global_send INLINECALLDICT
     }>ELSE<{
       s5 POP
@@ -773,7 +773,7 @@ PROGRAM{
     209778528950190195973528115415557644819 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5138525278666b74696947624e597a564e7261586d6b5773375968627467746b464578766e6a5a6f5a524542} PUSHSLICE
+    x{697066733a2f2f516d554e7143763437634865566863535944464231646f7336667348524e4c454a764b686a7641464745757a3947} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
