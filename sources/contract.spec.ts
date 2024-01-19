@@ -1,4 +1,3 @@
-import { ContractSystem } from "@tact-lang/emulator";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
 import {
     Blockchain,
@@ -7,12 +6,11 @@ import {
     printTransactionFees,
     prettyLogTransactions,
 } from "@ton-community/sandbox";
-import { Address, beginCell, contractAddress, fromNano, StateInit, toNano } from "ton-core";
+import { Address, beginCell, fromNano, StateInit, toNano } from "ton-core";
 import "@ton-community/test-utils";
 
 import { SampleJetton, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
 import { JettonDefaultWallet, TokenBurn } from "./output/SampleJetton_JettonDefaultWallet";
-import exp from "constants";
 
 //
 // This version of test is based on "@ton-community/sandbox" package
@@ -31,7 +29,7 @@ describe("contract", () => {
         const jettonParams = {
             name: "Best Practice",
             description: "This is description of Test tact jetton",
-            symbol: "XXX",
+            symbol: "XXXE",
             image: "https://play-lh.googleusercontent.com/ahJtMe0vfOlAu1XJVQ6rcaGrQBgtrEZQefHy7SXB7jpijKhu1Kkox90XDuH8RmcBOXNn",
         };
         let content = buildOnchainMetadata(jettonParams);
@@ -179,11 +177,13 @@ describe("contract", () => {
 
     it("Convert Address Format", async () => {
         console.log("Example Address(Jetton Root Contract: " + token.address);
-
         console.log("Is Friendly Address: " + Address.isFriendly(token.address.toString()));
 
         const testAddr = Address.parse(token.address.toString());
         console.log("✓ Address: " + testAddr.toString({ bounceable: false }));
+        console.log("✓ Address: " + testAddr.toString());
+        console.log("✓ Address(urlSafe: true): " + testAddr.toString({ urlSafe: true }));
+        console.log("✓ Address(urlSafe: false): " + testAddr.toString({ urlSafe: false }));
         console.log("✓ Raw Address: " + testAddr.toRawString());
     });
 });
