@@ -49,8 +49,7 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
     let jettonMasterWallet = contractAddress(workchain, init);
     let jettonMasterContract = JettonMasterContract.fromAddress(jettonMasterWallet);
     let jettonMasterContractOpened = client4.open(jettonMasterContract);
-    let jettonWallet = Address.parse("EQCnbZk0PtMzBz4jjVy7jai-Sf45MaU-HODtFPWI_WlcqD2V");
-    // let jettonWallet = await jettonMasterContractOpened.getGetWalletAddress(owner);
+    let jettonWallet = await jettonMasterContractOpened.getGetWalletAddress(owner);
 
     // ✨Pack the forward message into a cell
     const forwardPayloadLeft = beginCell()
