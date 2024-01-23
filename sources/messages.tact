@@ -34,9 +34,9 @@ message(0x178d4519) TokenTransferInternal {
 
 message(0x7362d09c) TokenNotification {
     query_id: Int as uint64;
-    amount: Int as coins;
+    amount: Int as coins; // forward_ton_amount from sender's transfer message
     from: Address;
-    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton 
+    forward_payload: Slice as remaining; // Comment Text message when Transfer the jetton
 }
 
 message(0x595f07bc) TokenBurn {
@@ -68,7 +68,7 @@ message(0x2c76b973) ProvideWalletAddress {
     include_address: Bool;
 }
 
-// take_wallet_address#d1735400 
+// take_wallet_address#d1735400
 // query_id:uint64 wallet_address:MsgAddress owner_address:(Maybe ^MsgAddress) = InternalMsgBody;
 message(0xd1735400) TakeWalletAddress {
     query_id: Int as uint64;

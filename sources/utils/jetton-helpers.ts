@@ -1,6 +1,5 @@
 import { Sha256 } from "@aws-crypto/sha256-js";
-import { beginCell, Cell } from "ton";
-import { Dictionary } from "ton-core";
+import {beginCell, Cell, Dictionary} from "@ton/core";
 
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const SNAKE_PREFIX = 0x00;

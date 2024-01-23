@@ -6,18 +6,19 @@ import {
     printTransactionFees,
     prettyLogTransactions,
 } from "@ton-community/sandbox";
-import { Address, beginCell, fromNano, StateInit, toNano } from "ton-core";
 import "@ton-community/test-utils";
 
-import { SampleJetton, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
-import { JettonDefaultWallet, TokenBurn } from "./output/SampleJetton_JettonDefaultWallet";
+import {beginCell, toNano} from "@ton/ton";
+import {Address} from "@ton/core";
+import {JettonMasterContract} from "./output/JettonTact_JettonMasterContract";
+import {JettonDefaultWallet, Mint, TokenBurn, TokenTransfer} from "./output/JettonTact_JettonDefaultWallet";
 
 //
 // This version of test is based on "@ton-community/sandbox" package
 //
 describe("contract", () => {
     let blockchain: Blockchain;
-    let token: SandboxContract<SampleJetton>;
+    let token: SandboxContract<JettonMasterContract>;
     let jettonWallet: SandboxContract<JettonDefaultWallet>;
     let deployer: SandboxContract<TreasuryContract>;
 
@@ -34,7 +35,7 @@ describe("contract", () => {
         };
         let content = buildOnchainMetadata(jettonParams);
         let max_supply = toNano(1234766689011); // Set the specific total supply in nano
-        token = blockchain.openContract(await SampleJetton.fromInit(deployer.address, content, max_supply));
+        token = blockchain.openContract(await JettonMasterContract.fromInit(deployer.address, content, max_supply));
 
         // Send Transaction
         const deployResult = await token.send(deployer.getSender(), { value: toNano("10") }, "Mint: 100");

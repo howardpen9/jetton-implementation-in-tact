@@ -1,11 +1,10 @@
-import { Address, beginCell, contractAddress, toNano, Cell, TonClient4 } from "ton";
-import { ContractSystem, testAddress } from "ton-emulator";
-import { buildOnchainMetadata } from "./utils/jetton-helpers";
 import { printAddress, printHeader, printDeploy, printSeparator } from "./utils/print";
 import { deploy } from "./utils/deploy";
 
-import { SampleJetton } from "./output/SampleJetton_SampleJetton";
-import { JettonDefaultWallet, storeTokenTransfer } from "./output/SampleJetton_JettonDefaultWallet";
+import {Address} from "@ton/core";
+import {beginCell, toNano} from "@ton/ton";
+import {JettonMasterContract, storeTokenTransfer} from "./output/JettonTact_JettonMasterContract";
+import {JettonDefaultWallet} from "./output/JettonTact_JettonDefaultWallet";
 
 // 🔴 Jetton Root Address
 let jetton_minter_root = Address.parse("");
@@ -17,7 +16,7 @@ let caller_wallet_address = Address.parse("");
 let new_owner_Address = Address.parse("");
 
 (async () => {
-    let contract_address = await SampleJetton.fromAddress(jetton_minter_root);
+    let contract_address = JettonMasterContract.fromAddress(jetton_minter_root);
 
     // Get the Jetton Wallet Address of the deployer
     let target_jetton_wallet_init = await JettonDefaultWallet.init(contract_address.address, caller_wallet_address);

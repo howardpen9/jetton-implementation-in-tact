@@ -2,9 +2,9 @@
 #pragma allow-post-modification;
 #pragma compute-asm-ltr;
 
-#include "SampleJetton_JettonDefaultWallet.headers.fc";
-#include "SampleJetton_JettonDefaultWallet.stdlib.fc";
-#include "SampleJetton_JettonDefaultWallet.storage.fc";
+#include "JettonTact_JettonDefaultWallet.headers.fc";
+#include "JettonTact_JettonDefaultWallet.stdlib.fc";
+#include "JettonTact_JettonDefaultWallet.storage.fc";
 
 ;;
 ;; Contract JettonDefaultWallet functions

@@ -1,12 +1,13 @@
-import {beginCell, contractAddress, toNano, TonClient4, WalletContractV4, internal, fromNano} from "ton";
-import {mnemonicToPrivateKey} from "ton-crypto";
 import {buildOnchainMetadata} from "./utils/jetton-helpers";
 
-import {SampleJetton, storeMint} from "./output/SampleJetton_SampleJetton";
 import {printSeparator} from "./utils/print";
 import * as dotenv from "dotenv";
 import {configJettonParams} from "./contract.config";
 import {_ENDPOINT_MAINNET, _ENDPOINT_TESTNET, _IS_TEST_ENV} from "./utils/static";
+import {TonClient4, WalletContractV4, beginCell, contractAddress, toNano, internal, fromNano} from "@ton/ton";
+import {mnemonicToPrivateKey} from "@ton/crypto";
+import {JettonMasterContract} from "./output/JettonTact_JettonMasterContract";
+import {storeMint} from "./output/JettonTact_JettonDefaultWallet";
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ dotenv.config();
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address
     // which means any changes will change the smart contract address as well
-    let init = await SampleJetton.init(ownerAddress, content, maxSupply);
+    let init = await JettonMasterContract.init(ownerAddress, content, maxSupply);
     let jettonMasterAddress = contractAddress(workchain, init);
 
     // send a message on new address contract to deploy it
@@ -68,7 +69,7 @@ dotenv.config();
         messages: [
             internal({
                 to: jettonMasterAddress,
-                value: toNano("0.15"),
+                value: toNano("0.15"), // this value not include the external msg fee!!
                 init: {
                     code: init.code,
                     data: init.data,

@@ -1,6 +1,6 @@
-import { Address, beginCell, Cell, contractAddress, storeStateInit } from "ton";
 import qs from 'qs';
 import base64url from "base64url";
+import {Address, beginCell, Cell, contractAddress, storeStateInit} from "@ton/core";
 
 export function printSeparator() {
     console.log("========================================================================================");
@@ -19,9 +19,9 @@ export function printAddress(address: Address, testnet: boolean = true) {
 }
 
 export function printDeploy(
-    init: { code: Cell, data: Cell }, 
-    value: bigint, 
-    command: Cell | string, 
+    init: { code: Cell, data: Cell },
+    value: bigint,
+    command: Cell | string,
     testnet: boolean = true
     ) {
 

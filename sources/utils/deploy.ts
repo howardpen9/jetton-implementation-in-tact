@@ -1,9 +1,9 @@
-import { beginCell, Cell, contractAddress, storeStateInit } from "ton-core";
 import { prompt } from "enquirer";
 import open from "open";
 import base64url from "base64url";
 import { printSeparator } from "./print";
 import qs from "qs";
+import {beginCell, Cell, contractAddress, storeStateInit} from "@ton/core";
 
 function getLink(
     prefix: string,
@@ -15,7 +15,7 @@ function getLink(
     // Resolve target address
     let to = contractAddress(0, init);
 
-    // Resovle init
+    // Resolve init
     let initStr = base64url(beginCell().store(storeStateInit(init)).endCell().toBoc({ idx: false }));
 
     let link: string;

@@ -1,10 +1,10 @@
 {
     "projects": [{
-        "name": "SampleJetton",
-        "path": "./sources/contract.tact",
+        "name": "JettonTact",
+        "path": "./sources/master.tact",
         "output": "./sources/output",
         "options":{
-            
+
         }
     }]
 }

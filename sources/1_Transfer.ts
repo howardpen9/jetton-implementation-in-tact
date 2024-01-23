@@ -1,14 +1,16 @@
-import {Address, beginCell, contractAddress, toNano, TonClient4, internal, fromNano, WalletContractV4} from "ton";
 import {printSeparator} from "./utils/print";
 import {buildOnchainMetadata} from "./utils/jetton-helpers";
-import {mnemonicToPrivateKey} from "ton-crypto";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 // ========================================
-import {SampleJetton, storeTokenTransfer} from "./output/SampleJetton_SampleJetton";
 import { configJettonParams} from "./contract.config";
 import {_ENDPOINT_MAINNET, _ENDPOINT_TESTNET, _IS_TEST_ENV} from "./utils/static";
+import {Address, Cell, MessageRelaxed} from "@ton/core";
+import {beginCell, contractAddress, fromNano, internal, toNano, TonClient4, WalletContractV4} from "@ton/ton";
+import {mnemonicToPrivateKey} from "@ton/crypto";
+import {JettonMasterContract} from "./output/JettonTact_JettonMasterContract";
+import {storeTokenTransfer} from "./output/JettonTact_JettonDefaultWallet";
 // ========================================
 
 // 🔴 Who will receive the transferred jetton
@@ -32,6 +34,7 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
 
     let senderTonWalletContract = client4.open(senderTonWallet);
 
+
     // Create content Cell
     let content = buildOnchainMetadata(configJettonParams);
     let maxSupply = toNano("666.123456789"); // 🔴 Set the specific total supply in nano
@@ -40,11 +43,11 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
     // NOTICE: the parameters inside the init functions were the input for the contract address
     // which means any changes will change the smart contract address as well.
     let owner = senderTonWalletContract.address;
-    let init = await SampleJetton.init(owner, content, maxSupply);
+    let init = await JettonMasterContract.init(owner, content, maxSupply);
     console.log("✨ " + owner + "'s JettonWallet ==> ");
 
     let jettonMasterWallet = contractAddress(workchain, init);
-    let sampleJetton = SampleJetton.fromAddress(jettonMasterWallet);
+    let sampleJetton = JettonMasterContract.fromAddress(jettonMasterWallet);
     let contract = client4.open(sampleJetton);
     let jettonWallet = await contract.getGetWalletAddress(owner);
 

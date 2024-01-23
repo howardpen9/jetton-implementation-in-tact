@@ -1,5 +1,5 @@
 # TACT Compilation Report
-Contract: SampleJetton
+Contract: JettonMasterContract
 BOC Size: 2174 bytes
 
 # Types
