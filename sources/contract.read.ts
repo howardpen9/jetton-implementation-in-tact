@@ -1,18 +1,17 @@
-
 import { printSeparator } from "./utils/print";
 
 // Contract Abi //
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
 
-import {contractAddress, toNano, TonClient4, WalletContractV4} from "@ton/ton";
-import {mnemonicToPrivateKey} from "@ton/crypto";
-import {_ENDPOINT_MAINNET, _ENDPOINT_TESTNET, _IS_TEST_ENV} from "./utils/static";
-import {JettonMasterContract} from "./output/JettonTact_JettonMasterContract";
-import {JettonDefaultWallet} from "./output/JettonTact_JettonDefaultWallet";
+import { contractAddress, toNano, TonClient4, WalletContractV4 } from "@ton/ton";
+import { mnemonicToPrivateKey } from "@ton/crypto";
+import { _ENDPOINT_MAINNET, _ENDPOINT_TESTNET } from "./utils/static";
+import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
+import { JettonDefaultWallet } from "./output/JettonTact_JettonDefaultWallet";
 
 (async () => {
     // const client = new TonClient4({
-    //     endpoint: _IS_TEST_ENV ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET
+    //     endpoint: process.env._IS_TEST_ENV === "true" ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET,
     // });
     // const mnemonics = "YOUR OWN mnemonics";
     // let keyPair = await mnemonicToPrivateKey(mnemonics.split(" "));

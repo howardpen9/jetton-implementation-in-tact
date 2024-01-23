@@ -1,28 +1,28 @@
-import {buildOnchainMetadata} from "./utils/jetton-helpers";
+import { buildOnchainMetadata } from "./utils/jetton-helpers";
 
-import {printSeparator} from "./utils/print";
+import { printSeparator } from "./utils/print";
 import * as dotenv from "dotenv";
-import {configJettonParams} from "./contract.config";
-import {_ENDPOINT_MAINNET, _ENDPOINT_TESTNET, _IS_TEST_ENV} from "./utils/static";
-import {TonClient4, WalletContractV4, beginCell, contractAddress, toNano, internal, fromNano} from "@ton/ton";
-import {mnemonicToPrivateKey} from "@ton/crypto";
-import {JettonMasterContract} from "./output/JettonTact_JettonMasterContract";
-import {storeMint} from "./output/JettonTact_JettonDefaultWallet";
+import { configJettonParams } from "./contract.config";
+import { _ENDPOINT_MAINNET, _ENDPOINT_TESTNET } from "./utils/static";
+import { TonClient4, WalletContractV4, beginCell, contractAddress, toNano, internal, fromNano } from "@ton/ton";
+import { mnemonicToPrivateKey } from "@ton/crypto";
+import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
+import { storeMint } from "./output/JettonTact_JettonDefaultWallet";
 
 dotenv.config();
 
-
 (async () => {
     const client4 = new TonClient4({
-        endpoint: _IS_TEST_ENV ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET
+        endpoint: process.env._IS_TEST_ENV === "true" ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET,
     });
+    console.info(" -----→ use " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
     let workchain = 0; //we are working in basechain.
 
     // 🔴 Change to your own, by creating .env file!
     let ownerMnemonics = (process.env.MNEMONICS_OWNER || "").toString();
     let ownerKeyPair = await mnemonicToPrivateKey(ownerMnemonics.split(" "));
     let ownerSecretKey = ownerKeyPair.secretKey;
-    let ownerWalletContract = WalletContractV4.create({workchain, publicKey: ownerKeyPair.publicKey});
+    let ownerWalletContract = WalletContractV4.create({ workchain, publicKey: ownerKeyPair.publicKey });
     let ownerWalletContractOpened = client4.open(ownerWalletContract);
 
     let ownerAddress = ownerWalletContractOpened.address;
@@ -51,14 +51,13 @@ dotenv.config();
     console.log("Minting:: ", fromNano(supply));
     printSeparator();
 
-
     let packedMsg = beginCell()
         .store(
             storeMint({
                 $$type: "Mint",
                 amount: supply,
                 receiver: ownerAddress,
-            })
+            }),
         )
         .endCell();
 

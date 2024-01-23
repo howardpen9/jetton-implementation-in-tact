@@ -1,16 +1,16 @@
-import {printSeparator} from "./utils/print";
-import {buildOnchainMetadata} from "./utils/jetton-helpers";
+import { printSeparator } from "./utils/print";
+import { buildOnchainMetadata } from "./utils/jetton-helpers";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 // ========================================
-import { configJettonParams} from "./contract.config";
-import {_ENDPOINT_MAINNET, _ENDPOINT_TESTNET, _IS_TEST_ENV} from "./utils/static";
-import {Address, Cell, MessageRelaxed} from "@ton/core";
-import {beginCell, contractAddress, fromNano, internal, toNano, TonClient4, WalletContractV4} from "@ton/ton";
-import {mnemonicToPrivateKey} from "@ton/crypto";
-import {JettonMasterContract} from "./output/JettonTact_JettonMasterContract";
-import {storeTokenTransfer} from "./output/JettonTact_JettonDefaultWallet";
+import { configJettonParams } from "./contract.config";
+import { _ENDPOINT_MAINNET, _ENDPOINT_TESTNET } from "./utils/static";
+import { Address } from "@ton/core";
+import { beginCell, contractAddress, fromNano, internal, toNano, TonClient4, WalletContractV4 } from "@ton/ton";
+import { mnemonicToPrivateKey } from "@ton/crypto";
+import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
+import { storeTokenTransfer } from "./output/JettonTact_JettonDefaultWallet";
 // ========================================
 
 // 🔴 Who will receive the transferred jetton
@@ -18,9 +18,10 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
 
 (async () => {
     const client4 = new TonClient4({
-        endpoint: _IS_TEST_ENV ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET
+        endpoint: process.env._IS_TEST_ENV === "true" ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET,
     });
 
+    console.info(" -----→ use " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
     let workchain = 0;
 
     // 🔴 Change to your own, by creating .env file!
@@ -34,10 +35,9 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
 
     let senderTonWalletContract = client4.open(senderTonWallet);
 
-
     // Create content Cell
     let content = buildOnchainMetadata(configJettonParams);
-    let maxSupply = toNano("666.123456789"); // 🔴 Set the specific total supply in nano
+    let maxSupply = toNano(123456766689011); // 🔴 Set the specific total supply in nano
 
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address
@@ -47,9 +47,10 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
     console.log("✨ " + owner + "'s JettonWallet ==> ");
 
     let jettonMasterWallet = contractAddress(workchain, init);
-    let sampleJetton = JettonMasterContract.fromAddress(jettonMasterWallet);
-    let contract = client4.open(sampleJetton);
-    let jettonWallet = await contract.getGetWalletAddress(owner);
+    let jettonMasterContract = JettonMasterContract.fromAddress(jettonMasterWallet);
+    let jettonMasterContractOpened = client4.open(jettonMasterContract);
+    let jettonWallet = Address.parse("EQCnbZk0PtMzBz4jjVy7jai-Sf45MaU-HODtFPWI_WlcqD2V");
+    // let jettonWallet = await jettonMasterContractOpened.getGetWalletAddress(owner);
 
     // ✨Pack the forward message into a cell
     const forwardPayloadLeft = beginCell()
@@ -70,17 +71,17 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
             storeTokenTransfer({
                 $$type: "TokenTransfer",
                 query_id: 0n,
-                amount: toNano(20000),
+                amount: toNano(100000000),
                 destination: newReceiverAddress,
                 response_destination: owner, // Original Owner, aka. First Minter's Jetton Wallet
                 custom_payload: customPayload,
-                forward_ton_amount: toNano("0.000000001"),
+                forward_ton_amount: toNano("0.01"),
                 forward_payload: forwardPayloadLeft,
-            })
+            }),
         )
         .endCell();
 
-    let deployAmount = toNano("0.3");
+    let deployAmount = toNano("0.6");
     let seqno: number = await senderTonWalletContract.getSeqno();
     let balance: bigint = await senderTonWalletContract.getBalance();
     // ========================================
@@ -89,7 +90,7 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
     console.log("\n🛠️ Calling To JettonWallet:\n" + jettonWallet + "\n");
     await senderTonWalletContract.sendTransfer({
         seqno,
-        secretKey:senderSecretKey,
+        secretKey: senderSecretKey,
         messages: [
             internal({
                 to: jettonWallet,
