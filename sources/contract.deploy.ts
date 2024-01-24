@@ -15,7 +15,7 @@ dotenv.config();
     const client4 = new TonClient4({
         endpoint: process.env._IS_TEST_ENV === "true" ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET,
     });
-    console.info("  ###### Using " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
+    console.info("  ###### Using ", process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
     let workchain = 0; //we are working in basechain.
 
     // 🔴 Change to your own, by creating .env file!

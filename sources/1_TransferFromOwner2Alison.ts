@@ -11,6 +11,7 @@ import { beginCell, contractAddress, fromNano, internal, toNano, TonClient4, Wal
 import { mnemonicToPrivateKey } from "@ton/crypto";
 import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
 import { storeTokenTransfer } from "./output/JettonTact_JettonDefaultWallet";
+
 // ========================================
 
 export async function transferJetton(from: string, to: string) {
@@ -18,7 +19,7 @@ export async function transferJetton(from: string, to: string) {
         endpoint: process.env._IS_TEST_ENV === "true" ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET,
     });
 
-    console.info(" ###### Using " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
+    console.info(" ###### Using ", process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
     let workchain = 0;
 
     // 🔴 Change to your own, by creating .env file!
