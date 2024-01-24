@@ -15,7 +15,7 @@ dotenv.config();
     const client4 = new TonClient4({
         endpoint: process.env._IS_TEST_ENV === "true" ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET,
     });
-    console.info(" -----→ use " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
+    console.info("  ###### Using " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
     let workchain = 0; //we are working in basechain.
 
     // 🔴 Change to your own, by creating .env file!
@@ -47,7 +47,7 @@ dotenv.config();
     // Get deployment wallet balance
     let balance: bigint = await ownerWalletContractOpened.getBalance();
     console.log("Current deployment wallet balance = ", fromNano(balance).toString(), "💎TON");
-    let supply = toNano(1000000000); // 🔴 Specify total supply in nano
+    let supply = toNano(1000000); // 🔴 Specify total supply in nano
     console.log("Minting:: ", fromNano(supply));
     printSeparator();
 

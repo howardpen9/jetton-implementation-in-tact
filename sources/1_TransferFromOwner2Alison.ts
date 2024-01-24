@@ -13,27 +13,24 @@ import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
 import { storeTokenTransfer } from "./output/JettonTact_JettonDefaultWallet";
 // ========================================
 
-// 🔴 Who will receive the transferred jetton
-let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as string);
-
-(async () => {
+export async function transferJetton(from: string, to: string) {
     const client4 = new TonClient4({
         endpoint: process.env._IS_TEST_ENV === "true" ? _ENDPOINT_TESTNET : _ENDPOINT_MAINNET,
     });
 
-    console.info(" -----→ use " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
+    console.info(" ###### Using " + process.env._IS_TEST_ENV === "true" ? "Testnet" : "Mainnet");
     let workchain = 0;
 
     // 🔴 Change to your own, by creating .env file!
-    let senderMnemonics = (process.env.MNEMONICS_OWNER || "").toString();
-    let senderKeyPair = await mnemonicToPrivateKey(senderMnemonics.split(" "));
-    let senderSecretKey = senderKeyPair.secretKey;
-    let senderTonWallet = WalletContractV4.create({
+    let ownerMnemonics = (process.env.MNEMONICS_OWNER || "").toString();
+    let ownerKeyPair = await mnemonicToPrivateKey(ownerMnemonics.split(" "));
+    let ownerSecretKey = ownerKeyPair.secretKey;
+    let ownerTonWallet = WalletContractV4.create({
         workchain,
-        publicKey: senderKeyPair.publicKey,
+        publicKey: ownerKeyPair.publicKey,
     });
 
-    let senderTonWalletContract = client4.open(senderTonWallet);
+    let ownerTonWalletContract = client4.open(ownerTonWallet);
 
     // Create content Cell
     let content = buildOnchainMetadata(configJettonParams);
@@ -42,14 +39,14 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
     // Compute init data for deployment
     // NOTICE: the parameters inside the init functions were the input for the contract address
     // which means any changes will change the smart contract address as well.
-    let owner = senderTonWalletContract.address;
+    let owner = ownerTonWalletContract.address;
     let init = await JettonMasterContract.init(owner, content, maxSupply);
-    console.log("✨ " + owner + "'s JettonWallet ==> ");
+    console.log("✨ Jetton Owner address: " + owner + "");
 
     let jettonMasterWallet = contractAddress(workchain, init);
     let jettonMasterContract = JettonMasterContract.fromAddress(jettonMasterWallet);
     let jettonMasterContractOpened = client4.open(jettonMasterContract);
-    let jettonWallet = await jettonMasterContractOpened.getGetWalletAddress(owner);
+    let ownerJettonWallet = await jettonMasterContractOpened.getGetWalletAddress(owner);
 
     // ✨Pack the forward message into a cell
     const forwardPayloadLeft = beginCell()
@@ -64,6 +61,8 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
     //     .endCell();
 
     // ========================================
+
+    let receiverTonWalletAddress = Address.parse(to as string);
     let customPayload = beginCell().storeBit(1).storeUint(0, 32).storeStringTail("EEEEEE").endCell();
     let packed = beginCell()
         .store(
@@ -71,7 +70,7 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
                 $$type: "TokenTransfer",
                 query_id: 0n,
                 amount: toNano(100000000),
-                destination: newReceiverAddress,
+                destination: receiverTonWalletAddress,
                 response_destination: owner, // Original Owner, aka. First Minter's Jetton Wallet
                 custom_payload: customPayload,
                 forward_ton_amount: toNano("0.01"),
@@ -80,19 +79,32 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
         )
         .endCell();
 
+    // 🔴 Change to your own, by creating .env file!
+    let senderMnemonics = (from || "").toString();
+    let senderKeyPair = await mnemonicToPrivateKey(senderMnemonics.split(" "));
+    let senderSecretKey = senderKeyPair.secretKey;
+    let senderTonWallet = WalletContractV4.create({
+        workchain,
+        publicKey: senderKeyPair.publicKey,
+    });
+
+    let senderTonWalletContract = client4.open(senderTonWallet);
+
+    let senderJettonWallet = await jettonMasterContractOpened.getGetWalletAddress(senderTonWallet.address);
+
     let deployAmount = toNano("0.6");
     let seqno: number = await senderTonWalletContract.getSeqno();
     let balance: bigint = await senderTonWalletContract.getBalance();
     // ========================================
     printSeparator();
     console.log("Current deployment senderTonWallet balance: ", fromNano(balance).toString(), "💎TON");
-    console.log("\n🛠️ Calling To JettonWallet:\n" + jettonWallet + "\n");
+    console.log("\n🛠️ Calling Sender's JettonWallet:\n" + senderJettonWallet + "\n");
     await senderTonWalletContract.sendTransfer({
         seqno,
         secretKey: senderSecretKey,
         messages: [
             internal({
-                to: jettonWallet,
+                to: senderJettonWallet,
                 value: deployAmount,
                 init: {
                     code: init.code,
@@ -103,4 +115,8 @@ let newReceiverAddress = Address.parse(process.env.TRANSFER_RECEIVER_ADDRESS as 
             }),
         ],
     });
+}
+
+(async () => {
+    await transferJetton(process.env.MNEMONICS_OWNER as string, process.env.TON_WALLET_ADDRESS_ALISON as string);
 })();
