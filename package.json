@@ -3,11 +3,11 @@
   "scripts": {
     "build": "tact --config ./tact.config.json",
     "test": "jest",
-    "deploy_with_mint": "ts-node ./sources/contract.deploy.ts",
-    "read": "ts-node ./sources/contract.read.ts",
-    "transferFromOwner2Alison": "ts-node ./sources/1_TransferFromOwner2Alison.ts",
-    "transferFromAlison2Becky": "ts-node ./sources/2_TransferFromAlison2Becky.ts",
-    "transferURL": "ts-node ./sources/2_TransferURL.ts"
+    "deploy_with_mint": "ts-node ./src_ts/contract.deploy.ts",
+    "read": "ts-node ./src_ts/contract.read.ts",
+    "transferFromOwner2Alison": "ts-node ./src_ts/1_TransferFromOwner2Alison.ts",
+    "transferFromAlison2Becky": "ts-node ./src_ts/2_TransferFromAlison2Becky.ts",
+    "transferURL": "ts-node ./src_ts/2_TransferURL.ts"
   },
   "dependencies": {
     "@aws-crypto/sha256-js": "^5.2.0",

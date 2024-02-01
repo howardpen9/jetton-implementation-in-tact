@@ -9,8 +9,8 @@ import { _ENDPOINT_MAINNET, _ENDPOINT_TESTNET } from "./utils/static";
 import { Address } from "@ton/core";
 import { beginCell, contractAddress, fromNano, internal, toNano, TonClient4, WalletContractV4 } from "@ton/ton";
 import { mnemonicToPrivateKey } from "@ton/crypto";
-import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
-import { storeTokenTransfer } from "./output/JettonTact_JettonDefaultWallet";
+import { JettonMasterContract } from "../artifact/JettonTact_JettonMasterContract";
+import { storeTokenTransfer } from "../artifact/JettonTact_JettonDefaultWallet";
 
 // ========================================
 

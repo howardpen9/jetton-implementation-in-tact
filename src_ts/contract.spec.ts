@@ -10,8 +10,8 @@ import "@ton-community/test-utils";
 
 import {beginCell, toNano} from "@ton/ton";
 import {Address} from "@ton/core";
-import {JettonMasterContract} from "./output/JettonTact_JettonMasterContract";
-import {JettonDefaultWallet, Mint, TokenBurn, TokenTransfer} from "./output/JettonTact_JettonDefaultWallet";
+import {JettonMasterContract} from "../artifact/JettonTact_JettonMasterContract";
+import {JettonDefaultWallet, Mint, TokenBurn, TokenTransfer} from "../artifact/JettonTact_JettonDefaultWallet";
 
 //
 // This version of test is based on "@ton-community/sandbox" package

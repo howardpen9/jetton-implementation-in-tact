@@ -3,8 +3,8 @@ import { deploy } from "./utils/deploy";
 
 import {Address} from "@ton/core";
 import {beginCell, toNano} from "@ton/ton";
-import {JettonMasterContract, storeTokenTransfer} from "./output/JettonTact_JettonMasterContract";
-import {JettonDefaultWallet} from "./output/JettonTact_JettonDefaultWallet";
+import {JettonMasterContract, storeTokenTransfer} from "../artifact/JettonTact_JettonMasterContract";
+import {JettonDefaultWallet} from "../artifact/JettonTact_JettonDefaultWallet";
 
 // 🔴 Jetton Root Address
 let jetton_minter_root = Address.parse("");

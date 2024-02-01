@@ -6,8 +6,6 @@ import { buildOnchainMetadata } from "./utils/jetton-helpers";
 import { contractAddress, toNano, TonClient4, WalletContractV4 } from "@ton/ton";
 import { mnemonicToPrivateKey } from "@ton/crypto";
 import { _ENDPOINT_MAINNET, _ENDPOINT_TESTNET } from "./utils/static";
-import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
-import { JettonDefaultWallet } from "./output/JettonTact_JettonDefaultWallet";
 
 (async () => {
     // const client = new TonClient4({

@@ -1,8 +1,8 @@
 {
     "projects": [{
         "name": "JettonTact",
-        "path": "./sources/master.tact",
-        "output": "./sources/output",
+        "path": "./src_tact/master.tact",
+        "output": "./artifact",
         "options":{
 
         }

@@ -6,8 +6,8 @@ import { configJettonParams } from "./contract.config";
 import { _ENDPOINT_MAINNET, _ENDPOINT_TESTNET } from "./utils/static";
 import { TonClient4, WalletContractV4, beginCell, contractAddress, toNano, internal, fromNano } from "@ton/ton";
 import { mnemonicToPrivateKey } from "@ton/crypto";
-import { JettonMasterContract } from "./output/JettonTact_JettonMasterContract";
-import { storeMint } from "./output/JettonTact_JettonDefaultWallet";
+import { JettonMasterContract } from "../artifact/JettonTact_JettonMasterContract";
+import { storeMint } from "../artifact/JettonTact_JettonDefaultWallet";
 
 dotenv.config();
 
