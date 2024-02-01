@@ -1,7 +1,9 @@
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
+  DECLPROC __tact_load_address_opt
   DECLPROC __tact_store_address
+  DECLPROC __tact_store_address_opt
   DECLPROC __tact_create_address
   DECLPROC __tact_compute_contract_address
   DECLPROC __tact_my_balance
@@ -83,9 +85,34 @@ PROGRAM{
     SWAP
     __tact_verify_address INLINECALLDICT
   }>
+  __tact_load_address_opt PROCINLINE:<{
+    LDMSGADDR
+    OVER
+    2 PLDU
+    0 NEQINT
+    IF:<{
+      SWAP
+      __tact_verify_address INLINECALLDICT
+    }>ELSE<{
+      NIP
+      PUSHNULL
+    }>
+  }>
   __tact_store_address PROCINLINE:<{
     __tact_verify_address INLINECALLDICT
     STSLICER
+  }>
+  __tact_store_address_opt PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      0 PUSHINT
+      SWAP
+      2 STU
+    }>ELSE<{
+      __tact_store_address INLINECALLDICT
+    }>
   }>
   __tact_create_address PROCINLINE:<{
     NEWC
@@ -162,7 +189,7 @@ PROGRAM{
     LDGRAMS
     __tact_load_address INLINECALLDICT
     SWAP
-    __tact_load_address INLINECALLDICT
+    __tact_load_address_opt INLINECALLDICT
     SWAP
     1 LDI
     SWAP
@@ -190,7 +217,7 @@ PROGRAM{
     SWAP
     __tact_store_address INLINECALLDICT
     SWAP
-    __tact_store_address INLINECALLDICT
+    __tact_store_address_opt INLINECALLDICT
     SWAP
     STGRAMS
     SWAP
@@ -212,7 +239,7 @@ PROGRAM{
     LDGRAMS
     __tact_load_address INLINECALLDICT
     SWAP
-    __tact_load_address INLINECALLDICT
+    __tact_load_address_opt INLINECALLDICT
     SWAP
     LDGRAMS
     s5 s5 XCPU
@@ -257,7 +284,7 @@ PROGRAM{
     129 THROWIFNOT
     64 LDU
     LDGRAMS
-    __tact_load_address INLINECALLDICT
+    __tact_load_address_opt INLINECALLDICT
     SWAP
     1 LDI
     SWAP
@@ -280,7 +307,7 @@ PROGRAM{
     SWAP
     __tact_store_address INLINECALLDICT
     SWAP
-    __tact_store_address INLINECALLDICT
+    __tact_store_address_opt INLINECALLDICT
   }>
   $TokenBurnNotification$_store_cell PROCINLINE:<{
     NEWC
@@ -535,11 +562,11 @@ PROGRAM{
     __tact_my_balance INLINECALLDICT
     OVER
     SUB
-    30000000 PUSHINT
+    10000000 PUSHINT
     TUCK
     MIN
     SUB
-    30000000 PUSHINT
+    10000000 PUSHINT
     ADD
     SUB
   }>
@@ -594,9 +621,9 @@ PROGRAM{
     s4 s3 PUXC
     $Context$_fun_readForwardFee INLINECALLDICT
     ADD
-    60000000 PUSHINT
+    20000000 PUSHINT
     ADD
-    30000000 PUSHINT
+    10000000 PUSHINT
     ADD
     s2 PUSH
     ADD
@@ -696,12 +723,13 @@ PROGRAM{
       FALSE
     }>
     IF:<{
+      SWAP
+      __tact_not_null INLINECALLDICT
       FALSE
       s0 s3 XCHG
       $TokenExcesses$_constructor_query_id INLINECALLDICT
       $TokenExcesses$_store_cell INLINECALLDICT
-      s3 s6 s0 XCHG3
-      s1 s2 XCHG
+      s6 s3 s0 XCHG3
       $SendParameters$_constructor_to_value_bounce_body INLINECALLDICT
       $global_send INLINECALLDICT
     }>ELSE<{
@@ -728,18 +756,20 @@ PROGRAM{
     $Context$_fun_readForwardFee INLINECALLDICT
     43422 PUSHINT
     SWAP
-    60000000 PUSHINT
+    20000000 PUSHINT
     ADD
-    30000000 PUSHINT
+    10000000 PUSHINT
     ADD
     s1 s2 XCHG
     GREATER
     THROWANYIFNOT
     0 PUSHINT
     64 PUSHINT
-    s4 s3 s6 XC2PU
     TRUE
-    s0 s4 XCHG
+    s0 s3 XCHG
+    __tact_not_null INLINECALLDICT
+    s5 s4 s0 XCHG3
+    s7 s(-1) PUXC
     $TokenBurnNotification$_constructor_query_id_amount_sender_response_destination INLINECALLDICT
     $TokenBurnNotification$_store_cell INLINECALLDICT
     s4 PUSH
@@ -773,7 +803,7 @@ PROGRAM{
     209778528950190195973528115415557644819 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d554e7143763437634865566863535944464231646f7336667348524e4c454a764b686a7641464745757a3947} PUSHSLICE
+    x{697066733a2f2f516d5948785339526f6968697470514c7457613646766433794a576774754370774e63456f78634a6b4255386b57} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

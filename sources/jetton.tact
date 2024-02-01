@@ -16,11 +16,11 @@ trait Jetton with Ownable {
     }
 
     receive(msg: TokenBurnNotification) {
-        self.requireSenderAsWalletOwner(msg.response_destination);       // Check wallet
+        self.requireSenderAsWalletOwner(msg.response_destination!!);       // Check wallet
         self.total_supply = self.total_supply - msg.amount; // Update supply
         if (msg.response_destination != null) { // Cashback
             send(SendParameters{
-                to: msg.response_destination, 
+                to: msg.response_destination!!, 
                 value: 0,
                 bounce: false,
                 mode: SendRemainingValue,
@@ -114,8 +114,8 @@ trait Jetton with Ownable {
 // ============================================================ //
 @interface("org.ton.jetton.wallet")
 contract JettonDefaultWallet {
-    const minTonsForStorage: Int = ton("0.03");
-    const gasConsumption: Int = ton("0.03");
+    const minTonsForStorage: Int = ton("0.01");
+    const gasConsumption: Int = ton("0.01");
 
     balance: Int as coins = 0;
     owner: Address;
@@ -133,7 +133,7 @@ contract JettonDefaultWallet {
 
         // Gas checks
         let fwd_fee: Int = ctx.readForwardFee() + ctx.readForwardFee();  
-        let final: Int = fwd_fee + 2 * self.gasConsumption + self.minTonsForStorage + msg.forward_ton_amount;
+        let final: Int = fwd_fee + 2 * self.gasConsumption + self.minTonsForStorage + msg.forward_ton_amount; // forward_ton = 0.152
         require(ctx.value > final, "Invalid value!!"); 
 
         // Update balance
@@ -195,7 +195,7 @@ contract JettonDefaultWallet {
         // 0xd53276db -- Cashback to the original Sender
         if (msg.response_destination != null && msg_value > 0) { 
             send(SendParameters {
-                to: msg.response_destination, 
+                to: msg.response_destination!!, 
                 value: msg_value,  
                 bounce: false,
                 body: TokenExcesses { query_id: msg.query_id }.toCell()
@@ -223,7 +223,7 @@ contract JettonDefaultWallet {
                 query_id: msg.query_id,
                 amount: msg.amount,
                 sender: self.owner,
-                response_destination: msg.response_destination
+                response_destination: msg.response_destination!!
             }.toCell()
         });
     }

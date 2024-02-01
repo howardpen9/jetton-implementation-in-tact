@@ -1,6 +1,5 @@
 import { Sha256 } from "@aws-crypto/sha256-js";
-import { beginCell, Cell } from "ton";
-import { Dictionary } from "ton-core";
+import { Dictionary, beginCell, Cell } from "@ton/core";
 
 const ONCHAIN_CONTENT_PREFIX = 0x00;
 const SNAKE_PREFIX = 0x00;
@@ -16,25 +15,15 @@ const toKey = (key: string) => {
     return BigInt(`0x${sha256(key).toString("hex")}`);
 };
 
-export function buildOnchainMetadata(data: {
-    name: string;
-    description: string;
-    image: string;
-}): Cell {
-    let dict = Dictionary.empty(
-        Dictionary.Keys.BigUint(256),
-        Dictionary.Values.Cell()
-    );
+export function buildOnchainMetadata(data: { name: string; description: string; image: string }): Cell {
+    let dict = Dictionary.empty(Dictionary.Keys.BigUint(256), Dictionary.Values.Cell());
 
     // Store the on-chain metadata in the dictionary
     Object.entries(data).forEach(([key, value]) => {
         dict.set(toKey(key), makeSnakeCell(Buffer.from(value, "utf8")));
     });
 
-    return beginCell()
-        .storeInt(ONCHAIN_CONTENT_PREFIX, 8)
-        .storeDict(dict)
-        .endCell();
+    return beginCell().storeInt(ONCHAIN_CONTENT_PREFIX, 8).storeDict(dict).endCell();
 }
 
 export function makeSnakeCell(data: Buffer) {

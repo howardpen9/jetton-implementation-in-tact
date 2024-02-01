@@ -5,26 +5,26 @@ import {
     TreasuryContract,
     printTransactionFees,
     prettyLogTransactions,
-} from "@ton-community/sandbox";
-import { Address, beginCell, fromNano, StateInit, toNano } from "ton-core";
-import "@ton-community/test-utils";
+    RemoteBlockchainStorage,
+    wrapTonClient4ForRemote,
+} from "@ton/sandbox";
+import "@ton/test-utils";
+// import { Address, beginCell, fromNano, StateInit, toNano } from "ton-core";
+import { Address, beginCell, fromNano, StateInit, toNano } from "@ton/core";
+import { TonClient4 } from "@ton/ton";
 
 import { SampleJetton, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
 import { JettonDefaultWallet, TokenBurn } from "./output/SampleJetton_JettonDefaultWallet";
 
-//
-// This version of test is based on "@ton-community/sandbox" package
-//
+import { Factory, MAINNET_FACTORY_ADDR } from "@dedust/sdk";
+
 describe("contract", () => {
     let blockchain: Blockchain;
     let token: SandboxContract<SampleJetton>;
     let jettonWallet: SandboxContract<JettonDefaultWallet>;
     let deployer: SandboxContract<TreasuryContract>;
 
-    beforeEach(async () => {
-        blockchain = await Blockchain.create();
-        deployer = await blockchain.treasury("deployer");
-
+    beforeAll(async () => {
         // Create content Cell
         const jettonParams = {
             name: "Best Practice",
@@ -34,6 +34,9 @@ describe("contract", () => {
         };
         let content = buildOnchainMetadata(jettonParams);
         let max_supply = toNano(1234766689011); // Set the specific total supply in nano
+
+        blockchain = await Blockchain.create();
+        deployer = await blockchain.treasury("deployer");
         token = blockchain.openContract(await SampleJetton.fromInit(deployer.address, content, max_supply));
 
         // Send Transaction
@@ -91,7 +94,7 @@ describe("contract", () => {
             amount: initMintAmount,
             receiver: sender.address,
         };
-        await token.send(deployer.getSender(), { value: toNano("10") }, mintMessage);
+        await token.send(deployer.getSender(), { value: toNano("0.25") }, mintMessage);
 
         const senderWalletAddress = await token.getGetWalletAddress(sender.address);
         const senderWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(senderWalletAddress));
@@ -104,11 +107,12 @@ describe("contract", () => {
             destination: receiver.address,
             response_destination: sender.address,
             custom_payload: null,
-            forward_ton_amount: 1n,
+            forward_ton_amount: 152805500n,
             forward_payload: beginCell().endCell(),
         };
-        const transferResult = await senderWallet.send(sender.getSender(), { value: toNano("10") }, transferMessage);
-        // console.log(transferResult.transactions);
+        const transferResult = await senderWallet.send(sender.getSender(), { value: toNano("0.25") }, transferMessage);
+        printTransactionFees(transferResult.transactions);
+        prettyLogTransactions(transferResult.transactions);
 
         const receiverWalletAddress = await token.getGetWalletAddress(receiver.address);
         const receiverWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(receiverWalletAddress));
@@ -186,4 +190,21 @@ describe("contract", () => {
         console.log("✓ Address(urlSafe: false): " + testAddr.toString({ urlSafe: false }));
         console.log("✓ Raw Address: " + testAddr.toRawString());
     });
+
+    // it("Onchian Testing", async () => {
+    //     const blkch = await Blockchain.create({
+    //         storage: new RemoteBlockchainStorage(
+    //             wrapTonClient4ForRemote(
+    //                 new TonClient4({
+    //                     endpoint: "https://mainnet-v4.tonhubapi.com",
+    //                 })
+    //             )
+    //         ),
+    //     });
+
+    //     let checker = Address.parse("EQBfBWT7X2BHg9tXAxzhz2aKiNTU1tpt5NsiK0uSDW_YAJ67");
+    //     // 0x21cfe02b
+    //     // 0x97d51f2f
+    //     let dexRouter = Address.parse("");
+    // });
 });

@@ -343,6 +343,11 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@dedust/sdk@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@dedust/sdk/-/sdk-0.8.6.tgz#55b201ad051e4595b0f9763ee267e1b12d42eb3f"
+  integrity sha512-EfFZLRhEMxqZqtXQvHRbFDwlGjmWFhaB1LaZRH6Uj19y2j7S0e5HPbbq6g43x0UInwUJsw7l7JJeOn17pdtYUg==
+
 "@ipld/dag-pb@2.1.18", "@ipld/dag-pb@^2.0.2":
   version "2.1.18"
   resolved "https://registry.npmjs.org/@ipld/dag-pb/-/dag-pb-2.1.18.tgz"
@@ -686,13 +691,15 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
-"@tact-lang/compiler@^1.1.3":
-  version "1.1.4"
-  resolved "https://registry.npmjs.org/@tact-lang/compiler/-/compiler-1.1.4.tgz"
-  integrity sha512-yrwrQBV1uDc3vl6fmKhfrGxsPkHrE7kVduennhq1cKzToftObwdyIHufKROkWtdJevBGFOqA8ZL8rkCP18zK4w==
+"@tact-lang/compiler@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@tact-lang/compiler/-/compiler-1.1.5.tgz#cad19bcf803943b23a1ecc9d6e9749c645b295a6"
+  integrity sha512-J48CKURf5bx3iIH6JKcGi/aiS0ASHe610caeD5Ud7sOFMRpHkDkDepE+7nRm/EsiAi5HVHwSwSVsW2YvB1CHNw==
   dependencies:
     "@ipld/dag-pb" "2.1.18"
-    "@tact-lang/opcode" "^0.0.13"
+    "@tact-lang/opcode" "^0.0.14"
+    "@ton/core" "0.49.2"
+    "@ton/crypto" "^3.2.0"
     arg "^5.0.2"
     blockstore-core "1.0.5"
     change-case "^4.1.2"
@@ -703,8 +710,6 @@
     path-normalize "^6.0.10"
     prando "^6.0.1"
     qs "^6.11.0"
-    ton-core ">=0.49.0"
-    ton-crypto "^3.2.0"
     zod "^3.20.2"
 
 "@tact-lang/emulator@^3.2.2":
@@ -716,22 +721,56 @@
     teslabot "^1.5.0"
     zod "^3.20.2"
 
-"@tact-lang/opcode@^0.0.13":
-  version "0.0.13"
-  resolved "https://registry.npmjs.org/@tact-lang/opcode/-/opcode-0.0.13.tgz"
-  integrity sha512-4FGp1p3ahVrXr2QbyD2FqmnvXTMYapTlRJSPhj4O1L2yIq7dp0CkFL9EdKOCUfyirT0X5en78PHLfj0CuQGD7A==
+"@tact-lang/opcode@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@tact-lang/opcode/-/opcode-0.0.14.tgz#52a9cb65bd43b8975481ecac26a3a59b377d1cf2"
+  integrity sha512-8FKHK2jwvViRBReO2t40DCkHAP9KPTRWZof4kdsAUJFlyeWIC8SsRQSl9QkZxF+48WvjDduKNqN5Ltb80paufA==
 
-"@ton-community/sandbox@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.npmjs.org/@ton-community/sandbox/-/sandbox-0.11.0.tgz"
-  integrity sha512-3tlSprRBTSu9m0tJTC3cl4MXQep1vfNMPqk9+JAXSRJu9ToEvIUVpqO6MQNkbz9LkKDuOEBs5vyqT37DlKKcWw==
-
-"@ton-community/test-utils@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@ton-community/test-utils/-/test-utils-0.3.0.tgz"
-  integrity sha512-eCw1c6a0TcKwiYEA4fmzPq+7dJtUx0UFYu+UEoRznIxEOcpEb8Ssjb9yMeiJEzbtUVMCkhEtpztdKt75ngDRWg==
+"@ton/core@0.49.2":
+  version "0.49.2"
+  resolved "https://registry.yarnpkg.com/@ton/core/-/core-0.49.2.tgz#bb5f714f727cb98768d53bfb76b87133858e6bda"
+  integrity sha512-jzW7ZGNkkkv131uvgX/4JgHBdtEnanT8i1fnZ6NOL7lxXjlVIKTuAfr1J2wJQAGHn0wLrbceAHix3jKX+4F5CA==
   dependencies:
-    node-inspect-extracted "^2.0.0"
+    symbol.inspect "1.0.1"
+
+"@ton/core@^0.54.0":
+  version "0.54.0"
+  resolved "https://registry.yarnpkg.com/@ton/core/-/core-0.54.0.tgz#811495859102d9868ac7a412b540df14eae15795"
+  integrity sha512-ry3sCDq3jdjZuo7+egZ827/Y0/ajPbtrozvJryNMefUGfZQ/zYLVCmw9zBtxVsY2EX2zW7QhHQUs76/3y6HCwQ==
+  dependencies:
+    symbol.inspect "1.0.1"
+
+"@ton/crypto-primitives@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ton/crypto-primitives/-/crypto-primitives-2.0.0.tgz#446256146d64fcec6e3f21d9f40b5148640329cc"
+  integrity sha512-wttiNClmGbI6Dfy/8oyNnsIV0b/qYkCJz4Gn4eP62lJZzMtVQ94Ko7nikDX1EfYHkLI1xpOitWpW+8ZuG6XtDg==
+  dependencies:
+    jssha "3.2.0"
+
+"@ton/crypto@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@ton/crypto/-/crypto-3.2.0.tgz#8fcb36cc93eafd05249c847d1f4ad39cf2565e46"
+  integrity sha512-50RkwReEuV2FkxSZ8ht/x9+n0ZGtwRKGsJ0ay4I/HFhkYVG/awIIBQeH0W4j8d5lADdO5h01UtX8PJ8AjiejjA==
+  dependencies:
+    "@ton/crypto-primitives" "2.0.0"
+    jssha "3.2.0"
+    tweetnacl "1.0.3"
+
+"@ton/sandbox@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@ton/sandbox/-/sandbox-0.15.0.tgz#552f73ce525c1ba85d42cedf1e6535abbeda123b"
+  integrity sha512-dlxhKOfwnAL9XkEuve0v1ffXLk0rPkZn+/ym+RoY2fKx4Tx+lGSJwprIdo02bOdfPopK83zYh1BLxjLmjY1J6Q==
+
+"@ton/ton@^13.9.0":
+  version "13.9.0"
+  resolved "https://registry.yarnpkg.com/@ton/ton/-/ton-13.9.0.tgz#18b0a447d49c84b30997bda385af30278bac8033"
+  integrity sha512-bvDn9vv0rNsN/OH84Q4DKH3N21AD0MvTxXmnS0wPEOoU38F4mltXmA7an2SjaSgd9kAlsOSHa0EirkTie+Zitw==
+  dependencies:
+    axios "^0.25.0"
+    dataloader "^2.0.0"
+    symbol.inspect "1.0.1"
+    teslabot "^1.3.0"
+    zod "^3.21.4"
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
@@ -2314,11 +2353,6 @@ node-fetch@^2.6.1:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-inspect-extracted@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/node-inspect-extracted/-/node-inspect-extracted-2.0.2.tgz"
-  integrity sha512-8qm9+tu/GmbA/uWQRs6ad8KstyhH94a0pXpRVGHaJ9wHlJbetCYoCwXbKILaaMcE+wgbgpOpzcCnipkL8vTqxA==
-
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/node-int64/-/node-int64-0.4.0.tgz"
@@ -2804,13 +2838,6 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-ton-core@>=0.49.0, ton-core@^0.51.0:
-  version "0.51.0"
-  resolved "https://registry.npmjs.org/ton-core/-/ton-core-0.51.0.tgz"
-  integrity sha512-FgejId/X1o7nNc5g8DBW1+9piwFolVU3e83Z8TudDCALik29YPhGOqLHSvcVYux3QV7SL0qCNaKgA3mV2nNfCA==
-  dependencies:
-    symbol.inspect "1.0.1"
-
 ton-crypto-primitives@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ton-crypto-primitives/-/ton-crypto-primitives-2.0.0.tgz"
@@ -2835,17 +2862,6 @@ ton-emulator@^2.1.1:
     prando "^6.0.1"
     teslabot "^1.5.0"
     zod "^3.20.2"
-
-ton@^13.6.0:
-  version "13.6.1"
-  resolved "https://registry.npmjs.org/ton/-/ton-13.6.1.tgz"
-  integrity sha512-CZlFsmO+l+uPSI2zgnUd8zCS5XuWnUSFRVUjRGl5X5fKXYnjaVba4vMaIyFTJwel+uEMnolGMSlNP8DAa9mfVg==
-  dependencies:
-    axios "^0.25.0"
-    dataloader "^2.0.0"
-    symbol.inspect "1.0.1"
-    teslabot "^1.3.0"
-    zod "^3.21.4"
 
 tr46@~0.0.3:
   version "0.0.3"

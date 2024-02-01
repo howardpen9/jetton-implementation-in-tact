@@ -52,7 +52,7 @@ _ $Context$_get_value((int, slice, int, slice) v) inline {
 ;;
 ;; Type: TokenTransferInternal
 ;; Header: 0x178d4519
-;; TLB: token_transfer_internal#178d4519 query_id:uint64 amount:coins from:address response_destination:address forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransferInternal
+;; TLB: token_transfer_internal#178d4519 query_id:uint64 amount:coins from:address response_destination:Maybe address forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransferInternal
 ;;
 
 builder $TokenTransferInternal$_store(builder build_0, (int, int, slice, slice, int, slice) v) inline_ref {
@@ -61,7 +61,7 @@ builder $TokenTransferInternal$_store(builder build_0, (int, int, slice, slice, 
     build_0 = build_0.store_uint(v'query_id, 64);
     build_0 = build_0.store_coins(v'amount);
     build_0 = __tact_store_address(build_0, v'from);
-    build_0 = __tact_store_address(build_0, v'response_destination);
+    build_0 = __tact_store_address_opt(build_0, v'response_destination);
     build_0 = build_0.store_coins(v'forward_ton_amount);
     build_0 = build_0.store_slice(v'forward_payload);
     return build_0;
@@ -78,7 +78,7 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
 ;;
 ;; Type: TokenBurnNotification
 ;; Header: 0x7bdd97de
-;; TLB: token_burn_notification#7bdd97de query_id:uint64 amount:coins sender:address response_destination:address = TokenBurnNotification
+;; TLB: token_burn_notification#7bdd97de query_id:uint64 amount:coins sender:address response_destination:Maybe address = TokenBurnNotification
 ;;
 
 (slice, ((int, int, slice, slice))) $TokenBurnNotification$_load(slice sc_0) inline {
@@ -86,7 +86,7 @@ cell $TokenTransferInternal$_store_cell((int, int, slice, slice, int, slice) v) 
     var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
     var v'sender = sc_0~__tact_load_address();
-    var v'response_destination = sc_0~__tact_load_address();
+    var v'response_destination = sc_0~__tact_load_address_opt();
     return (sc_0, (v'query_id, v'amount, v'sender, v'response_destination));
 }
 
