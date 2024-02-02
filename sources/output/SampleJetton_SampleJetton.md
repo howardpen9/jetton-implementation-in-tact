@@ -109,10 +109,10 @@ Argument: owner
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 3688: Not mintable
-4159: Invalid value!!
 4429: Invalid sender
 12241: Max supply exceeded
 14534: Not owner
+16059: Invalid value
 18668: Can't Mint Anymore
 23951: Insufficient gas
 42708: Invalid sender!

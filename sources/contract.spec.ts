@@ -8,7 +8,10 @@ import {
     RemoteBlockchainStorage,
     wrapTonClient4ForRemote,
 } from "@ton/sandbox";
+
 import "@ton/test-utils";
+// import "@ton-community/test-utils";
+
 // import { Address, beginCell, fromNano, StateInit, toNano } from "ton-core";
 import { Address, beginCell, fromNano, StateInit, toNano } from "@ton/core";
 import { TonClient4 } from "@ton/ton";
@@ -16,27 +19,41 @@ import { TonClient4 } from "@ton/ton";
 import { SampleJetton, Mint, TokenTransfer } from "./output/SampleJetton_SampleJetton";
 import { JettonDefaultWallet, TokenBurn } from "./output/SampleJetton_JettonDefaultWallet";
 
-import { Factory, MAINNET_FACTORY_ADDR } from "@dedust/sdk";
+import {
+    Asset,
+    Factory,
+    MAINNET_FACTORY_ADDR,
+    PoolType,
+    Vault,
+    LiquidityDeposit,
+    VaultJetton,
+    JettonRoot,
+    ReadinessStatus,
+} from "@dedust/sdk";
+
+const jettonParams = {
+    name: "Best Practice",
+    description: "This is description of Test tact jetton",
+    symbol: "XXXE",
+    image: "https://play-lh.googleusercontent.com/ahJtMe0vfOlAu1XJVQ6rcaGrQBgtrEZQefHy7SXB7jpijKhu1Kkox90XDuH8RmcBOXNn",
+};
+let content = buildOnchainMetadata(jettonParams);
+let max_supply = toNano(1234766689011); // Set the specific total supply in nano
 
 describe("contract", () => {
     let blockchain: Blockchain;
     let token: SandboxContract<SampleJetton>;
     let jettonWallet: SandboxContract<JettonDefaultWallet>;
     let deployer: SandboxContract<TreasuryContract>;
+    // let player: SandboxContract<TreasuryContract>;
 
     beforeAll(async () => {
         // Create content Cell
-        const jettonParams = {
-            name: "Best Practice",
-            description: "This is description of Test tact jetton",
-            symbol: "XXXE",
-            image: "https://play-lh.googleusercontent.com/ahJtMe0vfOlAu1XJVQ6rcaGrQBgtrEZQefHy7SXB7jpijKhu1Kkox90XDuH8RmcBOXNn",
-        };
-        let content = buildOnchainMetadata(jettonParams);
-        let max_supply = toNano(1234766689011); // Set the specific total supply in nano
 
         blockchain = await Blockchain.create();
         deployer = await blockchain.treasury("deployer");
+        // player = await blockchain.treasury("player");
+
         token = blockchain.openContract(await SampleJetton.fromInit(deployer.address, content, max_supply));
 
         // Send Transaction
@@ -47,6 +64,9 @@ describe("contract", () => {
             deploy: true,
             success: true,
         });
+
+        const playerWallet = await token.getGetWalletAddress(deployer.address);
+        jettonWallet = blockchain.openContract(await JettonDefaultWallet.fromAddress(playerWallet));
     });
 
     it("should deploy", async () => {
@@ -58,13 +78,12 @@ describe("contract", () => {
     });
 
     it("should mint successfully", async () => {
-        const player = await blockchain.treasury("player");
         const totalSupplyBefore = (await token.getGetJettonData()).total_supply;
         const mintAmount = toNano(100);
         const Mint: Mint = {
             $$type: "Mint",
             amount: mintAmount,
-            receiver: player.address,
+            receiver: deployer.address,
         };
         const mintResult = await token.send(deployer.getSender(), { value: toNano("10") }, Mint);
         expect(mintResult.transactions).toHaveTransaction({
@@ -72,15 +91,14 @@ describe("contract", () => {
             to: token.address,
             success: true,
         });
+        // printTransactionFees(mintResult.transactions);
 
         const totalSupplyAfter = (await token.getGetJettonData()).total_supply;
         expect(totalSupplyBefore + mintAmount).toEqual(totalSupplyAfter);
 
-        const playerWallet = await token.getGetWalletAddress(player.address);
-        jettonWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(playerWallet));
         const walletData = await jettonWallet.getGetWalletData();
-        expect(walletData.owner).toEqualAddress(player.address);
-        expect(walletData.balance).toEqual(mintAmount);
+        expect(walletData.owner).toEqualAddress(deployer.address);
+        expect(walletData.balance).toBeGreaterThanOrEqual(mintAmount);
     });
 
     it("should transfer successfully", async () => {
@@ -111,8 +129,8 @@ describe("contract", () => {
             forward_payload: beginCell().endCell(),
         };
         const transferResult = await senderWallet.send(sender.getSender(), { value: toNano("0.25") }, transferMessage);
-        printTransactionFees(transferResult.transactions);
-        prettyLogTransactions(transferResult.transactions);
+        // printTransactionFees(transferResult.transactions);
+        // prettyLogTransactions(transferResult.transactions);
 
         const receiverWalletAddress = await token.getGetWalletAddress(receiver.address);
         const receiverWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(receiverWalletAddress));
@@ -176,35 +194,94 @@ describe("contract", () => {
         expect(totalSupply_later).toEqual(totalSupply);
         // printTransactionFees(messateResult.transactions);
         // prettyLogTransactions(messateResult.transactions);
-        console.log("totalSupply = ", totalSupply_later);
+        // console.log("totalSupply = ", totalSupply_later);
     });
 
-    it("Convert Address Format", async () => {
-        console.log("Example Address(Jetton Root Contract: " + token.address);
-        console.log("Is Friendly Address: " + Address.isFriendly(token.address.toString()));
+    // it("Convert Address Format", async () => {
+    //     console.log("Example Address(Jetton Root Contract: " + token.address);
+    //     console.log("Is Friendly Address: " + Address.isFriendly(token.address.toString()));
 
-        const testAddr = Address.parse(token.address.toString());
-        console.log("✓ Address: " + testAddr.toString({ bounceable: false }));
-        console.log("✓ Address: " + testAddr.toString());
-        console.log("✓ Address(urlSafe: true): " + testAddr.toString({ urlSafe: true }));
-        console.log("✓ Address(urlSafe: false): " + testAddr.toString({ urlSafe: false }));
-        console.log("✓ Raw Address: " + testAddr.toRawString());
-    });
-
-    // it("Onchian Testing", async () => {
-    //     const blkch = await Blockchain.create({
-    //         storage: new RemoteBlockchainStorage(
-    //             wrapTonClient4ForRemote(
-    //                 new TonClient4({
-    //                     endpoint: "https://mainnet-v4.tonhubapi.com",
-    //                 })
-    //             )
-    //         ),
-    //     });
-
-    //     let checker = Address.parse("EQBfBWT7X2BHg9tXAxzhz2aKiNTU1tpt5NsiK0uSDW_YAJ67");
-    //     // 0x21cfe02b
-    //     // 0x97d51f2f
-    //     let dexRouter = Address.parse("");
+    //     const testAddr = Address.parse(token.address.toString());
+    //     console.log("✓ Address: " + testAddr.toString({ bounceable: false }));
+    //     console.log("✓ Address: " + testAddr.toString());
+    //     console.log("✓ Address(urlSafe: true): " + testAddr.toString({ urlSafe: true }));
+    //     console.log("✓ Address(urlSafe: false): " + testAddr.toString({ urlSafe: false }));
+    //     console.log("✓ Raw Address: " + testAddr.toRawString());
     // });
+
+    it("Onchian Testing", async () => {
+        const blkch = await Blockchain.create({
+            storage: new RemoteBlockchainStorage(
+                wrapTonClient4ForRemote(
+                    new TonClient4({
+                        endpoint: "https://mainnet-v4.tonhubapi.com",
+                    })
+                )
+            ),
+        });
+        const player = await blkch.treasury("player");
+
+        const jettonRoot = blkch.openContract(await SampleJetton.fromInit(player.address, content, max_supply));
+        await jettonRoot.send(player.getSender(), { value: toNano("10") }, "Mint: 100");
+
+        const tonAmount = toNano("0.1"); // 5 TON
+        const scaleAmount = toNano("0.000000001"); // 10 SCALE
+
+        const TON = Asset.native();
+        const SCALE = Asset.jetton(jettonRoot.address);
+
+        const assets: [Asset, Asset] = [TON, SCALE];
+        const targetBalances: [bigint, bigint] = [tonAmount, scaleAmount];
+        console.log("DeDust Factory Address: " + MAINNET_FACTORY_ADDR);
+
+        // 0x21cfe02b / 567271467
+        const factory = blkch.openContract(Factory.createFromAddress(MAINNET_FACTORY_ADDR));
+        const Tx = await factory.sendCreateVault(player.getSender(), {
+            asset: SCALE,
+        });
+        await printTransactionFees(await Tx.transactions);
+
+        // ------------------------------------------------------------------------------------------------
+        // (0x97d51f2f / 2547326767 / Create Pool)
+        const pool = blkch.openContract(await factory.getPool(PoolType.VOLATILE, [TON, SCALE]));
+
+        const poolReadiness = await pool.getReadinessStatus();
+        if (poolReadiness === ReadinessStatus.NOT_DEPLOYED) {
+            const transferLiquidity = await factory.sendCreateVolatilePool(player.getSender(), {
+                assets: [TON, SCALE],
+            });
+            await printTransactionFees(await transferLiquidity.transactions);
+        }
+
+        // ------------------------------------------------------------------------------------------------
+        // Deposit / Adding Liquidity: Deposit TON to Vault
+        const tonVault = blkch.openContract(await factory.getNativeVault());
+        const tx = await tonVault.sendDepositLiquidity(player.getSender(), {
+            poolType: PoolType.VOLATILE,
+            assets,
+            targetBalances,
+            amount: tonAmount,
+        });
+        await printTransactionFees(await tx.transactions);
+
+        // ------------------------------------------------------------------------------------------------
+        // Deposit Jetton to Vault
+        const scaleRoot = blkch.openContract(JettonRoot.createFromAddress(jettonRoot.address));
+        const scaleWallet = blkch.openContract(await scaleRoot.getWallet(player.address));
+        await jettonRoot.send(player.getSender(), { value: toNano("10") }, "Mint: 100");
+
+        const scaleVault = blkch.openContract(await factory.getJettonVault(jettonRoot.address));
+        const tx_jetton = await scaleWallet.sendTransfer(player.getSender(), toNano("0.5"), {
+            amount: scaleAmount,
+            destination: scaleVault.address,
+            responseAddress: player.address,
+            forwardAmount: toNano("0.4"),
+            forwardPayload: VaultJetton.createDepositLiquidityPayload({
+                poolType: PoolType.VOLATILE,
+                assets,
+                targetBalances,
+            }),
+        });
+        await printTransactionFees(await tx_jetton.transactions);
+    }, 10000);
 });

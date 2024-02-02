@@ -1,8 +1,10 @@
-import { beginCell, contractAddress, toNano, TonClient4, WalletContractV4, internal, fromNano } from "ton";
+import { beginCell, contractAddress, toNano, TonClient4, WalletContractV4, internal, fromNano } from "@ton/ton";
 import { mnemonicToPrivateKey } from "ton-crypto";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
 
 import { SampleJetton, storeMint } from "./output/SampleJetton_SampleJetton";
+import { JettonDefaultWallet, TokenBurn } from "./output/SampleJetton_JettonDefaultWallet";
+
 import { printSeparator } from "./utils/print";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -24,9 +26,9 @@ dotenv.config();
     let deployer_wallet_contract = client4.open(deployer_wallet);
 
     const jettonParams = {
-        name: "Token Name",
+        name: "XXXXXX Name",
         description: "This is description of Test Jetton Token in Tact-lang",
-        symbol: "TNT",
+        symbol: "XXXXXXXXX",
         image: "https://avatars.githubusercontent.com/u/104382459?s=200&v=4",
     };
 

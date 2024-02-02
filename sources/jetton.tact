@@ -131,10 +131,9 @@ contract JettonDefaultWallet {
         let ctx: Context = context(); // Check sender
         require(ctx.sender == self.owner, "Invalid sender");
 
-        // Gas checks
-        let fwd_fee: Int = ctx.readForwardFee() + ctx.readForwardFee();  
-        let final: Int = fwd_fee + 2 * self.gasConsumption + self.minTonsForStorage + msg.forward_ton_amount; // forward_ton = 0.152
-        require(ctx.value > final, "Invalid value!!"); 
+        // Gas checks, forward_ton = 0.152
+        let final: Int = ctx.readForwardFee() * 2 + 2 * self.gasConsumption + self.minTonsForStorage + msg.forward_ton_amount; 
+        require(ctx.value > final, "Invalid value"); 
 
         // Update balance
         self.balance = self.balance - msg.amount; 

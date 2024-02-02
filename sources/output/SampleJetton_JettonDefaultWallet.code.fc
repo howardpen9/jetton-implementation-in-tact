@@ -41,9 +41,8 @@
     var ($msg'query_id, $msg'amount, $msg'destination, $msg'response_destination, $msg'custom_payload, $msg'forward_ton_amount, $msg'forward_payload) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(4429, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
-    int $fwd_fee = ($Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)) + $Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)));
-    int $final = ((($fwd_fee + (2 * 10000000)) + 10000000) + $msg'forward_ton_amount);
-    throw_unless(4159, ($ctx'value > $final));
+    int $final = (((($Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)) * 2) + (2 * 10000000)) + 10000000) + $msg'forward_ton_amount);
+    throw_unless(16059, ($ctx'value > $final));
     $self'balance = ($self'balance - $msg'amount);
     throw_unless(62972, ($self'balance >= 0));
     var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $msg'destination, $self'master);
@@ -122,7 +121,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmYHxS9RoihitpQLtWa6Fvd3yJWgtuCpwNcEoxcJkBU8kW";
+    return "ipfs://QmXSH1YnScoc1zRegQySbBy2TrJSvnYsPYanv2wCw3vZqG";
 }
 
 _ lazy_deployment_completed() method_id {
