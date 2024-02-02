@@ -42,19 +42,19 @@ _ $StateInit$_get_code((cell, cell) v) inline {
 ;;
 ;; Type: TokenTransfer
 ;; Header: 0x0f8a7ea5
-;; TLB: token_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address response_destination:Maybe address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
+;; TLB: token_transfer#0f8a7ea5 query_id:uint64 amount:coins sender:address response_destination:Maybe address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer
 ;;
 
 (slice, ((int, int, slice, slice, cell, int, slice))) $TokenTransfer$_load(slice sc_0) inline_ref {
     throw_unless(129, sc_0~load_uint(32) == 260734629);
     var v'query_id = sc_0~load_uint(64);
     var v'amount = sc_0~load_coins();
-    var v'destination = sc_0~__tact_load_address();
+    var v'sender = sc_0~__tact_load_address();
     var v'response_destination = sc_0~__tact_load_address_opt();
     var v'custom_payload = sc_0~load_int(1) ? sc_0~load_ref() : null();
     var v'forward_ton_amount = sc_0~load_coins();
     var v'forward_payload = sc_0;
-    return (sc_0, (v'query_id, v'amount, v'destination, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload));
+    return (sc_0, (v'query_id, v'amount, v'sender, v'response_destination, v'custom_payload, v'forward_ton_amount, v'forward_payload));
 }
 
 ;;

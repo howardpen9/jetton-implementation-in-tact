@@ -34,8 +34,8 @@ TLB: `_ balance:int257 owner:address master:address code:^cell = JettonWalletDat
 Signature: `JettonWalletData{balance:int257,owner:address,master:address,code:^cell}`
 
 ## TokenTransfer
-TLB: `token_transfer#0f8a7ea5 query_id:uint64 amount:coins destination:address response_destination:Maybe address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
-Signature: `TokenTransfer{query_id:uint64,amount:coins,destination:address,response_destination:Maybe address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
+TLB: `token_transfer#0f8a7ea5 query_id:uint64 amount:coins sender:address response_destination:Maybe address custom_payload:Maybe ^cell forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransfer`
+Signature: `TokenTransfer{query_id:uint64,amount:coins,sender:address,response_destination:Maybe address,custom_payload:Maybe ^cell,forward_ton_amount:coins,forward_payload:remainder<slice>}`
 
 ## TokenTransferInternal
 TLB: `token_transfer_internal#178d4519 query_id:uint64 amount:coins from:address response_destination:Maybe address forward_ton_amount:coins forward_payload:remainder<slice> = TokenTransferInternal`

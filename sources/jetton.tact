@@ -78,7 +78,7 @@ trait Jetton with Ownable {
                 from: myAddress(),
                 response_destination: response_destination,
                 forward_ton_amount: 0,
-                forward_payload: emptySlice()
+                forward_payload: beginCell().endCell().asSlice()
             }.toCell(),
             code: winit.code,
             data: winit.data
@@ -139,7 +139,7 @@ contract JettonDefaultWallet {
         self.balance = self.balance - msg.amount; 
         require(self.balance >= 0, "Invalid balance");
 
-        let init: StateInit = initOf JettonDefaultWallet(msg.destination, self.master);  
+        let init: StateInit = initOf JettonDefaultWallet(msg.sender, self.master);  
         let wallet_address: Address = contractAddress(init);
         send(SendParameters{
             to: wallet_address, 
@@ -174,22 +174,24 @@ contract JettonDefaultWallet {
         let msg_value: Int = self.msg_value(ctx.value);  
         let fwd_fee: Int = ctx.readForwardFee();
         
-         // 0x7362d09c - notify the new owner of JettonToken that the transfer is complete
+        // let forward_payload: Int = msg.forward_payload.loadInt(1);
+
         if (msg.forward_ton_amount > 0) { 
-            msg_value = msg_value - msg.forward_ton_amount - fwd_fee;
-            send(SendParameters{
-                to: self.owner,
-                value: msg.forward_ton_amount,
-                mode: SendPayGasSeparately,
-                bounce: false,
-                body: TokenNotification {
-                    query_id: msg.query_id,
-                    amount: msg.amount,
-                    from: msg.from,
-                    forward_payload: msg.forward_payload
-                }.toCell()
-            });
+                msg_value = msg_value - msg.forward_ton_amount - fwd_fee;
+                send(SendParameters{
+                    to: self.owner,
+                    value: msg.forward_ton_amount,
+                    mode: SendPayGasSeparately,
+                    bounce: false,
+                    body: TokenNotification {
+                        query_id: msg.query_id,
+                        amount: msg.amount,
+                        from: msg.from,
+                        forward_payload: msg.forward_payload
+                    }.toCell()
+                });
         }
+
 
         // 0xd53276db -- Cashback to the original Sender
         if (msg.response_destination != null && msg_value > 0) { 

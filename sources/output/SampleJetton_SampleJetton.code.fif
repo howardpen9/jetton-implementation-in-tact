@@ -33,11 +33,9 @@ PROGRAM{
   DECLPROC $SampleJetton$_contract_init
   DECLPROC $SampleJetton$_contract_load
   DECLPROC $SampleJetton$_contract_store
-  DECLPROC $global_emptyCell
-  DECLPROC $Cell$_fun_asSlice
-  DECLPROC $global_emptySlice
   DECLPROC $global_contractAddress
   DECLPROC $global_send
+  DECLPROC $Cell$_fun_asSlice
   DECLPROC $JettonDefaultWallet$_init_child
   DECLPROC $SendParameters$_constructor_to_value_bounce_mode_body_code_data
   DECLPROC $TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload
@@ -368,17 +366,6 @@ PROGRAM{
     ENDC
     c4 POP
   }>
-  $global_emptyCell PROCINLINE:<{
-    NEWC
-    ENDC
-  }>
-  $Cell$_fun_asSlice PROCINLINE:<{
-    CTOS
-  }>
-  $global_emptySlice PROCINLINE:<{
-    $global_emptyCell INLINECALLDICT
-    $Cell$_fun_asSlice INLINECALLDICT
-  }>
   $global_contractAddress PROCINLINE:<{
     0 PUSHINT
     -ROT
@@ -486,6 +473,9 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
+  $Cell$_fun_asSlice PROCINLINE:<{
+    CTOS
+  }>
   $JettonDefaultWallet$_init_child PROCREF:<{
     s0 s2 XCHG
     CTOS
@@ -541,7 +531,9 @@ PROGRAM{
     s2 PUSH
     MYADDR
     OVER
-    $global_emptySlice INLINECALLDICT
+    NEWC
+    ENDC
+    $Cell$_fun_asSlice INLINECALLDICT
     s3 s5 XCHG
     s4 s15 XCHG
     s2 s3 XCHG
@@ -789,7 +781,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6366563744384c6973466432574445647a734232784a78736e45594b7942427474696b585532527446466572} PUSHSLICE
+    x{697066733a2f2f516d52685865666b77695733426d745058664556314a69314578455a4847375a364e6b367037794a387a4d33426a} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH

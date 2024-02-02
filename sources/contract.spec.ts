@@ -91,7 +91,7 @@ describe("contract", () => {
             to: token.address,
             success: true,
         });
-        // printTransactionFees(mintResult.transactions);
+        printTransactionFees(mintResult.transactions);
 
         const totalSupplyAfter = (await token.getGetJettonData()).total_supply;
         expect(totalSupplyBefore + mintAmount).toEqual(totalSupplyAfter);
@@ -117,18 +117,23 @@ describe("contract", () => {
         const senderWalletAddress = await token.getGetWalletAddress(sender.address);
         const senderWallet = blockchain.openContract(JettonDefaultWallet.fromAddress(senderWalletAddress));
 
-        // Transfer tokens from sender's wallet to receiver's wallet
+        // Transfer tokens from sender's wallet to receiver's wallet // 0xf8a7ea5
         const transferMessage: TokenTransfer = {
             $$type: "TokenTransfer",
-            query_id: 1n,
+            query_id: 0n,
             amount: transferAmount,
-            destination: receiver.address,
+            sender: receiver.address,
             response_destination: sender.address,
             custom_payload: null,
-            forward_ton_amount: 152805500n,
-            forward_payload: beginCell().endCell(),
+            forward_ton_amount: toNano("0.1"),
+            forward_payload: beginCell().storeUint(0, 1).storeUint(0, 32).endCell(),
         };
-        const transferResult = await senderWallet.send(sender.getSender(), { value: toNano("0.25") }, transferMessage);
+        const transferResult = await senderWallet.send(sender.getSender(), { value: toNano("0.5") }, transferMessage);
+        expect(transferResult.transactions).toHaveTransaction({
+            from: sender.address,
+            to: senderWallet.address,
+            success: true,
+        });
         // printTransactionFees(transferResult.transactions);
         // prettyLogTransactions(transferResult.transactions);
 
@@ -194,7 +199,6 @@ describe("contract", () => {
         expect(totalSupply_later).toEqual(totalSupply);
         // printTransactionFees(messateResult.transactions);
         // prettyLogTransactions(messateResult.transactions);
-        // console.log("totalSupply = ", totalSupply_later);
     });
 
     // it("Convert Address Format", async () => {
@@ -234,7 +238,8 @@ describe("contract", () => {
         const targetBalances: [bigint, bigint] = [tonAmount, scaleAmount];
         console.log("DeDust Factory Address: " + MAINNET_FACTORY_ADDR);
 
-        // 0x21cfe02b / 567271467
+        // 0x21cfe02b / 567271467: Create Vault
+        // https://docs.dedust.io/reference/tlb-schemes#message-create_vault
         const factory = blkch.openContract(Factory.createFromAddress(MAINNET_FACTORY_ADDR));
         const Tx = await factory.sendCreateVault(player.getSender(), {
             asset: SCALE,
@@ -242,7 +247,8 @@ describe("contract", () => {
         await printTransactionFees(await Tx.transactions);
 
         // ------------------------------------------------------------------------------------------------
-        // (0x97d51f2f / 2547326767 / Create Pool)
+        // (0x97d51f2f / 2547326767: Create a volatile pool)
+        // https://docs.dedust.io/reference/tlb-schemes#message-create_volatile_pool
         const pool = blkch.openContract(await factory.getPool(PoolType.VOLATILE, [TON, SCALE]));
 
         const poolReadiness = await pool.getReadinessStatus();
@@ -254,8 +260,10 @@ describe("contract", () => {
         }
 
         // ------------------------------------------------------------------------------------------------
-        // Deposit / Adding Liquidity: Deposit TON to Vault
+        // 0xd55e4686, Deposit / Adding Liquidity: Deposit TON to Vault
+        // https://docs.dedust.io/reference/tlb-schemes#message-deposit_liquidity
         const tonVault = blkch.openContract(await factory.getNativeVault());
+        console.log("Native Vault Address: " + tonVault.address);
         const tx = await tonVault.sendDepositLiquidity(player.getSender(), {
             poolType: PoolType.VOLATILE,
             assets,
@@ -264,16 +272,15 @@ describe("contract", () => {
         });
         await printTransactionFees(await tx.transactions);
 
-        // ------------------------------------------------------------------------------------------------
         // Deposit Jetton to Vault
         const scaleRoot = blkch.openContract(JettonRoot.createFromAddress(jettonRoot.address));
         const scaleWallet = blkch.openContract(await scaleRoot.getWallet(player.address));
         await jettonRoot.send(player.getSender(), { value: toNano("10") }, "Mint: 100");
 
-        const scaleVault = blkch.openContract(await factory.getJettonVault(jettonRoot.address));
+        const jettonVault = blkch.openContract(await factory.getJettonVault(jettonRoot.address));
         const tx_jetton = await scaleWallet.sendTransfer(player.getSender(), toNano("0.5"), {
             amount: scaleAmount,
-            destination: scaleVault.address,
+            destination: jettonVault.address,
             responseAddress: player.address,
             forwardAmount: toNano("0.4"),
             forwardPayload: VaultJetton.createDepositLiquidityPayload({
@@ -282,6 +289,52 @@ describe("contract", () => {
                 targetBalances,
             }),
         });
+        console.log("Deposit Jetton To Vault: " + jettonVault.address);
         await printTransactionFees(await tx_jetton.transactions);
+        // ------------------------------------------------------------------------------------------------
+        console.log("Swap: ");
+        if ((await pool.getReadinessStatus()) !== ReadinessStatus.READY) {
+            throw new Error("Pool (TON, Jetton) does not exist.");
+        }
+        // Check if vault exits:
+        if ((await tonVault.getReadinessStatus()) !== ReadinessStatus.READY) {
+            throw new Error("Vault (TON) does not exist.");
+        }
+
+        // Swap TON to Jetton
+        const amountIn = toNano("0.0001"); // 5 TON
+        const swapTx_result = await tonVault.sendSwap(player.getSender(), {
+            poolAddress: pool.address,
+            amount: amountIn,
+            gasAmount: toNano("0.25"),
+        });
+        await printTransactionFees(await swapTx_result.transactions);
+
+        // Swap Jetton to TON
+        const jettonAmountIn = toNano("0.00000001"); // 50 SCALE
+        const swapJetton_result = await scaleWallet.sendTransfer(player.getSender(), toNano("0.3030303"), {
+            amount: jettonAmountIn,
+            destination: jettonVault.address,
+            responseAddress: player.address, // return gas to user
+            forwardAmount: toNano("0.25"),
+            forwardPayload: VaultJetton.createSwapPayload({
+                poolAddress: pool.address,
+                swapParams: { recipientAddress: deployer.address },
+            }),
+        });
+        await printTransactionFees(await swapJetton_result.transactions);
+
+        // ------------------------------------------------------------------------------------------------
+        // Remove Liquidity
+        // https://docs.dedust.io/docs/liquidity-provisioning#withdraw-liquidity
+        const lpWallet = blkch.openContract(await pool.getWallet(player.address));
+
+        const removeTx_Result = await lpWallet.sendBurn(player.getSender(), toNano("10"), {
+            amount: await lpWallet.getBalance(),
+        });
+        console.log("removeTx_Result: ");
+        await printTransactionFees(await removeTx_Result.transactions);
+        console.log("JettonWallet: " + scaleWallet.address);
+        await prettyLogTransactions(await removeTx_Result.transactions);
     }, 10000);
 });

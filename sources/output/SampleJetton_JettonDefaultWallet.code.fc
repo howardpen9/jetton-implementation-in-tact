@@ -38,14 +38,14 @@
 
 (((int, slice, slice)), ()) $JettonDefaultWallet$_internal_binary_TokenTransfer((int, slice, slice) $self, (int, int, slice, slice, cell, int, slice) $msg) impure inline {
     var ($self'balance, $self'owner, $self'master) = $self;
-    var ($msg'query_id, $msg'amount, $msg'destination, $msg'response_destination, $msg'custom_payload, $msg'forward_ton_amount, $msg'forward_payload) = $msg;
+    var ($msg'query_id, $msg'amount, $msg'sender, $msg'response_destination, $msg'custom_payload, $msg'forward_ton_amount, $msg'forward_payload) = $msg;
     var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
     throw_unless(4429, ( __tact_slice_eq_bits($self'owner, $ctx'sender) ));
     int $final = (((($Context$_fun_readForwardFee(($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw)) * 2) + (2 * 10000000)) + 10000000) + $msg'forward_ton_amount);
     throw_unless(16059, ($ctx'value > $final));
     $self'balance = ($self'balance - $msg'amount);
     throw_unless(62972, ($self'balance >= 0));
-    var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $msg'destination, $self'master);
+    var ($init'code, $init'data) = $JettonDefaultWallet$_init_child(__tact_context_sys, $msg'sender, $self'master);
     slice $wallet_address = $global_contractAddress(($init'code, $init'data));
     $global_send($SendParameters$_constructor_to_value_mode_bounce_body_code_data($wallet_address, 0, 64, false, $TokenTransferInternal$_store_cell($TokenTransferInternal$_constructor_query_id_amount_from_response_destination_forward_ton_amount_forward_payload($msg'query_id, $msg'amount, $self'owner, $msg'response_destination, $msg'forward_ton_amount, $msg'forward_payload)), $init'code, $init'data));
     return (($self'balance, $self'owner, $self'master), ());
@@ -121,7 +121,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmXSH1YnScoc1zRegQySbBy2TrJSvnYsPYanv2wCw3vZqG";
+    return "ipfs://Qmc2bLaTkNmXqojo7RJxrRvfezpC9VgPJHwjfGCEwBQpkM";
 }
 
 _ lazy_deployment_completed() method_id {
