@@ -144,8 +144,8 @@ int $Context$_fun_readForwardFee((int, slice, int, slice) $self) impure inline_r
 ;; $TokenNotification$_constructor_query_id_amount_from_forward_payload
 ((int, int, slice, slice)) $TokenNotification$_constructor_query_id_amount_from_forward_payload(int query_id, int amount, slice from, slice forward_payload) inline;
 
-;; $SendParameters$_constructor_to_value_bounce_body
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body(slice to, int value, int bounce, cell body) inline;
+;; $SendParameters$_constructor_to_value_bounce_body_mode
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_body_mode(slice to, int value, int bounce, cell body, int mode) inline;
 
 ;; $TokenExcesses$_constructor_query_id
 ((int)) $TokenExcesses$_constructor_query_id(int query_id) inline;
