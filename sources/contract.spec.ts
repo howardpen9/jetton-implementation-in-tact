@@ -30,6 +30,7 @@ import {
     JettonRoot,
     ReadinessStatus,
 } from "@dedust/sdk";
+import { printSeparator } from "./utils/print";
 
 const jettonParams = {
     name: "Best Practice",
@@ -289,10 +290,12 @@ describe("contract", () => {
                 targetBalances,
             }),
         });
-        console.log("Deposit Jetton To Vault: " + jettonVault.address);
+        console.log("----- Deposit Jetton To Vault: -----" + jettonVault.address);
         await printTransactionFees(await tx_jetton.transactions);
+        printSeparator();
+
         // ------------------------------------------------------------------------------------------------
-        console.log("Swap: ");
+        console.log("----- Swap: -----");
         if ((await pool.getReadinessStatus()) !== ReadinessStatus.READY) {
             throw new Error("Pool (TON, Jetton) does not exist.");
         }

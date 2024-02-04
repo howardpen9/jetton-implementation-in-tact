@@ -46,7 +46,7 @@ PROGRAM{
   DECLPROC $SendParameters$_constructor_to_value_mode_bounce_body_code_data
   DECLPROC $SendParameters$_constructor_to_value_mode_bounce_body
   DECLPROC $TokenNotification$_constructor_query_id_amount_from_forward_payload
-  DECLPROC $SendParameters$_constructor_to_value_bounce_body
+  DECLPROC $SendParameters$_constructor_to_value_bounce_body_mode
   DECLPROC $TokenExcesses$_constructor_query_id
   DECLPROC $TokenBurnNotification$_constructor_query_id_amount_sender_response_destination
   DECLPROC $JettonDefaultWallet$_internal_binary_TokenTransfer
@@ -562,11 +562,11 @@ PROGRAM{
     __tact_my_balance INLINECALLDICT
     OVER
     SUB
-    10000000 PUSHINT
+    19000000 PUSHINT
     TUCK
     MIN
     SUB
-    10000000 PUSHINT
+    13000000 PUSHINT
     ADD
     SUB
   }>
@@ -596,10 +596,9 @@ PROGRAM{
   }>
   $TokenNotification$_constructor_query_id_amount_from_forward_payload PROCINLINE:<{
   }>
-  $SendParameters$_constructor_to_value_bounce_body PROCINLINE:<{
-    s3 s3 s0 XCHG3
-    0 PUSHINT
-    SWAP
+  $SendParameters$_constructor_to_value_bounce_body_mode PROCINLINE:<{
+    s2 s4 XCHG
+    s3 s0 s0 XCHG3
     PUSHNULL
     PUSHNULL
   }>
@@ -618,9 +617,9 @@ PROGRAM{
     s3 s(-1) PUXC
     $Context$_fun_readForwardFee INLINECALLDICT
     1 LSHIFT#
-    20000000 PUSHINT
+    26000000 PUSHINT
     ADD
-    10000000 PUSHINT
+    19000000 PUSHINT
     ADD
     s2 PUSH
     ADD
@@ -727,7 +726,8 @@ PROGRAM{
       $TokenExcesses$_constructor_query_id INLINECALLDICT
       $TokenExcesses$_store_cell INLINECALLDICT
       s6 s3 s0 XCHG3
-      $SendParameters$_constructor_to_value_bounce_body INLINECALLDICT
+      1 PUSHINT
+      $SendParameters$_constructor_to_value_bounce_body_mode INLINECALLDICT
       $global_send INLINECALLDICT
     }>ELSE<{
       s5 POP
@@ -753,9 +753,9 @@ PROGRAM{
     $Context$_fun_readForwardFee INLINECALLDICT
     43422 PUSHINT
     SWAP
-    20000000 PUSHINT
+    26000000 PUSHINT
     ADD
-    10000000 PUSHINT
+    19000000 PUSHINT
     ADD
     s1 s2 XCHG
     GREATER

@@ -114,8 +114,8 @@ trait Jetton with Ownable {
 // ============================================================ //
 @interface("org.ton.jetton.wallet")
 contract JettonDefaultWallet {
-    const minTonsForStorage: Int = ton("0.01");
-    const gasConsumption: Int = ton("0.01");
+    const minTonsForStorage: Int = ton("0.019");
+    const gasConsumption: Int = ton("0.013");
 
     balance: Int as coins = 0;
     owner: Address;
@@ -131,8 +131,10 @@ contract JettonDefaultWallet {
         let ctx: Context = context(); // Check sender
         require(ctx.sender == self.owner, "Invalid sender");
 
-        // Gas checks, forward_ton = 0.152
-        let final: Int = ctx.readForwardFee() * 2 + 2 * self.gasConsumption + self.minTonsForStorage + msg.forward_ton_amount; 
+        let final: Int = ctx.readForwardFee() * 2 + 
+                            2 * self.gasConsumption + 
+                                self.minTonsForStorage + 
+                                    msg.forward_ton_amount;   // Gas checks, forward_ton = 0.152
         require(ctx.value > final, "Invalid value"); 
 
         // Update balance
@@ -152,7 +154,7 @@ contract JettonDefaultWallet {
                 from: self.owner,
                 response_destination: msg.response_destination,
                 forward_ton_amount: msg.forward_ton_amount,
-                forward_payload: msg.forward_payload
+                forward_payload:  msg.forward_payload
             }.toCell(),
             code: init.code,
             data: init.data
@@ -173,9 +175,6 @@ contract JettonDefaultWallet {
         // Get value for gas
         let msg_value: Int = self.msg_value(ctx.value);  
         let fwd_fee: Int = ctx.readForwardFee();
-        
-        // let forward_payload: Int = msg.forward_payload.loadInt(1);
-
         if (msg.forward_ton_amount > 0) { 
                 msg_value = msg_value - msg.forward_ton_amount - fwd_fee;
                 send(SendParameters{
@@ -199,7 +198,8 @@ contract JettonDefaultWallet {
                 to: msg.response_destination!!, 
                 value: msg_value,  
                 bounce: false,
-                body: TokenExcesses { query_id: msg.query_id }.toCell()
+                body: TokenExcesses { query_id: msg.query_id }.toCell(),
+                mode: SendPayGasSeparately
             });
         }
     }
