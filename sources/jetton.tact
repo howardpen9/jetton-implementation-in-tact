@@ -148,7 +148,7 @@ contract JettonDefaultWallet {
             value: 0,
             mode: SendRemainingValue, 
             bounce: false,
-            body: TokenTransferInternal{
+            body: TokenTransferInternal{ // 0x178d4519
                 query_id: msg.query_id,
                 amount: msg.amount,
                 from: self.owner,
@@ -182,7 +182,7 @@ contract JettonDefaultWallet {
                     value: msg.forward_ton_amount,
                     mode: SendPayGasSeparately,
                     bounce: false,
-                    body: TokenNotification {
+                    body: TokenNotification { // 0x7362d09c -- Remind the new Owner
                         query_id: msg.query_id,
                         amount: msg.amount,
                         from: msg.from,
@@ -190,7 +190,6 @@ contract JettonDefaultWallet {
                     }.toCell()
                 });
         }
-
 
         // 0xd53276db -- Cashback to the original Sender
         if (msg.response_destination != null && msg_value > 0) { 

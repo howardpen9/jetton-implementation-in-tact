@@ -12,15 +12,13 @@
     "@aws-crypto/sha256-js": "^4.0.0",
     "@dedust/sdk": "^0.8.6",
     "@ston-fi/sdk": "^0.4.0",
-    "@tact-lang/compiler": "^1.1.5",
+    "@tact-lang/compiler": "^1.2.0",
     "@tact-lang/emulator": "^3.2.2",
-    
     "@ton/core": "^0.54.0",
     "@ton/crypto": "^3.2.0",
     "@ton/sandbox": "^0.15.0",
     "@ton/test-utils": "^0.4.2",
     "@ton/ton": "^13.9.0",
-
     "@types/jest": "^29.5.3",
     "@types/node": "^20.2.5",
     "@types/qs": "^6.9.7",

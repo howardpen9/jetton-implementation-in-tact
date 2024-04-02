@@ -804,10 +804,10 @@
   resolved "https://registry.yarnpkg.com/@ston-fi/sdk/-/sdk-0.4.0.tgz#f39b879fddeb624731c17e6e1a744a098d741fad"
   integrity sha512-D3beJaiGRQ2JCb1OjI3ouR2+wDPbIxgjHJN/cWFrNvngGo8CUVvIzKWb0P7AvdoemXJjJhsQU+dTuQJ625hIGw==
 
-"@tact-lang/compiler@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@tact-lang/compiler/-/compiler-1.1.5.tgz#cad19bcf803943b23a1ecc9d6e9749c645b295a6"
-  integrity sha512-J48CKURf5bx3iIH6JKcGi/aiS0ASHe610caeD5Ud7sOFMRpHkDkDepE+7nRm/EsiAi5HVHwSwSVsW2YvB1CHNw==
+"@tact-lang/compiler@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@tact-lang/compiler/-/compiler-1.2.0.tgz#803b2ea7ca37a6fd99da731f584715596bf2270e"
+  integrity sha512-H44pj+DV6G9CYbl+oVOSHbwcicrxA5sZ0sCVseb2Z7uTqptb3+hEj2p/rLS3AtJ/KeEibzasLGf5wgnX2eSLbw==
   dependencies:
     "@ipld/dag-pb" "2.1.18"
     "@tact-lang/opcode" "^0.0.14"
@@ -823,7 +823,7 @@
     path-normalize "^6.0.10"
     prando "^6.0.1"
     qs "^6.11.0"
-    zod "^3.20.2"
+    zod "^3.22.4"
 
 "@tact-lang/emulator@^3.2.2":
   version "3.2.2"
@@ -3556,3 +3556,8 @@ zod@^3.20.2, zod@^3.21.4:
   version "3.22.2"
   resolved "https://registry.npmjs.org/zod/-/zod-3.22.2.tgz"
   integrity sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==
+
+zod@^3.22.4:
+  version "3.22.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
+  integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
