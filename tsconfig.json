@@ -64,6 +64,6 @@
     "resolveJsonModule": true
   },
   "include": [
-    "src/**/*"
+    "sources/**/*"
   ]
 }
