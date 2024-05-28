@@ -1,4 +1,4 @@
-import { Address, beginCell, contractAddress, toNano, Cell, TonClient4 } from "ton";
+import { Address, beginCell, contractAddress, toNano, Cell } from "@ton/core";
 import { ContractSystem, testAddress } from "ton-emulator";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
 import { printAddress, printHeader, printDeploy, printSeparator } from "./utils/print";
@@ -17,7 +17,7 @@ let caller_wallet_address = Address.parse("");
 let new_owner_Address = Address.parse("");
 
 (async () => {
-    let contract_address = await SampleJetton.fromAddress(jetton_minter_root);
+    let contract_address = SampleJetton.fromAddress(jetton_minter_root);
 
     // Get the Jetton Wallet Address of the deployer
     let target_jetton_wallet_init = await JettonDefaultWallet.init(contract_address.address, caller_wallet_address);
@@ -39,7 +39,7 @@ let new_owner_Address = Address.parse("");
                 $$type: "TokenTransfer",
                 query_id: 0n,
                 amount: toNano(1),
-                destination: new_owner_jetton_wallet.address,
+                to: new_owner_jetton_wallet.address,
                 response_destination: caller_wallet_address, // Original Owner, aka. First Minter's Jetton Wallet
                 custom_payload: null,
                 forward_ton_amount: toNano("0.000000001"),

@@ -11,7 +11,7 @@ import {
     Cell,
     BitString,
     Slice,
-} from "ton";
+} from "@ton/ton";
 import { printSeparator } from "./utils/print";
 
 // Contract Abi //

@@ -125,7 +125,7 @@ describe("contract", () => {
             $$type: "TokenTransfer",
             query_id: 0n,
             amount: transferAmount,
-            sender: receiver.address,
+            to: receiver.address,
             response_destination: sender.address,
             custom_payload: null,
             forward_ton_amount: toNano("0.1"),
