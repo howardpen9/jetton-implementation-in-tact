@@ -18,7 +18,7 @@ yarn d2 # (Optional) To generate the Transfer URL to let the new account to tran
 
 # ✨ Important knowledge points
 
-![image1.png](./image1.png)
+![image1.png](./images/image1.png)
 
 -   Store the Jetton content in the `Cell` data type.
 -   Use lowercase for the name in `get_jetton_data()` as per [TEP-74](https://github.com/ton-blockchain/TEPs/blob/master/text/0074-jettons-standard.md). Otherwise, major explorers won't be able to read the Jetton information correctly.
