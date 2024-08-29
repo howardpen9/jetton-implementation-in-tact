@@ -1,4 +1,4 @@
-import { Address, beginCell, contractAddress, toNano, TonClient4, internal, fromNano, WalletContractV4 } from "ton";
+import { Address, beginCell, contractAddress, toNano, TonClient4, internal, fromNano, WalletContractV4 } from "@ton/ton";
 import { deploy } from "./utils/deploy";
 import { printAddress, printDeploy, printHeader, printSeparator } from "./utils/print";
 import { buildOnchainMetadata } from "./utils/jetton-helpers";
@@ -68,7 +68,7 @@ let NewOnwer_Address = Address.parse(""); // 🔴 Owner should usually be the de
                 $$type: "TokenTransfer",
                 query_id: 0n,
                 amount: toNano(20000),
-                destination: NewOnwer_Address,
+                sender: NewOnwer_Address,
                 response_destination: wallet_contract.address, // Original Owner, aka. First Minter's Jetton Wallet
                 custom_payload: forward_string_test,
                 forward_ton_amount: toNano("0.000000001"),
